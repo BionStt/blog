@@ -1,0 +1,76 @@
+﻿@using Microsoft.AspNetCore.Http.Extensions
+@model Blog.Website.Core.ViewModels.User.MainPageViewModel
+@{
+    Layout = "_Layout";
+    ViewBag.Title = Model.Title;
+    ViewBag.Description = Model.Description;
+    ViewBag.Keywords = Model.Keywords;
+}
+
+<div class="b-post__posts j-masonry">
+    <div class="b-post__h1">
+        <h1>@Model.Title</h1>
+    </div>
+    @foreach (var story in Model.Stories)
+    {
+        <div class="b-post" itemscope itemtype="http://schema.org/ListItem">
+            <div class="b-post__inner">
+                <div class="b-post__top">
+                    <img src="@story.StoryThumbUrl" alt="@story.Title">
+                    <div class="b-post__date b-post__date_position_absolute">
+                        <div class="b-post__date-num">@story.CreateDayDate</div>
+                        <div class="b-post__date-month">@story.CreateMonthYearDate</div>
+                    </div>
+                </div>
+                <div class="b-post__block">
+                    <a href="@Url.Action("Story", "BlogStory", new {alias = story.Alias})">
+                        <h2 class="b-post__ttl" itemprop="name">@story.Title</h2>
+                    </a>
+                    <div class="b-post__info">
+                        <ul class="b-post__tags">
+                            @foreach (var tag in story.Tags)
+                            {
+                                <li class="b-post__tag">
+                                    <a href="@Url.Action("Tags", "Tags", new {alias = tag.Alias})" class="b-post__tag-link">
+                                        <svg class="b-icon__tag b-post__tag-icon">
+                                            <use xlink:href="/img/sprite/sprite.svg#tag"></use>
+                                        </svg>
+                                        <div class="b-post__tag-link-txt">@tag.Name</div>
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                    <div itemprop="description">
+                        @Html.Raw(story.ShrotContent)
+                    </div>
+                </div>
+                <div class="b-post__btn">
+                    <a href="@Url.Action("Story", "BlogStory", new {alias = story.Alias})" class="b-btn" itemprop="url">Читать</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+@if (Model.TotalPageCount > 1)
+{
+    <div class="b-post__navigation">
+        <a class="b-post__navigation-btn b-post__navigation-prev @(Model.PageNumber > 1 ? ("is-active") : (""))"
+           href="@this.Context.Request.Path.ToString()?page=@((Model.PageNumber - 1).ToString())">
+            <svg class="b-icon__prev b-post__nav">
+                <use xlink:href="/img/sprite/sprite.svg#prev"></use>
+            </svg>
+        </a>
+        <a class="b-post__navigation-btn b-post__navigation-next @(Model.PageNumber < Model.TotalPageCount ? ("is-active") : (""))"
+           href="@this.Context.Request.Path.ToString()?page=@((Model.PageNumber + 1).ToString())">
+            <svg class="b-icon__next b-post__nav">
+                <use xlink:href="/img/sprite/sprite.svg#next"></use>
+            </svg>
+        </a>
+    </div>
+}
+
+@section publicMainMenu
+{
+    @await Component.InvokeAsync("PublicMainMenu", Model.Tags)
+}

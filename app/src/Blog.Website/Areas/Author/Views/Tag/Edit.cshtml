@@ -1,0 +1,43 @@
+﻿@model Blog.Website.Core.ViewModels.Author.Tag.TagEditViewModel
+@{
+    ViewBag.Title = "Edit blog post";
+    Layout = "_AuthorLayout";
+}
+
+<article class="content item-editor-page">
+    <div class="row card card-block">
+        <form id="edit-story" asp-route="edit-tag" method="POST">
+            <div class="col-xl-10 col-md-9">
+                <div class="form-group">
+                    <label class="control-label" asp-for="Alias"></label>
+                    <p class="form-control-static underlined">@Model.Alias</p>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" asp-for="Name"></label>
+                    <input asp-for="Name" type="text" class="form-control form-control underlined">
+                    <span class="has-error" asp-validation-for="Name"></span>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" asp-for="Keywords"></label>
+                    <input asp-for="Keywords" type="text" class="form-control form-control underlined" placeholder="keyword, keyword1, keyword2">
+                    <span class="has-error" asp-validation-for="Keywords"></span>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" asp-for="SeoTitle"></label>
+                    <textarea rows="5" class="form-control" asp-for="SeoTitle" >@Model.SeoTitle</textarea>
+                    <span class="has-error" asp-validation-for="SeoTitle"></span>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" asp-for="SeoDescription"></label>
+                    <textarea rows="5" class="form-control" asp-for="SeoDescription" >@Model.SeoDescription</textarea>
+                    <span class="has-error" asp-validation-for="SeoDescription"></span>
+                </div>
+            </div>
+            <div class="col-xl-2 col-md-3">
+                <button type="button" class="btn btn-primary btn-block mb-1 submit">Save</button>
+            </div>
+            <input type="hidden" asp-for="Id"/>
+            <input type="hidden" asp-for="Alias"/>
+        </form>
+    </div>
+</article>

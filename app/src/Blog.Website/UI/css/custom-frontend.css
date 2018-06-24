@@ -1,0 +1,13 @@
+pre[class*=language-], code[class*=language-]{
+    line-height: 1.4;
+    white-space: pre-wrap;
+    font-size: 13px;
+}
+
+pre.line-numbers > code {
+    display: inline-block;
+}
+
+.token.operator{
+    background: none;
+}

@@ -1,0 +1,74 @@
+﻿@using Microsoft.AspNetCore.Http.Extensions
+@model Blog.Website.Core.ViewModels.User.FullStoryViewModel
+@{
+    Layout = "_Layout";
+    ViewBag.Title = Model.Title;
+    ViewBag.Description = Model.Description;
+    ViewBag.Keywords = Model.Keywords;
+    ViewBag.Url = Context.Request.GetDisplayUrl();
+    ViewBag.ImageLink = Model.StoryImageUrl;
+}
+<div class="b-single-post" itemscope itemtype="http://schema.org/BlogPosting">
+    <meta itemprop="author" content="Даниил Павлов"/>
+    <meta itemprop="datePublished" content="@Model.CreateDate.ToString("yyyy-MM-dd")"/>
+    <meta itemprop="dateModified" content="@Model.ModifiedDate.ToString("yyyy-MM-dd")"/>
+    <meta itemprop="headline" content="@Model.Title"/>
+    <a itemprop="mainEntityOfPage" href="/" style="display:none;"></a>
+    <div itemprop="publisher" itemscope itemtype="https://schema.org/Organization">
+        <div itemprop="logo" itemscope itemtype="https://schema.org/ImageObject">
+            <img itemprop="image" src="https://d2funlife.com/img/favicons/152x152.png" style="display:none;" />
+            <a itemprop="url" href="https://d2funlife.com" style="display:none;"></a>
+            <meta itemprop="width" content="152">
+            <meta itemprop="height" content="152">
+        </div>
+        <meta itemprop="name" content="d2funlife">
+        <meta itemprop="address" content="none">
+        <meta itemprop="telephone" content="none">
+    </div>
+    <div class="b-post__inner">
+        <div class="b-single-post__block">
+            <img src="@Model.StoryImageUrl" alt="@Model.Title" itemprop="image">
+            <div class="b-single-post__block-inner">
+                <div class="b-single-post__top">
+                    <div class="b-post__date b-single-post__date">
+                        <div class="b-post__date-num" itemprop="dateCreated">@Model.CreateDayDate</div>
+                        <div class="b-post__date-month">@Model.CreateMonthYearDate</div>
+                    </div>
+                    <div class="b-single-post__ttl">
+                        <h1 class="b-post__ttl" itemprop="name">@Model.Title</h1>
+                        <div class="b-post__info b-single-post__tags">
+                            <ul class="b-post__tags">
+                                @foreach (var tag in Model.StoryTags)
+                                {
+                                    <li class="b-post__tag">
+                                        <a href="@Url.Action("Tags", "Tags", new {alias = tag.Alias})" class="b-post__tag-link">
+                                            <svg class="b-icon__tag b-post__tag-icon">
+                                                <use xlink:href="/img/sprite/sprite.svg#tag"></use>
+                                            </svg>
+                                            <div class="b-post__tag-link-txt">@tag.Name</div>
+                                        </a>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="b-single-post__txt" itemprop="articleBody">
+                    @Html.Raw(Model.Content)
+                </div>
+                <div id="disqus_thread"></div>
+                <div id="disqus"></div>
+            </div>
+        </div>
+    </div>
+</div>
+@section publicMainMenu
+{
+    @await Component.InvokeAsync("PublicMainMenu", Model.MenuTags)
+}
+@section additionalScripts
+{
+    <script>
+        var pathSegments = window.location.pathname.split('/');if (pathSegments.length >= 2 && pathSegments[1] !== 'drafts') {var options = {scriptUrl: '//d2funlife.disqus.com/embed.js',disqusConfig: function () {this.page.title = $("title").text();this.page.url = window.location.href;this.page.identifier = window.location.pathname.replace("/", "");}};$.disqusLoader("#disqus", options);}
+    </script>
+}

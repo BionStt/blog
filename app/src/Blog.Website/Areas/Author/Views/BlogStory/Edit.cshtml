@@ -1,0 +1,102 @@
+﻿@model Blog.Website.Core.ViewModels.Author.BlogStories.EditBlogStoryViewModel
+@{
+    ViewBag.Title = "Edit story";
+}
+<article class="content item-editor-page">
+    <div class="row card card-block">
+        <form id="edit-story" asp-route="edit-story" method="POST">
+            <div class="col-xl-10 col-md-9">
+                <div class="form-group">
+                    <label class="control-label" asp-for="Title"></label>
+                    <input asp-for="Title" type="text" class="form-control form-control underlined" placeholder="Blog story title">
+                    <span class="has-error" asp-validation-for="Title"></span>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" asp-for='Description'></label>
+                    <textarea rows="5" class="form-control" asp-for="Description" >@Model.Description</textarea>
+                    <span class="has-error" asp-validation-for="Description"></span>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" asp-for="Keywords"></label>
+                    <input asp-for="Keywords" type="text" class="form-control form-control underlined" placeholder="keyword, keyword1, keyword2">
+                    <span class="has-error" asp-validation-for="Keywords"></span>
+                </div>
+                <div class="form-group">
+                    <div class="input-group">
+                        <span class="input-group-addon">https://d2funlife.com/</span>
+                        <input type="text" class="form-control" placeholder="input-story-alias" asp-for="Alias">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="input-group">
+                        <span class="input-group-addon">Main image</span>
+                        <input type="text" class="form-control" placeholder="http://imagehost.com" asp-for="StoryImageUrl">
+                    </div>
+                    <span class="has-error" asp-validation-for="StoryImageUrl"></span>
+                </div>
+                <div class="form-group">
+                    <div class="input-group">
+                        <span class="input-group-addon">Thumb image</span>
+                        <input type="text" class="form-control" placeholder="http://imagehost.com" asp-for="StoryThumbUrl">
+                    </div>
+                    <span class="has-warning" asp-validation-for="StoryThumbUrl"></span>
+                </div>
+                <div class="form-group">
+                    <textarea class="editor" asp-for="Content"></textarea>
+                </div>
+            </div>
+            <div class="col-xl-2 col-md-3">
+                @if (Model.IsPublished)
+                {
+                    <button type="button" class="btn btn-primary btn-block" id="publish-btn" set="false">Unpublish</button>
+                    <a id="share-link"  target="_blank" class="btn btn-primary btn-block" href="@Url.Action("Story", "BlogStory", new {alias = Model.Alias})">Preview</a>
+                }
+                else
+                {
+                    <button type="button" class="btn btn-primary btn-block" id="publish-btn" set="true">Publish</button>
+                    <a id="share-link"  target="_blank" class="btn btn-primary btn-block" href="@Url.Action("Preview", "BlogStory", new {alias = Model.Alias})">Preview</a>
+                }
+                <button type="button" class="btn btn-primary btn-block mb-1 submit">Save</button>
+                @if (!System.String.IsNullOrWhiteSpace(Model.CreateDate))
+                {
+                    <div class="form-group">
+                        <label class="control-label">Craeted date</label>
+                        <div>@Model.CreateDate</div>
+                    </div>
+                }
+                <div class="form-group">
+                    <label class="control-label">Status</label>
+                    <section id="story-status">
+                        @if (Model.IsPublished)
+                        {
+                            <i class="fa fa-smile-o status-publish"></i><span> Published</span>
+                        }
+                        else
+                        {
+                            <i class="fa fa-meh-o status-draft"></i><span> Draft</span>
+                        }
+                    </section>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Tags</label>
+                    <input asp-for="TagsSelected" type="text" class="form-control tag-editor" />
+                </div>
+            </div>
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="Alias" />
+            <input type="hidden" asp-for="AccessToken" />
+            <input type="hidden" asp-for="IsPublished" />
+        </form>
+    </div>
+</article>
+@section additionalScripts
+{
+    <script src="~/blog-story-edit.min.js?v=@Versioning.Current"></script>
+    <script>
+        var tags = @Html.Raw(Model.Tags);
+        blogStoryManager.initialize(tags);
+    </script>
+}
+@section headerMenu{
+    @await Component.InvokeAsync("HeaderMenu")
+}

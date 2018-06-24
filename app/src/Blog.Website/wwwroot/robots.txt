@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /StatusCode
+Disallow: /Manage
+Disallow: /author
+Disallow: /Account
+Disallow: /drafts
+Host: https://d2funlife.com
+sitemap: https://d2funlife.com/sitemap.xml

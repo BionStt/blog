@@ -1,0 +1,15 @@
+﻿@model IEnumerable<Blog.Website.Core.ViewModels.User.TagViewModel>
+
+<div class="b-menu__bottom">
+    <div class="b-menu__tags-ttl">Теги</div>
+    <ul class="b-post__tags b-menu__tags">
+        @foreach (var tag in Model)
+        {
+            <li class="b-post__tag">
+                <a href="@Url.Action("Tags", "Tags", new {alias = tag.Alias})" class="b-post__tag-link">
+                    <div class="b-post__tag-link-txt">@tag.Name</div>
+                </a>
+            </li>
+        }
+    </ul>
+</div>

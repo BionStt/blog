@@ -1,0 +1,5 @@
+﻿@model Blog.Website.Core.ViewModels.Author.ViewComponents.MenuViewModel
+@foreach (var link in Model.Links)
+{
+    <a href="@link.Url" target="@(link.Url.Equals("#")? ("_self") : ("_blank"))" id="@(String.IsNullOrWhiteSpace(link.Id) ? "" : link.Id)" class="btn btn-sm header-btn"> <i class="fa @link.Icon"></i> <span>@link.Text</span> </a>
+}
