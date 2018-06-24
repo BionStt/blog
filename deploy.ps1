@@ -10,4 +10,4 @@ if (! (Test-Path Env:\APPVEYOR_REPO_TAG_NAME)) {
 Write-Host Starting deploy
 docker login -u="$env:DOCKER_USER" -p="$env:DOCKER_PASS"
 
-docker push d2funlife/blog:1.0.$env:APPVEYOR_BUILD_NUMBER
+docker push d2funlife/blog

@@ -15,7 +15,7 @@ services:
 - docker
 
 build_script:
-  - docker build -t d2funlife/blog:latest -t d2funlife/blog:1.0.$env:APPVEYOR_BUILD_NUMBER .
+  - docker build -t d2funlife/blog .
 
 test: off
 
