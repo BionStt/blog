@@ -1,0 +1,20 @@
+version: 1.0.{build}
+image: Visual Studio 2017
+
+clone_depth: 1
+
+environment:
+  DOCKER_USER:
+    secure: DFCmCQYGVK19BRSoVVffYQ==
+  DOCKER_PASS:
+    secure: tyCs62GdU59M1vNsnAwKrw==
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+
+build_script:
+  - docker build -t d2funlife/blog:latest -t d2funlife/blog:1.0.{build} .
+
+test: off
+
+deploy_script:
+  - ps: .\deploy.ps1
