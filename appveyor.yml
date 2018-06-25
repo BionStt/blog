@@ -11,12 +11,11 @@ environment:
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
   DOTNET_CLI_TELEMETRY_OPTOUT: true
   
-
 install:
 - docker version
 
 build_script:
-  - docker build -t d2funlife/blog .
+  - ps: .\build.ps1
 
 test: off
 
