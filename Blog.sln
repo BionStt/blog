@@ -20,7 +20,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{F26953EA-040B-46D0-823F-4AA05B5B26E3}"
 ProjectSection(SolutionItems) = preProject
 	deploy.ps1 = deploy.ps1
-	deploy.sh = deploy.sh
 	appveyor.yml = appveyor.yml
 	Dockerfile = Dockerfile
 	README.md = README.md
