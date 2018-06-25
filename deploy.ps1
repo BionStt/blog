@@ -1,15 +1,11 @@
-Write-Host Start deploy $env:APPVEYOR_BUILD_VERSION
-
-Write-Host $env:APPVEYOR_BUILD_ID
-Write-Host $env:APPVEYOR_BUILD_NUMBER
-Write-Host $env:APPVEYOR_BUILD_VERSION
-Write-Host $env:APPVEYOR_REPO_NAME
+$Version=$env:APPVEYOR_BUILD_VERSION
+Write-Host Start deploy $Version
 
 docker images
 
 Write-Host Tag docker image
 
-docker tag d2funlife/blog d2funlife/blog:'$env:APPVEYOR_BUILD_VERSION'
+docker tag d2funlife/blog d2funlife/blog:$Version
 
 Write-Host Docker login
 
