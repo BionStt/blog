@@ -10,9 +10,10 @@ environment:
     secure: tyCs62GdU59M1vNsnAwKrw==
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
   DOTNET_CLI_TELEMETRY_OPTOUT: true
+  
 
-services:
-- docker
+install:
+- docker version
 
 build_script:
   - docker build -t d2funlife/blog .

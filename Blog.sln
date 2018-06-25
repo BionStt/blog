@@ -17,6 +17,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blog.Website", "src\Blog.We
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blog.Data.Contracts", "src\Blog.Data.Contracts\Blog.Data.Contracts.csproj", "{748C7290-EC44-46D0-AE8D-D27F0B87574B}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{F26953EA-040B-46D0-823F-4AA05B5B26E3}"
+ProjectSection(SolutionItems) = preProject
+	deploy.ps1 = deploy.ps1
+	deploy.sh = deploy.sh
+	appveyor.yml = appveyor.yml
+	Dockerfile = Dockerfile
+	README.md = README.md
+	LICENSE = LICENSE
+	.gitignore = .gitignore
+EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
