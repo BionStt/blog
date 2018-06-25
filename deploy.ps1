@@ -13,4 +13,4 @@ $env:DOCKER_PASS | docker login --username d2funlife --password-stdin
 
 Write-Host Push to docker hub
 
-docker push d2funlife/blog:latest d2funlife/blog:$Version
+docker push d2funlife/blog:$Version
