@@ -7,7 +7,8 @@ var gulp = require("gulp"),
     cssmin = require("gulp-cssmin"),
     uglify = require("gulp-uglify"),
     rename = require("gulp-rename"),
-    strip = require('gulp-strip-comments');
+    strip = require('gulp-strip-comments'),
+    stripCss = require('gulp-strip-css-comments');
 
 var paths = {
     webroot: "./wwwroot/",
@@ -20,6 +21,8 @@ var paths = {
 
 paths.adminJs = paths.webroot + "admin.min.js";
 paths.adminCss = paths.webroot + "admin.min.css";
+paths.adminLocalCss = paths.webroot + "admin.local.min.css";
+paths.adminRemoteCss = paths.webroot + "admin.remote.min.css";
 
 paths.frontJs = paths.webroot + "front.min.js";
 paths.frontCss = paths.webroot + "front.min.css";
@@ -37,7 +40,6 @@ var adminJsFiles = [
     paths.uiPlugins + 'metisMenu/dist/metisMenu.min.js',
     paths.uiPlugins + 'nprogress/nprogress.js',
     paths.uiPlugins + 'Sortable/Sortable.min.js',
-    paths.uiPlugins + 'tinymce/tinymce.min.js',
     paths.uiPlugins + 'microplugin/src/microplugin.js',
     paths.uiPlugins + 'sifter/sifter.min.js',
     paths.uiPlugins + 'selectize/dist/js/selectize.min.js',
@@ -51,13 +53,12 @@ var adminCssFiles = [
     paths.uiPlugins + 'bootstrap/dist/css/bootstrap-flex.min.css',
     paths.uiPlugins + 'bootstrap/dist/css/bootstrap.min.css',
     paths.uiPlugins + 'animate.css/animate.min.css',
-    paths.uiPlugins + 'font-awesome/css/font-awesome.min.css',
+    paths.uiCss + 'font-awesome.min.css',
     paths.uiPlugins + 'metisMenu/dist/metisMenu.min.css',
     paths.uiPlugins + 'selectize/dist/css/selectize.css',
     paths.uiCss + 'prism.vs.css',
     paths.uiCss + 'app.css'
 ];
-
 
 gulp.task("min:admin-managers", function () {
     var files = [
@@ -94,6 +95,7 @@ gulp.task("clean-admin-js", function (cb) {
 gulp.task("min:admin-css", function () {
     return gulp.src(adminCssFiles)
         .pipe(concat(paths.adminCss))
+        .pipe(stripCss())
         .pipe(cssmin())
         .pipe(gulp.dest("."));
 });
@@ -131,6 +133,7 @@ var frontCssFiles = [
 gulp.task("min-front-css", function () {
     return gulp.src(frontCssFiles)
         .pipe(concat(paths.frontCss))
+        .pipe(stripCss())
         .pipe(cssmin())
         .pipe(gulp.dest("."));
 });
@@ -141,10 +144,10 @@ gulp.task("clean-front-css", function (cb) {
 
 gulp.task("min-front-js", function () {
     return gulp.src(frontJsFiles)
-               .pipe(concat(paths.frontJs))
-               .pipe(strip())
-               .pipe(uglify())
-               .pipe(gulp.dest("."));
+        .pipe(concat(paths.frontJs))
+        .pipe(strip())
+        .pipe(uglify())
+        .pipe(gulp.dest("."));
 });
 
 gulp.task("clean-front-js", function (cb) {
@@ -153,7 +156,7 @@ gulp.task("clean-front-js", function (cb) {
 
 gulp.task("copy-min", function () {
     return gulp.src(frontJsFilesCopy)
-               .pipe(gulp.dest(paths.webroot));
+        .pipe(gulp.dest(paths.webroot));
 });
 
 gulp.task("min-front", ["min-front-js", "min-front-css"]);

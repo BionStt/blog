@@ -5,12 +5,13 @@
         this.tags = tags;
         this.initializeShortCuts();
 
-        tinyMCE.baseURL = '/lib/tinymce';
+        tinyMCE.baseURL = 'https://cdn.jsdelivr.net/npm/tinymce@4.7.13/';
 
         tinymce.init({
             selector: '.editor',
             height: 500,
             menubar: true,
+            branding: false,
             plugins: [
                 'advlist autolink lists link image charmap print preview anchor',
                 'searchreplace visualblocks code fullscreen',
