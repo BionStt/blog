@@ -17,8 +17,7 @@ using Microsoft.Extensions.Logging;
 namespace Blog.Website.Areas.Author.Controllers
 {
     [Authorize]
-    [Area("author")]
-    [Route("author/stories")]
+    [Area("author"), Route("author/stories")]
     public class BlogStoryController : BaseController
     {
         private readonly Int32 _cachePeriod;

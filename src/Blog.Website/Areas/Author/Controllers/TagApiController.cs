@@ -11,8 +11,7 @@ using Microsoft.Extensions.Logging;
 namespace Blog.Website.Areas.Author.Controllers
 {
     [Authorize]
-    [Area("author")]
-    [Route("api/{version:int}/author/tags")]
+    [Area("author"), Route("api/{version:int}/author/tags")]
     public class TagApiController : Controller
     {
         private readonly Int32 _pageSize;

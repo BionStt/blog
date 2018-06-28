@@ -9,8 +9,7 @@ using Microsoft.Extensions.Configuration;
 namespace Blog.Website.Areas.Author.Controllers
 {
     [Authorize]
-    [Area("author")]
-    [Route("author/tags")]
+    [Area("author"), Route("author/tags")]
     public class TagController : Controller
     {
         private readonly Int32 _pageSize;
