@@ -3,14 +3,23 @@ image: ubuntu
 
 clone_depth: 1
 
+pull_requests:
+  do_not_increment_build_number: true
+
 environment:
-  DOCKER_USER:
-    secure: DFCmCQYGVK19BRSoVVffYQ==
   DOCKER_PASS:
     secure: tyCs62GdU59M1vNsnAwKrw==
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
   DOTNET_CLI_TELEMETRY_OPTOUT: true
   
+branches:
+  only:
+    - master
+
+skip_commits:
+  files:
+    - README.md
+
 install:
 - docker version
 
@@ -19,5 +28,14 @@ build_script:
 
 test: off
 
-deploy_script:
+before_deploy:
   - ps: .\deploy.ps1
+
+deploy:
+- provider: Webhook
+  url:
+    secure: bwtxM3PwlQqNCxXgKZ78J8DkJhIu6ubu0cZMoGAul9FWEx9OTMjV4suCKf0E6vOI
+  authorization:
+    secure: n0prl+2NRyt6D5iOnQ7f+E287RQUnLcBxJfPvBgMxTrK+eOaFoh3eg/XH9Ksc2PD
+  on:
+    branch: master

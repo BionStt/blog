@@ -1,5 +1,5 @@
 $Version=$env:APPVEYOR_BUILD_VERSION
-Write-Host Start deploy $Version
+Write-Host Starting deploy $Version
 
 docker images
 
