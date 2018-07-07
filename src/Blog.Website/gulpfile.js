@@ -57,7 +57,8 @@ var adminCssFiles = [
     paths.uiPlugins + 'metisMenu/dist/metisMenu.min.css',
     paths.uiPlugins + 'selectize/dist/css/selectize.css',
     paths.uiCss + 'prism.vs.css',
-    paths.uiCss + 'app.css'
+    paths.uiCss + 'app.css',
+    paths.uiCss + 'admin.custom.css'
 ];
 
 gulp.task("min:admin-managers", function () {

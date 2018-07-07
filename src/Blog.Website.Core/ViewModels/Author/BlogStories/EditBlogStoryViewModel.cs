@@ -56,6 +56,7 @@ namespace Blog.Website.Core.ViewModels.Author.BlogStories
 
         public EditBlogStoryViewModel()
         {
+            Tags = "[]";
         }
 
         public EditBlogStoryViewModel(BlogStory blogStory)
@@ -75,6 +76,7 @@ namespace Blog.Website.Core.ViewModels.Author.BlogStories
                 StoryThumbUrl = blogStory.StoryThumbUrl;
                 CategoryId = blogStory.CategoryId;
                 AccessToken = blogStory.AccessToken;
+                Tags = "[]";
                 if (blogStory.BlogStoryTags != null)
                 {
                     TagsSelected = blogStory.BlogStoryTags.Select(x => x.TagId).JoinToString(",");
@@ -108,7 +110,7 @@ namespace Blog.Website.Core.ViewModels.Author.BlogStories
                        Title = Title.Trim(),
                        Description = Description.Trim(),
                        Keywords = Keywords,
-                       Content = Content,
+                       Content = Content ?? String.Empty,
                        StoryImageUrl = StoryImageUrl?.Trim(),
                        StoryThumbUrl = StoryThumbUrl?.Trim(),
                        CreateDate = String.IsNullOrWhiteSpace(CreateDate) ? DateTime.Now : DateTime.Parse(CreateDate),
