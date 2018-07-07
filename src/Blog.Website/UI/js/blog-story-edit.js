@@ -18,22 +18,39 @@
                 'insertdatetime media table contextmenu paste codesample'
             ],
             toolbar:
-            'undo redo | insert | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | codesample',
+                'undo redo | insert | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | codesample',
             codesample_languages: [
-                { text: 'HTML/XML', value: 'markup' },
-                { text: 'JavaScript', value: 'javascript' },
-                { text: 'CSS', value: 'css' },
-                { text: 'C', value: 'c' },
-                { text: 'C#', value: 'csharp' },
-                { text: 'ASP.NET MVC', value: 'aspnet' },
-                { text: 'Bash', value: 'bash' },
-                { text: 'Powershell', value: 'powershell' },
-                { text: 'DockerFile', value: 'docker' },
-                { text: 'Yaml', value: 'yaml' }
+                {text: 'HTML/XML', value: 'markup'},
+                {text: 'JavaScript', value: 'javascript'},
+                {text: 'CSS', value: 'css'},
+                {text: 'C', value: 'c'},
+                {text: 'C#', value: 'csharp'},
+                {text: 'ASP.NET MVC', value: 'aspnet'},
+                {text: 'Bash', value: 'bash'},
+                {text: 'Powershell', value: 'powershell'},
+                {text: 'DockerFile', value: 'docker'},
+                {text: 'Yaml', value: 'yaml'}
 
             ],
             setup: function (editor) {
-                editor.shortcuts.add("ctrl+s", "save story", function () { $("#edit-story").submit(); });
+                editor.shortcuts.add("ctrl+s", "save story", function () {
+                    $("#edit-story").submit();
+                });
+                editor.on('FullscreenStateChanged', function (editor) {
+                    if (editor.state) {
+                        window.location.hash = "fullscreen";
+                    } else {
+                        window.location.hash = "";
+                    }
+                });
+
+                editor.on('init', function () {
+                    if (window.location.hash === '#fullscreen') {
+                        tinyMCE.execCommand('mceFullScreen');
+                    }
+                });
+
+
             }
         });
 
@@ -53,14 +70,14 @@
             searchField: 'name',
             options: this.tags,
             create: function (input, callback) {
-                var request = JSON.stringify({ name: input });
+                var request = JSON.stringify({name: input});
                 $.ajax({
                     type: "POST",
                     url: "/author/tags",
                     data: request,
                     contentType: "application/json",
                     success: function (data) {
-                        var newItem = { id: data.id, name: data.name };
+                        var newItem = {id: data.id, name: data.name};
                         callback(newItem);
                         blogStoryManager.tags.push(newItem);
                     },
@@ -96,6 +113,10 @@
         });
 
         $("#share-link-copy").click(blogStoryManager.copyShareLink);
+
+        $('form').prop('action', function(i, val) {
+            return val + window.location.hash;
+        });
     },
     initializeShortCuts: function () {
         $(window).bind('keydown',
@@ -160,6 +181,5 @@
                 alert(data);
             }
         });
-
     }
 };
