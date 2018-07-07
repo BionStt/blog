@@ -37,11 +37,20 @@
                     $("#edit-story").submit();
                 });
                 editor.on('FullscreenStateChanged', function (editor) {
+                    var form = $("#edit-story");
+                    var fullscreenValue = "#fullscreen";
+                    
+                    var formCurrentAction = form.attr("action");
+
                     if (editor.state) {
-                        window.location.hash = "fullscreen";
+                        window.location.hash = fullscreenValue;
+                        form.attr("action", formCurrentAction + window.location.hash);
                     } else {
                         window.location.hash = "";
+                        form.attr("action", formCurrentAction.replace(fullscreenValue, ""));
                     }
+                    
+                    
                 });
 
                 editor.on('init', function () {
@@ -49,8 +58,6 @@
                         tinyMCE.execCommand('mceFullScreen');
                     }
                 });
-
-
             }
         });
 
@@ -113,10 +120,6 @@
         });
 
         $("#share-link-copy").click(blogStoryManager.copyShareLink);
-
-        $('form').prop('action', function(i, val) {
-            return val + window.location.hash;
-        });
     },
     initializeShortCuts: function () {
         $(window).bind('keydown',
