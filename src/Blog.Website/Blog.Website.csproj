@@ -28,4 +28,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Areas\Author\Views\Author\Index.cshtml" />
+  </ItemGroup>
 </Project>
