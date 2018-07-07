@@ -32,9 +32,9 @@ namespace Blog.Data.EntityFramework.Repository
             return FirstOrDefaultAsync(b => b.Id == id, cancel);
         }
 
-        public Task<List<BlogStory>> GetPerPageAsync(Int32 skip, 
-                                                     Int32 top, 
-                                                     StorySort sortType, 
+        public Task<List<BlogStory>> GetPerPageAsync(Int32 skip,
+                                                     Int32 top,
+                                                     StorySort sortType,
                                                      StoryFilter filter,
                                                      CancellationToken cancel = default)
         {
@@ -84,6 +84,33 @@ namespace Blog.Data.EntityFramework.Repository
             return Entities.Include(x => x.BlogStoryTags)
                            .Where(predicate)
                            .ToListAsync(cancel);
+        }
+
+        public Task<List<BlogStory>> WhereWithTagsPerPageAsync(Expression<Func<BlogStory, Boolean>> predicate,
+                                                               Int32 skip,
+                                                               Int32 top,
+                                                               StorySort sort,
+                                                               StoryFilter filter,
+                                                               CancellationToken cancel = default)
+        {
+            IQueryable<BlogStory> query = Entities.Include(x => x.BlogStoryTags)
+                                                  .Where(predicate);
+            if (filter == StoryFilter.Published)
+            {
+                query = query.Where(x => x.IsPublished);
+            }
+            else if (filter == StoryFilter.UnPublished)
+            {
+                query = query.Where(x => !x.IsPublished);
+            }
+
+            query = sort == StorySort.CreateDate
+                        ? query.OrderByDescending(x => x.CreateDate)
+                        : query.OrderByDescending(x => x.PublishedDate);
+
+            return query.Skip(skip)
+                        .Take(top)
+                        .ToListAsync(cancel);
         }
     }
 }

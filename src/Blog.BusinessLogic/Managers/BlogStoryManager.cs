@@ -124,10 +124,8 @@ namespace Blog.BusinessLogic.Managers
                 throw new EntityNotFoundException();
             }
 
-            var blogStoriesIds = tag.BlogStoryTags.OrderByDescending(x => x.BlogStoryId)
+            var blogStoriesIds = tag.BlogStoryTags
                                     .Select(x => x.BlogStoryId)
-                                    .Skip(skip)
-                                    .Take(top)
                                     .ToList();
 
             if (!blogStoriesIds.Any())
@@ -135,7 +133,12 @@ namespace Blog.BusinessLogic.Managers
                 return new Tuple<Tag, List<BlogStory>>(null, new List<BlogStory>(0));
             }
 
-            var blogStories = await _blogStoryRepository.WhereWithTagsAsync(x => blogStoriesIds.Contains(x.Id), cancel);
+            var blogStories = await _blogStoryRepository.WhereWithTagsPerPageAsync(x => blogStoriesIds.Contains(x.Id), 
+                                                                                   skip, 
+                                                                                   top,
+                                                                                   sort,
+                                                                                   filter,
+                                                                                   cancel);
             return new Tuple<Tag, List<BlogStory>>(tag, blogStories);
         }
 

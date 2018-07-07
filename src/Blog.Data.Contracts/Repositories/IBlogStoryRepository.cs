@@ -37,5 +37,12 @@ namespace Blog.Data.Contracts.Repositories
 
         Task<List<BlogStory>> WhereWithTagsAsync(Expression<Func<BlogStory, Boolean>> predicate,
                                                  CancellationToken cancel = default);
+
+        Task<List<BlogStory>> WhereWithTagsPerPageAsync(Expression<Func<BlogStory, Boolean>> predicate,
+                                                        Int32 skip,
+                                                        Int32 top,
+                                                        StorySort sort,
+                                                        StoryFilter filter,
+                                                        CancellationToken cancel = default);
     }
 }
