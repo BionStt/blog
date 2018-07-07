@@ -5,58 +5,50 @@
 }
 
 <!doctype html>
-<html lang="en">
+<html lang="ru">
 <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <title>@ViewBag.Title</title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
     <link rel="icon" type="image/png" href="/img/favicons/16x16.png" sizes="16x16">
+    <link rel="stylesheet" href="/front.min.css?v=@Versioning.Current">
 </head>
 <body>
-    <div class="auth">
-        <div class="auth-container">
-            <div class="card">
-                <header class="auth-header">
-                    <h1 class="auth-title">
-                        <div class="logo"> <span class="l l1"></span> <span class="l l2"></span> <span class="l l3"></span> <span class="l l4"></span> <span class="l l5"></span> </div> d2funlife blog
-                    </h1>
-                </header>
-                <div class="auth-content">
-                    <p class="text-xs-center">LOGIN</p>
-                    @{
-                        var loginProviders = (await Provider.GetAllSchemesAsync()).ToList();
-                        if (!loginProviders.Any())
-                        {
-                            <div>
-                                <p>
-                                    Noo login !!!
-                                </p>
-                            </div>
-                        }
-                        else
-                        {
-                            <form asp-controller="Account" asp-action="ExternalLogin" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
-                                <div>
-                                    <p>
-                                        @foreach (var provider in loginProviders.ToList())
-                                        {
-                                            if (provider.DisplayName == null)
-                                            {
-                                                continue;
-                                            }
-
-                                            <button type="submit" class="btn btn-block btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
-                                        }
-                                    </p>
-                                </div>
-                            </form>
-                        }
-                    }
-                </div>
-            </div>
+<div class="l-login">
+    <div class="b-login__wrap">
+        <div class="b-login">
+            <h2>Login</h2>
+            @{
+                var loginProviders = (await Provider.GetAllSchemesAsync()).ToList();
+                if (!loginProviders.Any())
+                {
+                    <div>
+                        <p>
+                            Noo login !!!
+                        </p>
+                    </div>
+                }
+                else
+                {
+                    <div class="b-login__btn-wrap">
+                        <form asp-controller="Account" asp-action="ExternalLogin" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
+                            @foreach (var provider in loginProviders.ToList())
+                            {
+                                if (provider.DisplayName == null)
+                                {
+                                    continue;
+                                }
+                                
+                                <button type="submit" class="b-btn b-login__btn" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
+                            }
+                        </form>
+                    </div>
+                }
+            }
         </div>
     </div>
+</div>
 </body>
 </html>
