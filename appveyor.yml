@@ -11,25 +11,25 @@ environment:
     secure: tyCs62GdU59M1vNsnAwKrw==
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
   DOTNET_CLI_TELEMETRY_OPTOUT: true
-  
+
 branches:
   only:
-    - master
+  - master
 
 skip_commits:
   files:
-    - README.md
+  - README.md
 
 install:
 - docker version
 
 build_script:
-  - ps: .\build.ps1
+- ps: .\build.ps1
 
 test: off
 
 before_deploy:
-  - ps: .\deploy.ps1
+- ps: .\deploy.ps1
 
 deploy:
 - provider: Webhook
