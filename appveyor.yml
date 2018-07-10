@@ -28,10 +28,8 @@ build_script:
 
 test: off
 
-before_deploy:
-  - ps: .\deploy.ps1
-
 deploy:
+- ps: .\deploy.ps1
 - provider: Webhook
   url:
     secure: bwtxM3PwlQqNCxXgKZ78J8DkJhIu6ubu0cZMoGAul9FWEx9OTMjV4suCKf0E6vOI
