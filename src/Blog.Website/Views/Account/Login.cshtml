@@ -32,19 +32,19 @@
                 }
                 else
                 {
-                    <div class="b-login__btn-wrap">
-                        <form asp-controller="Account" asp-action="ExternalLogin" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
+                    <form asp-controller="Account" asp-action="ExternalLogin" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
+                        <div class="b-login__btn-wrap">
                             @foreach (var provider in loginProviders.ToList())
                             {
                                 if (provider.DisplayName == null)
                                 {
                                     continue;
                                 }
-                                
+
                                 <button type="submit" class="b-btn b-login__btn" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
                             }
-                        </form>
-                    </div>
+                        </div>
+                    </form>
                 }
             }
         </div>
