@@ -35,6 +35,11 @@ namespace Blog.BusinessLogic.Managers
             return _tagRepository.GetAsync(id, cancel);
         }
 
+        public Task<List<Tag>> GetAllPublishedAsync(CancellationToken cancel = default)
+        {
+            return _tagRepository.GetAllPublishedAsync(cancel);
+        }
+
         public Task<List<Tag>> GetAllAsync(CancellationToken cancel = default)
         {
             return _tagRepository.GetAllAsync(cancel);

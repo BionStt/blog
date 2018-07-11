@@ -1,5 +1,4 @@
-﻿@using Microsoft.AspNetCore.Http.Extensions
-@model Blog.Website.Core.ViewModels.User.MainPageViewModel
+﻿@model Blog.Website.Core.ViewModels.User.MainPageViewModel
 @{
     Layout = "_Layout";
     ViewBag.Title = Model.Title;
@@ -13,7 +12,7 @@
     </div>
     @foreach (var story in Model.Stories)
     {
-        <div class="b-post" itemscope itemtype="http://schema.org/ListItem">
+        <div class="b-post">
             <div class="b-post__inner">
                 <div class="b-post__top">
                     <img src="@story.StoryThumbUrl" alt="@story.Title">
@@ -24,7 +23,7 @@
                 </div>
                 <div class="b-post__block">
                     <a href="@Url.Action("Story", "BlogStory", new {alias = story.Alias})">
-                        <h2 class="b-post__ttl" itemprop="name">@story.Title</h2>
+                        <h2 class="b-post__ttl">@story.Title</h2>
                     </a>
                     <div class="b-post__info">
                         <ul class="b-post__tags">
@@ -41,12 +40,12 @@
                             }
                         </ul>
                     </div>
-                    <div itemprop="description">
+                    <div>
                         @Html.Raw(story.ShrotContent)
                     </div>
                 </div>
                 <div class="b-post__btn">
-                    <a href="@Url.Action("Story", "BlogStory", new {alias = story.Alias})" class="b-btn" itemprop="url">Читать</a>
+                    <a href="@Url.Action("Story", "BlogStory", new {alias = story.Alias})" class="b-btn">Читать</a>
                 </div>
             </div>
         </div>

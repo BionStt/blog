@@ -39,10 +39,8 @@ namespace Blog.BusinessLogic.Builders
 
         public override String ToString()
         {
-            var sitemap = new XDocument(
-                                        new XDeclaration("1.0", "utf-8", "yes"),
-                                        new XElement(_ns + "urlset", _urls.Select(CreateItemElement))
-                                       );
+            var sitemap = new XDocument(new XDeclaration("1.0", "utf-8", "yes"),
+                                        new XElement(_ns + "urlset", _urls.Select(CreateItemElement)));
 
             return sitemap.ToString();
         }
@@ -59,7 +57,7 @@ namespace Blog.BusinessLogic.Builders
             if (url.ChangeFrequency.HasValue)
             {
                 itemElement.Add(new XElement(_ns + "changefreq", url.ChangeFrequency.Value.ToString()
-                                                                                          .ToLower()));
+                                                                    .ToLower()));
             }
 
             if (url.Priority.HasValue)

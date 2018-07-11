@@ -17,6 +17,11 @@ namespace Blog.Data.EntityFramework.Repository
         {
         }
 
+        public Task<List<Tag>> GetAllPublishedAsync(CancellationToken cancel = default)
+        {
+            return Entities.Where(x=>x.IsPublished).ToListAsync(cancel);
+        }
+
         public async Task<List<Tag>> GetAllOrderedByUseAsync(CancellationToken cancel = default)
         {
             var tags = await Entities.Include(x => x.BlogStoryTags)

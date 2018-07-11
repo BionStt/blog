@@ -41,7 +41,7 @@ namespace Blog.BusinessLogic.Helpers
                    {
                        Url = $"{baseUrl}/{story.Alias}",
                        Modified = story.ModifiedDate,
-                       ChangeFrequency = ChangeFrequency.Daily,
+                       ChangeFrequency = ChangeFrequency.Weekly,
                    };
         }
     }

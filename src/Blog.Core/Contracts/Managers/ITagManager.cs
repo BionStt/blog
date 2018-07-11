@@ -16,6 +16,13 @@ namespace Blog.Core.Contracts.Managers
         /// <returns>Tag entities</returns>
         Task<Tag> GetAsync(Int32 id,
                            CancellationToken cancel = default);
+        
+        /// <summary>
+        /// Get all published
+        /// </summary>
+        /// <param name="cancel">Cancellation token</param>
+        /// <returns>Tag entities</returns>
+        Task<List<Tag>> GetAllPublishedAsync(CancellationToken cancel = default);
 
         /// <summary>
         /// Get tags collection

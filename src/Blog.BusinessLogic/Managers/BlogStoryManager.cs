@@ -250,6 +250,13 @@ namespace Blog.BusinessLogic.Managers
                                    : null;
             
             siteMapBuilder.AddUrl(baseUrl, modifiedDate, ChangeFrequency.Daily);
+            
+            var tags = await _tagManager.GetAllPublishedAsync(cancel);
+
+            foreach (var tag in tags)
+            {
+                siteMapBuilder.AddUrl(tag.ToSitemapItem(baseUrl));
+            }
 
             foreach (var blogStory in blogStories)
             {
