@@ -4,6 +4,6 @@ namespace Blog.Website
 {
     public static class Versioning
     {
-        public static String Current => "ays23ltksd3";
+        public static String Current => "ays258tksd3";
     }
 }

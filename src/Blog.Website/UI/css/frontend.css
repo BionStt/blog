@@ -109,6 +109,10 @@ textarea {
     padding-right: 10px;
 }
 
+button {
+    border: none;
+}
+
 h1 {
     font-size: 26px;
     line-height: 30px;
@@ -424,6 +428,18 @@ a[href^='tel:'], a[href^='mailto:'] {
     fill: #929396;
 }
 
+.b-icon__facebook {
+    width: 15px;
+    height: 23px;
+    fill: #929396;
+}
+
+.b-icon__google {
+    width: 28px;
+    height: 23px;
+    fill: #929396;
+}
+
 .b-icon__twitter {
     width: 25px;
     height: 20px;
@@ -488,19 +504,6 @@ a[href^='tel:'], a[href^='mailto:'] {
     stroke: #1daf99;
 }
 
-.b-icon__review {
-    width: 30px;
-    height: 30px;
-    fill: #1daf99;
-}
-
-.b-icon__review1 {
-    width: 30px;
-    height: 30px;
-    fill: transparent;
-    stroke: #1daf99;
-}
-
 .b-icon__logo {
     width: 90px;
     height: 65px;
@@ -536,13 +539,15 @@ a[href^='tel:'], a[href^='mailto:'] {
     transition: .3s ease;
 }
 
-.b-btn:hover, .b-btn:focus {
-    text-decoration: none;
-}
+@media only screen and (min-width: 1280px) {
+    .b-btn:hover, .b-btn:focus {
+        text-decoration: none;
+    }
 
-.b-btn:hover:after, .b-btn:hover:before, .b-btn:focus:after, .b-btn:focus:before {
-    width: 100%;
-    height: 100%;
+    .b-btn:hover:after, .b-btn:hover:before, .b-btn:focus:after, .b-btn:focus:before {
+        width: 100%;
+        height: 100%;
+    }
 }
 
 .b-btn:after {
@@ -569,17 +574,6 @@ a[href^='tel:'], a[href^='mailto:'] {
     right: 0;
     top: 0;
     transition: .3s ease;
-}
-
-@media only screen and (min-width: 1280px) {
-    .b-btn:hover, .b-btn:focus {
-        text-decoration: none;
-    }
-
-    .b-btn:hover:after, .b-btn:hover:before, .b-btn:focus:after, .b-btn:focus:before {
-        width: 100%;
-        height: 100%;
-    }
 }
 
 .b-btn.is-disabled,
@@ -730,12 +724,12 @@ a[href^='tel:'], a[href^='mailto:'] {
     position: relative;
     width: 100%;
     background-color: #303d54;
-    min-height: 150px;
+    min-height: 200px;
 }
 
 @media only screen and (max-width: 670px) {
     .b-post__top {
-        min-height: 150px;
+        min-height: 175px;
     }
 }
 
@@ -867,11 +861,6 @@ a[href^='tel:'], a[href^='mailto:'] {
 }
 
 .b-post__tags {
-    width: 75%;
-    float: left;
-    padding-left: 15px;
-    padding-right: 15px;
-    padding: 0;
     display: -ms-flexbox;
     display: flex;
     -ms-flex-wrap: wrap;
@@ -1165,7 +1154,7 @@ a[href^='tel:'], a[href^='mailto:'] {
     top: 20px;
     right: 20px;
     content: '';
-    background-image: url("/img/gallery.svg");
+    background-image: url("../img/gallery.svg");
     background-repeat: no-repeat;
     background-position: 0 0;
     width: 45px;
@@ -1181,7 +1170,7 @@ a[href^='tel:'], a[href^='mailto:'] {
     top: 20px;
     right: 20px;
     content: '';
-    background-image: url("/img/gallery-hover.svg");
+    background-image: url("../img/gallery-hover.svg");
     background-repeat: no-repeat;
     background-position: 0 0;
     width: 45px;
@@ -1328,21 +1317,27 @@ a[href^='tel:'], a[href^='mailto:'] {
 
 .b-menu__block-inner {
     background-color: #303d54;
-    padding: 65px 55px;
     width: 300px;
     height: 100%;
+    padding: 50px 20px;
 }
 
 @media only screen and (max-width: 670px) {
     .b-menu__block-inner {
         overflow-y: scroll;
-        padding: 50px 20px;
         width: 100%;
+    }
+}
+
+@media only screen and (min-width: 671px) {
+    .b-menu__block-inner {
+        padding: 65px 30px;
     }
 }
 
 @media only screen and (min-width: 960px) {
     .b-menu__block-inner {
+        padding: 65px 55px;
         width: 350px;
     }
 }
@@ -1674,6 +1669,17 @@ a[href^='tel:'], a[href^='mailto:'] {
     }
 }
 
+.b-copy__link {
+    transition-property: border-bottom;
+    transition-duration: 0.3s;
+    transition-timing-function: ease;
+    border-bottom: 1px solid currentColor;
+}
+
+.b-copy__link:hover {
+    border-bottom: 1px solid transparent;
+}
+
 .b-error-page {
     background-color: #303d54;
     overflow: hidden;
@@ -1779,6 +1785,7 @@ a[href^='tel:'], a[href^='mailto:'] {
 }
 
 .b-error-page__ttl {
+    margin-bottom: 10px;
     font-size: 20px;
     line-height: 22px;
 }
@@ -1795,6 +1802,21 @@ a[href^='tel:'], a[href^='mailto:'] {
         font-size: 62px;
         line-height: 64px;
     }
+}
+
+.b-error-page__link {
+    transition-property: border-bottom;
+    transition-duration: 0.3s;
+    transition-timing-function: ease;
+    color: #fff;
+    font-size: 16px;
+    line-height: 18px;
+    border-bottom: 1px solid #fff;
+}
+
+.b-error-page__link:hover, .b-error-page__link:focus {
+    color: #fff;
+    border-bottom: 1px solid transparent;
 }
 
 .b-gallery__link {
