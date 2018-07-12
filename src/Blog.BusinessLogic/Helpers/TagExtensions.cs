@@ -10,7 +10,7 @@ namespace Blog.BusinessLogic.Helpers
         {
             return new SitemapItem
                    {
-                       Url = $"{baseUrl}/{tag.Alias}",
+                       Url = $"{baseUrl}/tags/{tag.Alias}",
                        ChangeFrequency = ChangeFrequency.Weekly,
                    };
         }
