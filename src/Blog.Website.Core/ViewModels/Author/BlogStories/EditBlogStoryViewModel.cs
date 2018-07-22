@@ -7,6 +7,7 @@ using Blog.Core.Converters;
 using Blog.Core.Entities;
 using Blog.Extensions.Helpers;
 using Blog.Website.Core.ViewModels.Author.Tag;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Primitives;
 using Newtonsoft.Json;
@@ -54,6 +55,8 @@ namespace Blog.Website.Core.ViewModels.Author.BlogStories
 
         public String AccessToken { get; set; }
 
+        public String ShareLink { get; set; }
+
         public EditBlogStoryViewModel()
         {
             Tags = "[]";
@@ -65,18 +68,19 @@ namespace Blog.Website.Core.ViewModels.Author.BlogStories
             {
                 Id = blogStory.Id;
                 Title = blogStory.Title;
+                Alias = blogStory.Alias;
                 Description = blogStory.Description;
                 Keywords = blogStory.Keywords;
-                CreateDate = blogStory.CreateDate.ToString("dd.MM.yyyy HH:mm");
-                ModifiedDate = blogStory.ModifiedDate.ToString("dd.MM.yyyy HH:mm");
-                IsPublished = blogStory.IsPublished;
-                Alias = blogStory.Alias;
                 Content = blogStory.Content;
                 StoryImageUrl = blogStory.StoryImageUrl;
                 StoryThumbUrl = blogStory.StoryThumbUrl;
+                CreateDate = blogStory.CreateDate.ToString("dd.MM.yyyy HH:mm");
+                ModifiedDate = blogStory.ModifiedDate.ToString("dd.MM.yyyy HH:mm");
+                IsPublished = blogStory.IsPublished;
                 CategoryId = blogStory.CategoryId;
                 AccessToken = blogStory.AccessToken;
                 Tags = "[]";
+
                 if (blogStory.BlogStoryTags != null)
                 {
                     TagsSelected = blogStory.BlogStoryTags.Select(x => x.TagId).JoinToString(",");
@@ -84,11 +88,13 @@ namespace Blog.Website.Core.ViewModels.Author.BlogStories
             }
         }
 
-        public EditBlogStoryViewModel(BlogStory blogStory, IEnumerable<Blog.Core.Entities.Tag> tags) : this(blogStory)
+        public EditBlogStoryViewModel(BlogStory blogStory, IEnumerable<Blog.Core.Entities.Tag> tags, IUrlHelper url) : this(blogStory)
         {
             Tags = tags == null
                        ? "[]"
                        : JsonConvert.SerializeObject(tags.Select(x => new TagShort(x)).ToList(), Formatting.None);
+
+            ShareLink = GetShareLink(url);
         }
 
         public BlogStory ToDomain()
@@ -108,6 +114,7 @@ namespace Blog.Website.Core.ViewModels.Author.BlogStories
                    {
                        Id = Id,
                        Title = Title.Trim(),
+                       Alias = slug ?? Alias,
                        Description = Description.Trim(),
                        Keywords = Keywords,
                        Content = Content ?? String.Empty,
@@ -115,9 +122,9 @@ namespace Blog.Website.Core.ViewModels.Author.BlogStories
                        StoryThumbUrl = StoryThumbUrl?.Trim(),
                        CreateDate = String.IsNullOrWhiteSpace(CreateDate) ? DateTime.Now : DateTime.Parse(CreateDate),
                        ModifiedDate = DateTime.Now,
+                       IsPublished = IsPublished,
                        CategoryId = CategoryId,
-                       Alias = slug ?? Alias,
-                       IsPublished = IsPublished
+                       AccessToken = AccessToken
                    };
         }
 
@@ -134,6 +141,18 @@ namespace Blog.Website.Core.ViewModels.Author.BlogStories
             }
 
             ResizeThumbImage(thumbMaxWidth);
+        }
+
+        public String GetShareLink(IUrlHelper url)
+        {
+            if (String.IsNullOrWhiteSpace(AccessToken))
+            {
+                return url.Action(IsPublished ? "Story" : "Preview", "BlogStory", new {alias = Alias});
+            }
+
+            return IsPublished
+                       ? url.Action("Story", "BlogStory", new {alias = Alias})
+                       : url.Action("Preview", "BlogStory", new {alias = Alias, token = AccessToken});
         }
 
         private void ResizeThumbImage(Int32 thumbMaxWidth)

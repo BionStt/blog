@@ -152,6 +152,7 @@ namespace Blog.BusinessLogic.Managers
 
             if (blogStory.Id <= 0)
             {
+                blogStory.InitializeOnCreate();
                 await _blogStoryRepository.AddAsync(blogStory, cancel);
                 return blogStory;
             }
@@ -167,7 +168,7 @@ namespace Blog.BusinessLogic.Managers
             return originalBlogStory;
         }
 
-        public async Task<BlogStory> CreateAccessTokenAsync(Int32 id,
+        public async Task<BlogStory> UpdateAccessTokenAsync(Int32 id,
                                                             CancellationToken cancel = default)
         {
             if (id <= 0)
@@ -179,12 +180,6 @@ namespace Blog.BusinessLogic.Managers
             if (story == null)
             {
                 throw new EntityNotFoundException($"Can't find story with id : {id}");
-            }
-
-            if (story.IsPublished || 
-                !String.IsNullOrWhiteSpace(story.AccessToken))
-            {
-                return story;
             }
 
             var accessToken = Guid.NewGuid()
@@ -275,6 +270,23 @@ namespace Blog.BusinessLogic.Managers
         public Task<Int32> CountStoriesForTagAsync(Int32 tagId, CancellationToken cancel = default)
         {
             return _tagManager.GetStoriesCountAsync(tagId, cancel);
+        }
+
+        public async Task RemoveAccessTokenAsync(Int32 id, CancellationToken cancel)
+        {
+            if (id <= 0)
+            {
+                throw new ArgumentException("Incorrect value for story id");
+            }
+
+            var story = await _blogStoryRepository.GetAsync(id, cancel);
+            if (story == null)
+            {
+                throw new EntityNotFoundException($"Can't find story with id : {id}");
+            }
+            
+            story.AccessToken = null;
+            await _blogStoryRepository.UpdateAsync(story, cancel);
         }
 
         public Task<Int32> CountAsync(CancellationToken cancel = default)

@@ -23,7 +23,7 @@ namespace Blog.Core.Entities
         public Int32? CategoryId { get; set; }
         public Language Language { get; set; }
         public String AccessToken { get; set; }
-        
+
         public List<BlogStoryTag> BlogStoryTags { get; set; }
 
         public void Update(BlogStory target)
@@ -38,6 +38,13 @@ namespace Blog.Core.Entities
             CategoryId = target.CategoryId;
             AccessToken = target.AccessToken;
             Language = target.Language;
+        }
+
+        public void InitializeOnCreate()
+        {
+            AccessToken = Guid.NewGuid()
+                              .ToString("N")
+                              .Substring(0, 6);
         }
     }
 }

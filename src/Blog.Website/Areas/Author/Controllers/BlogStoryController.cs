@@ -45,10 +45,8 @@ namespace Blog.Website.Areas.Author.Controllers
         public async Task<IActionResult> Index(Int32 page = 1)
         {
             var skip = GetSkip(page, PageSize);
-            var cancel = HttpContext.RequestAborted;
-
-            var stories = await _blogStoryManager.GetAsync(skip, PageSize, StorySort.CreateDate, StoryFilter.All, cancel);
-            var storiesTotalCount = await _blogStoryManager.CountAsync(cancel);
+            var stories = await _blogStoryManager.GetAsync(skip, PageSize, StorySort.CreateDate, StoryFilter.All, Cancel);
+            var storiesTotalCount = await _blogStoryManager.CountAsync(Cancel);
             var viewModel = new AuthorStoriesPageViewModel(stories, page, storiesTotalCount, PageSize);
             return View(viewModel);
         }
@@ -56,11 +54,9 @@ namespace Blog.Website.Areas.Author.Controllers
         [HttpGet("edit/{id?}")]
         public async Task<IActionResult> Edit(Int32 id = 0)
         {
-            var cancel = HttpContext.RequestAborted;
-
-            var tags = await _tagManager.GetAllAsync(cancel);
-            var story = await _blogStoryManager.GetWithTagsAsync(id, cancel);
-            var viewModel = new EditBlogStoryViewModel(story, tags);
+            var tags = await _tagManager.GetAllAsync(Cancel);
+            var story = await _blogStoryManager.GetWithTagsAsync(id, Cancel);
+            var viewModel = new EditBlogStoryViewModel(story, tags, Url);
             return View(viewModel);
         }
 
@@ -69,19 +65,17 @@ namespace Blog.Website.Areas.Author.Controllers
         {
             try
             {
-                var cancel = HttpContext.RequestAborted;
-
                 if (!ModelState.IsValid)
                 {
                     return View(model);
                 }
 
                 model.SetImageUrlIfNotExist(_defaultStoryImageUrl, _defaultThumbMaxWidth);
-                var blogStory = await _blogStoryManager.CreateOrUpdateAsync(model.ToDomain(), cancel);
+                var blogStory = await _blogStoryManager.CreateOrUpdateAsync(model.ToDomain(), Cancel);
                 var tagIds = model.TagsSelected.GetIntegers(',');
                 if (tagIds.Any())
                 {
-                    await _tagManager.AssignToBlogStoryAsync(tagIds, blogStory, cancel);
+                    await _tagManager.AssignToBlogStoryAsync(tagIds, blogStory, Cancel);
                 }
 
                 return RedirectToAction("Edit", new {id = blogStory.Id});
@@ -103,8 +97,7 @@ namespace Blog.Website.Areas.Author.Controllers
         {
             try
             {
-                var cancel = HttpContext.RequestAborted;
-                await _blogStoryManager.DeleteAsync(alias, cancel);
+                await _blogStoryManager.DeleteAsync(alias, Cancel);
                 return Ok();
             }
             catch (ArgumentException exception)
@@ -124,9 +117,10 @@ namespace Blog.Website.Areas.Author.Controllers
         {
             try
             {
-                var cancel = HttpContext.RequestAborted;
-                var story = await _blogStoryManager.ChangeAvailabilityAsync(id, isPublished, cancel);
-                var redirect = isPublished ? "" : "";
+                var story = await _blogStoryManager.ChangeAvailabilityAsync(id, isPublished, Cancel);
+                var redirect = isPublished 
+                                   ? Url.Action("Story", "BlogStory", new {alias = story.Alias}) 
+                                   : String.Empty;
 
                 return Ok(new {redirect = redirect});
             }
@@ -142,18 +136,33 @@ namespace Blog.Website.Areas.Author.Controllers
             }
         }
 
-        [HttpPost("{storyId:int}/sharelinks")]
-        public async Task<IActionResult> GetShareLink(Int32 storyId)
+        [HttpPost("{storyId:int}/accesstoken")]
+        public async Task<IActionResult> UpdateAccessToken(Int32 storyId)
         {
             try
             {
-                var cancel = HttpContext.RequestAborted;
-                var story = await _blogStoryManager.CreateAccessTokenAsync(storyId, cancel);
-                var link = String.IsNullOrWhiteSpace(story.AccessToken)
-                               ? Url.Action("Story", "BlogStory", new {alias = story.Alias})
-                               : Url.Action("Preview", "BlogStory", new {alias = story.Alias, token = story.AccessToken});
-
-                return Ok(new {link = link});
+                var story = await _blogStoryManager.UpdateAccessTokenAsync(storyId, Cancel);
+                return Ok();
+            }
+            catch (ArgumentException exception)
+            {
+                _logger.Error(exception);
+                return BadRequest();
+            }
+            catch (EntityNotFoundException exception)
+            {
+                _logger.Error(exception);
+                return NotFound();
+            }
+        }
+        
+        [HttpDelete("{storyId:int}/accesstoken")]
+        public async Task<IActionResult> RemoveAccessToken(Int32 storyId)
+        {
+            try
+            {
+                await _blogStoryManager.RemoveAccessTokenAsync(storyId, Cancel);
+                return Ok();
             }
             catch (ArgumentException exception)
             {

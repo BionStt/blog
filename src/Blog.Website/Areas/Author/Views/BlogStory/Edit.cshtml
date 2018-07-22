@@ -46,15 +46,20 @@
                 </div>
             </div>
             <div class="col-xl-2 col-md-3">
-                @if (Model.IsPublished)
+                <button type="button" class="btn btn-primary btn-block" id="publish-btn" set="@(Model.IsPublished ? "false" : "true")">
+                    @(Model.IsPublished
+                          ? "Un publish"
+                          : "Publish")
+                </button>
+                <a id="share-link" target="_blank" class="btn btn-primary btn-block" href="@Model.GetShareLink(Url)">Preview</a>
+                <button type="button" class="btn btn-primary btn-block" id="update-access-token-btn">
+                    @(String.IsNullOrWhiteSpace(Model.AccessToken)
+                          ? "Create access token"
+                          : "Update access token")
+                </button>
+                @if (!String.IsNullOrWhiteSpace(Model.AccessToken))
                 {
-                    <button type="button" class="btn btn-primary btn-block" id="publish-btn" set="false">Unpublish</button>
-                    <a id="share-link"  target="_blank" class="btn btn-primary btn-block" href="@Url.Action("Story", "BlogStory", new {alias = Model.Alias})">Preview</a>
-                }
-                else
-                {
-                    <button type="button" class="btn btn-primary btn-block" id="publish-btn" set="true">Publish</button>
-                    <a id="share-link"  target="_blank" class="btn btn-primary btn-block" href="@Url.Action("Preview", "BlogStory", new {alias = Model.Alias})">Preview</a>
+                    <button type="button" class="btn btn-primary btn-block" id="remove-access-token-btn">Remove access token</button>
                 }
                 <button type="button" class="btn btn-primary btn-block mb-1 submit">Save</button>
                 @if (!System.String.IsNullOrWhiteSpace(Model.CreateDate))
@@ -69,26 +74,29 @@
                     <section id="story-status">
                         @if (Model.IsPublished)
                         {
-                            <i class="fa fa-smile-o status-publish"></i><span> Published</span>
+                            <i class="fa fa-smile-o status-publish"></i>
+                            <span> Published</span>
                         }
                         else
                         {
-                            <i class="fa fa-meh-o status-draft"></i><span> Draft</span>
+                            <i class="fa fa-meh-o status-draft"></i>
+                            <span> Draft</span>
                         }
                     </section>
                 </div>
                 <div class="form-group">
                     <label class="control-label">Tags</label>
-                    <input asp-for="TagsSelected" type="text" class="form-control tag-editor" />
+                    <input asp-for="TagsSelected" type="text" class="form-control tag-editor"/>
                 </div>
             </div>
-            <input type="hidden" asp-for="Id" />
-            <input type="hidden" asp-for="Alias" />
-            <input type="hidden" asp-for="AccessToken" />
-            <input type="hidden" asp-for="IsPublished" />
+            <input type="hidden" asp-for="Id"/>
+            <input type="hidden" asp-for="Alias"/>
+            <input type="hidden" asp-for="AccessToken"/>
+            <input type="hidden" asp-for="IsPublished"/>
         </form>
     </div>
 </article>
+
 @section additionalScripts
 {
     <script src="https://cdn.jsdelivr.net/npm/tinymce@4.7.13/tinymce.min.js"></script>
@@ -98,6 +106,7 @@
         blogStoryManager.initialize(tags);
     </script>
 }
+
 @section headerMenu{
     @await Component.InvokeAsync("HeaderMenu")
 }

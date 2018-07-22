@@ -39,7 +39,7 @@
                 editor.on('FullscreenStateChanged', function (editor) {
                     var form = $("#edit-story");
                     var fullscreenValue = "#fullscreen";
-                    
+
                     var formCurrentAction = form.attr("action");
 
                     if (editor.state) {
@@ -49,8 +49,6 @@
                         window.location.hash = "";
                         form.attr("action", formCurrentAction.replace(fullscreenValue, ""));
                     }
-                    
-                    
                 });
 
                 editor.on('init', function () {
@@ -119,7 +117,8 @@
             });
         });
 
-        $("#share-link-copy").click(blogStoryManager.copyShareLink);
+        $("#update-access-token-btn").click(this.updateAccessToken);
+        $("#remove-access-token-btn").click(this.removeAccessToken);
     },
     initializeShortCuts: function () {
         $(window).bind('keydown',
@@ -134,54 +133,25 @@
                 }
             });
     },
-    initializeCopyShareLinkEvent: function () {
-        var copyData = function (e) {
-            var link = $("#share-link-copy").attr('link');
-            e.clipboardData.setData('text/plain', link);
-            document.removeEventListener('copy', copyData);
-            e.preventDefault();
-        };
-
-
-        document.addEventListener('copy', copyData);
-    },
-    copyShareLink: function (e) {
-        var $statusItem = $("#story-status span").text().trim();
-        var isPublished = $statusItem === blogStoryManager.publishText;
-
-        blogStoryManager.initializeCopyShareLinkEvent();
-
-        if (isPublished) {
-            var link = $("#share-link").attr("href");
-            $("#share-link-copy").attr('link', location.origin + link);
-            document.execCommand('copy');
-        } else {
-            if ($("#share-link-copy").attr("link")) {
-                document.execCommand('copy');
-            }
-            else if ($("#AccessToken").val()) {
-                var alias = $("#Alias").val();
-                var accessToken = $("#AccessToken").val();
-                $("#share-link-copy").attr("link", location.origin + '/drafts/' + alias + '?token=' + accessToken);
-                document.execCommand('copy');
-            }
-            else {
-                blogStoryManager.createShareLink();
-            }
-        }
-    },
-    createShareLink: function () {
+    updateAccessToken: function () {
         var id = $("#Id").val();
 
         $.ajax({
             type: "POST",
-            url: "/author/stories/" + id + "/sharelinks",
-            success: function (data) {
-                $("#share-link-copy").attr('link', location.origin + data.link);
-                document.execCommand('copy');
-            },
-            error: function (data) {
-                alert(data);
+            url: "/author/stories/" + id + "/accesstoken",
+            success: function () {
+                document.location.reload();
+            }
+        });
+    },
+    removeAccessToken: function () {
+        var id = $("#Id").val();
+
+        $.ajax({
+            type: "DELETE",
+            url: "/author/stories/" + id + "/accesstoken",
+            success: function () {
+                document.location.reload();
             }
         });
     }
