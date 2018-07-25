@@ -72,12 +72,10 @@ namespace Blog.Website.Areas.Author.Controllers
 
                 model.SetImageUrlIfNotExist(_defaultStoryImageUrl, _defaultThumbMaxWidth);
                 var blogStory = await _blogStoryManager.CreateOrUpdateAsync(model.ToDomain(), Cancel);
-                var tagIds = model.TagsSelected.GetIntegers(',');
-                if (tagIds.Any())
-                {
-                    await _tagManager.AssignToBlogStoryAsync(tagIds, blogStory, Cancel);
-                }
-
+                
+                var tagIds = model.TagsSelected?.GetIntegers(',').ToList();
+                await _tagManager.UpdateBlogStoryTagsAsync(tagIds, blogStory, Cancel);
+                
                 return RedirectToAction("Edit", new {id = blogStory.Id});
             }
             catch (ArgumentException exception)

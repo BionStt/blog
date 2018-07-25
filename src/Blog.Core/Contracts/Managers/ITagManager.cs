@@ -16,7 +16,7 @@ namespace Blog.Core.Contracts.Managers
         /// <returns>Tag entities</returns>
         Task<Tag> GetAsync(Int32 id,
                            CancellationToken cancel = default);
-        
+
         /// <summary>
         /// Get all published
         /// </summary>
@@ -54,9 +54,9 @@ namespace Blog.Core.Contracts.Managers
         /// <param name="tagIds">Tag id</param>
         /// <param name="story">Blog story entity</param>
         /// <param name="cancel">Cancellation token</param>
-        Task AssignToBlogStoryAsync(IEnumerable<Int32> tagIds,
-                                    BlogStory story,
-                                    CancellationToken cancel = default);
+        Task UpdateBlogStoryTagsAsync(List<Int32> tagIds,
+                                      BlogStory story,
+                                      CancellationToken cancel = default);
 
         /// <summary>
         /// Create tag
