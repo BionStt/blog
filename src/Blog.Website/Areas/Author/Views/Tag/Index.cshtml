@@ -24,6 +24,11 @@
                             <span>Title</span>
                         </div>
                     </div>
+                    <div class="item-col item-col-header item-col-stats">
+                        <div class="no-overflow">
+                            <span>Status</span>
+                        </div>
+                    </div>
                     <div class="item-col item-col-header fixed item-col-actions-dropdown"> </div>
                 </div>
             </li>
@@ -37,6 +42,12 @@
                                 <a asp-area="author" asp-controller="Tag" asp-action="Edit" asp-route-id="@tag.Id">
                                     <h4 class="item-title" tag-id="@tag.Id"> @tag.Name </h4>
                                 </a>
+                            </div>
+                        </div>
+                        <div class="item-col item-col-stats no-overflow">
+                            <div class="item-heading">Stats</div>
+                            <div class="no-overflow val @(tag.IsPublished ? ("status-publish") : ("status-draft"))">
+                                 @(tag.IsPublished? "Published" : "Draft")
                             </div>
                         </div>
                         <div class="item-col fixed item-col-actions-dropdown">

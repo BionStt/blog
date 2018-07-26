@@ -24,6 +24,7 @@ namespace Blog.Website.Core.ViewModels.Author.Tag
             {
                 Id = tag.Id;
                 Name = tag.Name;
+                IsPublished = tag.IsPublished;
             }
         }
     }
