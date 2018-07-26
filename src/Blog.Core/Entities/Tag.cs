@@ -33,7 +33,6 @@ namespace Blog.Core.Entities
             SeoTitle = targetEntity.SeoTitle;
             SeoDescription = targetEntity.SeoDescription;
             SeoKeywords = targetEntity.SeoKeywords;
-            IsPublished = targetEntity.IsPublished;
         }
     }
 }
