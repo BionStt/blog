@@ -770,16 +770,13 @@ a[href^='tel:'], a[href^='mailto:'] {
 @media only screen and (min-width: 1280px) {
     .b-single-post {
         margin-bottom: 70px;
-        z-index: 1;
         position: relative;
-        padding: 0; } }
-@media only screen and (min-width: 1920px) {
-    .b-single-post {
         max-width: 990px;
         margin-left: auto;
         margin-right: auto;
         padding: 0 20px;
-        float: none; } }
+        float: none;
+        z-index: 1; } }
 .b-single-post .b-post__inner {
     padding-bottom: 0; }
 @media only screen and (min-width: 1280px) {
