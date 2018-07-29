@@ -767,15 +767,17 @@ a[href^='tel:'], a[href^='mailto:'] {
         float: left;
         padding-left: 15px;
         padding-right: 15px; } }
+@media screen and (min-width: 1020px) {
+    .b-single-post {
+        max-width: 950px;
+        margin-left: auto;
+        margin-right: auto;
+        float: none;
+        padding: 0; } }
 @media only screen and (min-width: 1280px) {
     .b-single-post {
         margin-bottom: 70px;
         position: relative;
-        max-width: 990px;
-        margin-left: auto;
-        margin-right: auto;
-        padding: 0 20px;
-        float: none;
         z-index: 1; } }
 .b-single-post .b-post__inner {
     padding-bottom: 0; }
