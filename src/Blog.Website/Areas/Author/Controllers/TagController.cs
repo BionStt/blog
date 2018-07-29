@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Blog.Core.Contracts.Managers;
+using Blog.Website.Core.Requests;
 using Blog.Website.Core.ViewModels.Author.Tag;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -62,6 +63,26 @@ namespace Blog.Website.Areas.Author.Controllers
             catch (Exception exception)
             {
                 return View(model);
+            }
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> Edit([FromBody] TagCreateRequest model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(model);
+            }
+
+            try
+            {
+                var cancel = HttpContext.RequestAborted;
+                var tag = await _tagManager.CreateTagAsync(model.Name, cancel);
+                return Ok(tag);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500);
             }
         }
     }

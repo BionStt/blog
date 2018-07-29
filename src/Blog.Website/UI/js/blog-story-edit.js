@@ -77,7 +77,7 @@
             create: function (input, callback) {
                 var request = JSON.stringify({name: input});
                 $.ajax({
-                    type: "POST",
+                    type: "PUT",
                     url: "/author/tags",
                     data: request,
                     contentType: "application/json",
