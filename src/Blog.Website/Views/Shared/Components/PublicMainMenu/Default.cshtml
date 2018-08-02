@@ -6,7 +6,7 @@
         @foreach (var tag in Model)
         {
             <li class="b-post__tag">
-                <a href="@Url.Action("Tags", "Tags", new {alias = tag.Alias})" class="b-post__tag-link">
+                <a href="@Url.Action("Tags", "Tags", new {alias = tag.Alias})" class="b-post__tag-link" @(ViewBag.NoFollowForTags ?? false ? "rel=nofollow" : "")>
                     <div class="b-post__tag-link-txt">@tag.Name</div>
                 </a>
             </li>

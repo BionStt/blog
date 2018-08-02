@@ -47,8 +47,16 @@ namespace Blog.Website.Controllers
                 var tag = tagAndStories.Item1;
                 var tags = await _tagManager.GetAllOrderedByUseAsync(Cancel);
             
-                var viewModel = new MainPageViewModel(tagAndStories.Item2, tags, page, PageSize, storiesTotalCount, tag.SeoTitle,
-                                                      _defaultPageNumberTitle, tag.SeoDescription, tag.SeoKeywords);
+                var viewModel = new MainPageViewModel(tagAndStories.Item2, 
+                                                      tags, 
+                                                      page, 
+                                                      PageSize, 
+                                                      storiesTotalCount, 
+                                                      tag.SeoTitle,
+                                                      _defaultPageNumberTitle, 
+                                                      tag.SeoDescription, 
+                                                      tag.SeoKeywords);
+                ViewBag.NoFollowForTags = true;
                 return View("~/Views/BlogStory/IndexPub.cshtml", viewModel);
             }
             catch(EntityNotFoundException)
