@@ -31,7 +31,7 @@ namespace Blog.Website.Areas.Author.Controllers
         public BlogStoryController(IBlogStoryManager blogStoryManager,
                                    ITagManager tagManager,
                                    IConfiguration configuration,
-                                   ILoggerFactory loggerFactory) : base(configuration.GetValue<Int32>("default-page-size"))
+                                   ILoggerFactory loggerFactory) : base(configuration)
         {
             _blogStoryManager = blogStoryManager;
             _tagManager = tagManager;

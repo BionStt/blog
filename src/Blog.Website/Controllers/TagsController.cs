@@ -15,7 +15,7 @@ namespace Blog.Website.Controllers
     {
         private readonly IBlogStoryManager _blogStoryManager;
         private readonly ITagManager _tagManager;
-        
+
         private readonly String _defaultTitle;
         private readonly String _defaultDescription;
         private readonly String _defaultKeywords;
@@ -23,11 +23,11 @@ namespace Blog.Website.Controllers
         private readonly String _defaultPageNumberTitle;
 
         public TagsController(ITagManager tagManager, IBlogStoryManager blogStoryManager, IConfiguration configuration)
-            : base(configuration.GetValue<Int32>("default-page-size"))
+            : base(configuration)
         {
             _tagManager = tagManager;
             _blogStoryManager = blogStoryManager;
-            
+
             _defaultTitle = configuration.GetValue<String>("default-page-title");
             _defaultDescription = configuration.GetValue<String>("default-page-description");
             _defaultKeywords = configuration.GetValue<String>("default-page-keywords");
@@ -43,23 +43,23 @@ namespace Blog.Website.Controllers
                 var tagAndStories = await _blogStoryManager.GetTagStoriesByAliasAsync(alias, skip, PageSize, StorySort.PublishDate,
                                                                                       StoryFilter.Published, Cancel);
                 var storiesTotalCount = await _blogStoryManager.CountStoriesForTagAsync(tagAndStories.Item1.Id, Cancel);
-            
+
                 var tag = tagAndStories.Item1;
                 var tags = await _tagManager.GetAllOrderedByUseAsync(Cancel);
-            
-                var viewModel = new MainPageViewModel(tagAndStories.Item2, 
-                                                      tags, 
-                                                      page, 
-                                                      PageSize, 
-                                                      storiesTotalCount, 
+
+                var viewModel = new MainPageViewModel(tagAndStories.Item2,
+                                                      tags,
+                                                      page,
+                                                      PageSize,
+                                                      storiesTotalCount,
                                                       tag.SeoTitle,
-                                                      _defaultPageNumberTitle, 
-                                                      tag.SeoDescription, 
+                                                      _defaultPageNumberTitle,
+                                                      tag.SeoDescription,
                                                       tag.SeoKeywords);
                 ViewBag.NoFollowForTags = true;
                 return View("~/Views/BlogStory/IndexPub.cshtml", viewModel);
             }
-            catch(EntityNotFoundException)
+            catch (EntityNotFoundException)
             {
                 return NotFound();
             }

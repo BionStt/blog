@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Text;
 using System.Threading.Tasks;
 using Blog.Core.Contracts.Managers;
 using Blog.Core.Enums.Filtering;
@@ -22,7 +21,7 @@ namespace Blog.Website.Controllers
 
         public BlogStoryController(IBlogStoryManager blogStoryManager,
                                    ITagManager tagManager,
-                                   IConfiguration configuration) : base(configuration.GetValue<Int32>("default-page-size"))
+                                   IConfiguration configuration) : base(configuration)
         {
             _blogStoryManager = blogStoryManager;
             _tagManager = tagManager;
@@ -84,16 +83,6 @@ namespace Blog.Website.Controllers
             var tags = await _tagManager.GetAllOrderedByUseAsync(Cancel);
             var viewModel = new FullStoryViewModel(story, tags);
             return View("Story", viewModel);
-        }
-
-
-        [HttpGet("sitemap.xml")]
-        public async Task<IActionResult> SiteMap()
-        {
-            var cancel = HttpContext.RequestAborted;
-            var siteMap =
-                await _blogStoryManager.GetSiteMapXmlAsync($"{Request.Scheme}://{Request.Host.ToString()}", cancel);
-            return Content(siteMap, "text/xml", Encoding.UTF8);
         }
     }
 }
