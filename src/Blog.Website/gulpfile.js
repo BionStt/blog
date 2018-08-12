@@ -111,6 +111,8 @@ gulp.task("clean-admin", ["clean-admin-js", "clean-admin-css"]);
 
 var frontJsFiles = [
     paths.uiJs + 'jquery-3.2.1.min.js',
+    paths.uiCustomPlugins + 'intersection-observer.min.js',
+    paths.uiCustomPlugins + 'lozad.min.js',
     paths.uiCustomPlugins + 'prism.min.js',
     paths.uiPlugins + 'masonry/dist/masonry.pkgd.min.js',
     paths.uiPlugins + 'imagesloaded/imagesloaded.pkgd.min.js',
@@ -118,10 +120,6 @@ var frontJsFiles = [
     paths.uiJs + 'jquery.disqusloader.js',
     paths.uiJs + 'frontend.js',
     paths.uiJs + 'google-analytic.js'
-];
-
-var frontJsFilesCopy = [
-    paths.uiPlugins + 'lozad/dist/lozad.min.js'
 ];
 
 var frontCssFiles = [
@@ -153,11 +151,6 @@ gulp.task("min-front-js", function () {
 
 gulp.task("clean-front-js", function (cb) {
     rimraf(paths.frontJs, cb);
-});
-
-gulp.task("copy-min", function () {
-    return gulp.src(frontJsFilesCopy)
-        .pipe(gulp.dest(paths.webroot));
 });
 
 gulp.task("min-front", ["min-front-js", "min-front-css"]);

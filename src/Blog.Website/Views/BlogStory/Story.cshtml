@@ -56,7 +56,7 @@
                 <div class="b-single-post__txt" itemprop="articleBody">
                     @Html.Raw(Model.Content)
                 </div>
-                <div class="sharethis-inline-share-buttons"></div>
+                <div class="ya-share2" data-services="vkontakte,facebook,gplus,twitter,linkedin,pocket" data-counter=""></div>
                 <div id="disqus_thread"></div>
                 <div id="disqus"></div>
             </div>
@@ -67,10 +67,7 @@
 {
     @await Component.InvokeAsync("PublicMainMenu", Model.MenuTags)
 }
-@section additionalScripts
-{
-    
-    <script>
-        var pathSegments = window.location.pathname.split('/');if (pathSegments.length >= 2 && pathSegments[1] !== 'drafts') {var options = {scriptUrl: '//d2funlife.disqus.com/embed.js',disqusConfig: function () {this.page.title = $("title").text();this.page.url = window.location.href;this.page.identifier = window.location.pathname.replace("/", "");}};$.disqusLoader("#disqus", options);}
-    </script>
+@section additionalScripts{
+    <script src="//yastatic.net/share2/share.js"></script>
+    <script>var pathSegments = window.location.pathname.split('/');if (pathSegments.length >= 2 && pathSegments[1] !== 'drafts') {var options = {scriptUrl: '//d2funlife.disqus.com/embed.js',disqusConfig: function () {this.page.title = $("title").text();this.page.url = window.location.href;this.page.identifier = window.location.pathname.replace("/", "");}};$.disqusLoader("#disqus", options);}</script>
 }
