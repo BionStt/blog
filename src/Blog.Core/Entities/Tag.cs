@@ -24,7 +24,7 @@ namespace Blog.Core.Entities
         public Tag(String name)
         {
             Name = name;
-            Alias = StringToUrlStandart.Convert(name.ToLowerInvariant());
+            Alias = StringToUrlStandard.Convert(name.ToLowerInvariant());
         }
 
         public void Update(Tag targetEntity)

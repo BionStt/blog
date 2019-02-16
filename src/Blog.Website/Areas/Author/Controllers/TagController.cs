@@ -60,7 +60,7 @@ namespace Blog.Website.Areas.Author.Controllers
                 var tag = await _tagManager.UpdateAsync(model.ToDomain(), cancel);
                 return View(new TagEditViewModel(tag));
             }
-            catch (Exception exception)
+            catch (Exception)
             {
                 return View(model);
             }

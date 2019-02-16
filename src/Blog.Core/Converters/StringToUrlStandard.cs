@@ -4,11 +4,11 @@ using System.Linq;
 
 namespace Blog.Core.Converters
 {
-    public static class StringToUrlStandart
+    public static class StringToUrlStandard
     {
         private static readonly Dictionary<Char, String> Map;
 
-        static StringToUrlStandart()
+        static StringToUrlStandard()
         {
             Map = new Dictionary<Char, String>
                   {

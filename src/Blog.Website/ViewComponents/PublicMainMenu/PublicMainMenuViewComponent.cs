@@ -7,14 +7,14 @@ namespace Blog.Website.ViewComponents.PublicMainMenu
 {
     public class PublicMainMenuViewComponent : ViewComponent
     {
-        public async Task<IViewComponentResult> InvokeAsync(List<TagViewModel> tags)
+        public Task<IViewComponentResult> InvokeAsync(List<TagViewModel> tags)
         {
-            if (tags == null)
+            if(tags == null)
             {
                 tags = new List<TagViewModel>(0);
             }
 
-            return View("Default", tags);
+            return Task.FromResult<IViewComponentResult>(View("Default", tags));
         }
     }
 }

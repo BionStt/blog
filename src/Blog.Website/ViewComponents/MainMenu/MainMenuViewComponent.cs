@@ -14,9 +14,9 @@ namespace Blog.Website.ViewComponents.MainMenu
             _container = container;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync()
+        public Task<IViewComponentResult> InvokeAsync()
         {
-            return View(new MenuViewModel(_container.Items, Request.Path.Value));
+            return Task.FromResult<IViewComponentResult>(View(new MenuViewModel(_container.Items, Request.Path.Value)));
         }
     }
 }

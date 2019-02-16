@@ -103,7 +103,7 @@ namespace Blog.Website.Core.ViewModels.Author.BlogStories
 
             if (String.IsNullOrWhiteSpace(Alias))
             {
-                slug = StringToUrlStandart.Convert(Title.Trim());
+                slug = StringToUrlStandard.Convert(Title.Trim());
             }
             else
             {

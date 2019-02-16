@@ -5,12 +5,12 @@ namespace Blog.Website.Core.Helpers
 {
     public static class LogHelper
     {
-        private const String UnhandledEception = "Unhandled";
+        private const String UnhandledException = "Unhandled";
         private const String Default = "BlogLogger";
 
         public static ILogger GetUnhandledLogger(this ILoggerFactory factory)
         {
-            return factory.CreateLogger(UnhandledEception);
+            return factory.CreateLogger(UnhandledException);
         }
 
         public static void UnhandledError(this ILogger logger, Exception exception)
