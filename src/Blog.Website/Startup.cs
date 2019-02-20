@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
-using System.Threading.Tasks;
 using Blog.BusinessLogic.Managers;
 using Blog.Core.Contracts.Managers;
 using Blog.Data.Contracts.Repositories;
@@ -19,7 +18,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.HttpOverrides;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.WebEncoders;
 using GlobalExceptionFilter = Blog.Website.Filters.GlobalExceptionFilter;
 
