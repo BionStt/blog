@@ -14,7 +14,7 @@ namespace Blog.Core.Contracts.Managers
         /// <param name="id">Tag id</param>
         /// <param name="cancel">Cancellation token</param>
         /// <returns>Tag entities</returns>
-        Task<Tag> GetAsync(Int32 id,
+        Task<Tag> GetAsync(Guid id,
                            CancellationToken cancel = default);
 
         /// <summary>
@@ -30,7 +30,7 @@ namespace Blog.Core.Contracts.Managers
         /// <param name="ids">Tag ids for getting</param>
         /// <param name="cancel">Cancellation token</param>
         /// <returns>Tags collection</returns>
-        Task<List<Tag>> GetAsync(IEnumerable<Int32> ids,
+        Task<List<Tag>> GetAsync(IEnumerable<Guid> ids,
                                  CancellationToken cancel = default);
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace Blog.Core.Contracts.Managers
         /// </summary>
         /// <param name="id">Tag id</param>
         /// <param name="cancel">Cancellation token</param>
-        Task DeleteAsync(Int32 id,
+        Task DeleteAsync(Guid id,
                          CancellationToken cancel = default);
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace Blog.Core.Contracts.Managers
         /// <param name="tagIds">Tag id</param>
         /// <param name="story">Blog story entity</param>
         /// <param name="cancel">Cancellation token</param>
-        Task UpdateBlogStoryTagsAsync(List<Int32> tagIds,
+        Task UpdateBlogStoryTagsAsync(List<Guid> tagIds,
                                       BlogStory story,
                                       CancellationToken cancel = default);
 
@@ -74,8 +74,8 @@ namespace Blog.Core.Contracts.Managers
         /// <param name="blogStoryId">Blog story id</param>
         /// <param name="cancel">Cancellation token</param>
         /// <returns>Blog story entity</returns>
-        Task<BlogStory> AssignTagToBlogStoryAsync(Int32 tagId,
-                                                  Int32 blogStoryId,
+        Task<BlogStory> AssignTagToBlogStoryAsync(Guid tagId,
+                                                  Guid blogStoryId,
                                                   CancellationToken cancel = default);
 
         /// <summary>
@@ -85,8 +85,8 @@ namespace Blog.Core.Contracts.Managers
         /// <param name="blogStoryId">Blog story id</param>
         /// <param name="cancel">Cancellation token</param>
         /// <returns>Blog story entity</returns>
-        Task<BlogStory> UnassignTagFromBlogStoryAsync(Int32 tagId,
-                                                      Int32 blogStoryId,
+        Task<BlogStory> UnassignTagFromBlogStoryAsync(Guid tagId,
+                                                      Guid blogStoryId,
                                                       CancellationToken cancel = default);
 
         /// <summary>
@@ -113,7 +113,7 @@ namespace Blog.Core.Contracts.Managers
         /// <param name="tagId">Tag id</param>
         /// <param name="cancel">Cancellation tocken</param>
         /// <returns>Count of blog stories</returns>
-        Task<Int32> GetStoriesCountAsync(Int32 tagId,
+        Task<Int32> GetStoriesCountAsync(Guid tagId,
                                          CancellationToken cancel = default);
     }
 }

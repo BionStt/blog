@@ -4,7 +4,7 @@ namespace Blog.Website.Core.Requests
 {
     public class TagToBlogStoryRequest
     {
-        public Int32 BlogStoryId { get; set; }
-        public Int32 TagId { get; set; }
+        public Guid BlogStoryId { get; set; }
+        public Guid TagId { get; set; }
     }
 }

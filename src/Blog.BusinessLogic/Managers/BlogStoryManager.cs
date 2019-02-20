@@ -45,13 +45,8 @@ namespace Blog.BusinessLogic.Managers
                        : _blogStoryRepository.GetByAliasAsync(alias, cancel);
         }
 
-        public async Task<BlogStory> GetWithTagsAsync(Int32 id, CancellationToken cancel = default)
+        public async Task<BlogStory> GetWithTagsAsync(Guid id, CancellationToken cancel = default)
         {
-            if (id <= 0)
-            {
-                return null;
-            }
-
             var story = await _blogStoryRepository.GetWithBlogStoryTagsAsync(id, cancel);
             if (story != null)
             {
@@ -150,7 +145,7 @@ namespace Blog.BusinessLogic.Managers
                 throw new ArgumentNullException(nameof(blogStory));
             }
 
-            if (blogStory.Id <= 0)
+            if (blogStory.Id == Guid.Empty)
             {
                 blogStory.InitializeOnCreate();
                 await _blogStoryRepository.AddAsync(blogStory, cancel);
@@ -168,14 +163,9 @@ namespace Blog.BusinessLogic.Managers
             return originalBlogStory;
         }
 
-        public async Task<BlogStory> UpdateAccessTokenAsync(Int32 id,
+        public async Task<BlogStory> UpdateAccessTokenAsync(Guid id,
                                                             CancellationToken cancel = default)
         {
-            if (id <= 0)
-            {
-                throw new ArgumentException("Incorrect value for story id");
-            }
-
             var story = await _blogStoryRepository.GetAsync(id, cancel);
             if (story == null)
             {
@@ -192,14 +182,9 @@ namespace Blog.BusinessLogic.Managers
             return story;
         }
 
-        public async Task<BlogStory> ChangeAvailabilityAsync(Int32 id, Boolean isPublished,
+        public async Task<BlogStory> ChangeAvailabilityAsync(Guid id, Boolean isPublished,
                                                              CancellationToken cancel = default)
         {
-            if (id <= 0)
-            {
-                throw new ArgumentException("Incorrect value for story id");
-            }
-
             var story = await _blogStoryRepository.GetAsync(id, cancel);
             if (story == null)
             {
@@ -267,18 +252,13 @@ namespace Blog.BusinessLogic.Managers
             return _blogStoryRepository.CountAsync(x => x.IsPublished, cancel);
         }
 
-        public Task<Int32> CountStoriesForTagAsync(Int32 tagId, CancellationToken cancel = default)
+        public Task<Int32> CountStoriesForTagAsync(Guid tagId, CancellationToken cancel = default)
         {
             return _tagManager.GetStoriesCountAsync(tagId, cancel);
         }
 
-        public async Task RemoveAccessTokenAsync(Int32 id, CancellationToken cancel)
+        public async Task RemoveAccessTokenAsync(Guid id, CancellationToken cancel)
         {
-            if (id <= 0)
-            {
-                throw new ArgumentException("Incorrect value for story id");
-            }
-
             var story = await _blogStoryRepository.GetAsync(id, cancel);
             if (story == null)
             {

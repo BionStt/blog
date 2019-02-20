@@ -17,8 +17,7 @@ namespace Blog.Website.Core.ViewModels.Author.BlogStories
 {
     public class EditBlogStoryViewModel
     {
-        [Range(0, Int32.MaxValue)]
-        public Int32 Id { get; set; }
+        public Guid Id { get; set; }
 
         [Required, MinLength(4)]
         public String Title { get; set; }

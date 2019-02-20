@@ -7,7 +7,7 @@ namespace Blog.Core.Entities
 {
     public class BlogStory : IEntityUpdate<BlogStory>
     {
-        public Int32 Id { get; set; }
+        public Guid Id { get; set; }
         public String Title { get; set; }
         public String Alias { get; set; }
         public String Description { get; set; }

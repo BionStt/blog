@@ -24,7 +24,7 @@ namespace Blog.Core.Contracts.Managers
         /// </summary>
         /// <param name="id">Blog story id</param>
         /// <param name="cancel">Cancellation token</param>
-        Task<BlogStory> GetWithTagsAsync(Int32 id,
+        Task<BlogStory> GetWithTagsAsync(Guid id,
                                          CancellationToken cancel = default);
         
         /// <summary>
@@ -82,7 +82,7 @@ namespace Blog.Core.Contracts.Managers
         /// <param name="id">Blog story id</param>
         /// <param name="cancel">Cancellation token</param>
         /// <returns>Single blog story</returns>
-        Task<BlogStory> UpdateAccessTokenAsync(Int32 id,
+        Task<BlogStory> UpdateAccessTokenAsync(Guid id,
                                                CancellationToken cancel = default);
 
         /// <summary>
@@ -92,7 +92,7 @@ namespace Blog.Core.Contracts.Managers
         /// <param name="isPublished">Published status value</param>
         /// <param name="cancel">Cancellation token</param>
         /// <returns>Blog story entity</returns>
-        Task<BlogStory> ChangeAvailabilityAsync(Int32 id,
+        Task<BlogStory> ChangeAvailabilityAsync(Guid id,
                                                 Boolean isPublished,
                                                 CancellationToken cancel = default);
         
@@ -126,7 +126,7 @@ namespace Blog.Core.Contracts.Managers
         /// <param name="tagId">Tag id</param>
         /// <param name="cancel">Cancellation token</param>
         /// <returns>Count of blog stories</returns>
-        Task<Int32> CountStoriesForTagAsync(Int32 tagId,
+        Task<Int32> CountStoriesForTagAsync(Guid tagId,
                                             CancellationToken cancel = default);
 
         /// <summary>
@@ -134,6 +134,6 @@ namespace Blog.Core.Contracts.Managers
         /// </summary>
         /// <param name="storyId">Blog story id</param>
         /// <param name="cancel">Cancellation token</param>
-        Task RemoveAccessTokenAsync(Int32 storyId, CancellationToken cancel);
+        Task RemoveAccessTokenAsync(Guid storyId, CancellationToken cancel);
     }
 }

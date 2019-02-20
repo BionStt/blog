@@ -8,6 +8,17 @@ namespace Blog.Website.Core.ViewModels.User
 {
     public class ShortBlogStoryViewModel
     {
+        public Guid Id { get; set; }
+        public String Title { get; set; }
+        public String ShrotContent { get; }
+        public String StoryThumbUrl { get; set; }
+        public DateTime CreateDate { get; set; }
+        public String Alias { get; set; }
+        public String CreateDayDate { get; set; }
+        public String CreateMonthYearDate { get; set; }
+        public List<TagViewModel> Tags { get; set; }
+        
+        
         public ShortBlogStoryViewModel() { }
 
         public ShortBlogStoryViewModel(BlogStory blogStory)
@@ -33,15 +44,5 @@ namespace Blog.Website.Core.ViewModels.User
         {
             Tags = tags;
         }
-
-        public Int32 Id { get; set; }
-        public String Title { get; set; }
-        public String ShrotContent { get; }
-        public String StoryThumbUrl { get; set; }
-        public DateTime CreateDate { get; set; }
-        public String Alias { get; set; }
-        public String CreateDayDate { get; set; }
-        public String CreateMonthYearDate { get; set; }
-        public List<TagViewModel> Tags { get; set; }
     }
 }

@@ -9,7 +9,7 @@ namespace Blog.Website.Core.ViewModels.User
 {
     public class FullStoryViewModel
     {
-        public Int32 Id { get; set; }
+        public Guid Id { get; set; }
         public String Title { get; set; }
         public String Description { get; set; }
         public String Keywords { get; set; }

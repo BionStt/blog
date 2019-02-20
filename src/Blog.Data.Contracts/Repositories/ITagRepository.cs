@@ -13,7 +13,7 @@ namespace Blog.Data.Contracts.Repositories
 
         Task<List<Tag>> GetAllOrderedByUseAsync(CancellationToken cancel = default);
 
-        Task<Tag> GetAsync(Int32 id,
+        Task<Tag> GetAsync(Guid id,
                            CancellationToken cancel = default);
 
         Task<Tag> GetTagWithBlogStoryTagsAsync(String alias,

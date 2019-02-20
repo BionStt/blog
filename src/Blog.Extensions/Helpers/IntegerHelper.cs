@@ -5,7 +5,7 @@ namespace Blog.Extensions.Helpers
 {
     public static class IntegerHelper
     {
-        public static String JoinToString(this IEnumerable<Int32> numbers, String delimiter)
+        public static String JoinToString(this IEnumerable<Guid> numbers, String delimiter)
         {
             return numbers == null
                        ? String.Empty

@@ -12,7 +12,7 @@ namespace Blog.Data.Contracts.Repositories
 {
     public interface IBlogStoryRepository : IRepository<BlogStory>, IRepositoryAsync<BlogStory>
     {
-        Task<BlogStory> GetAsync(Int32 id,
+        Task<BlogStory> GetAsync(Guid id,
                                  CancellationToken cancel = default);
 
         Task<List<BlogStory>> GetAllPublishedModifedDescAsync(CancellationToken cancel = default);
@@ -29,7 +29,7 @@ namespace Blog.Data.Contracts.Repositories
         Task<BlogStory> GetByAliasWithAuthorAsync(String alias,
                                                   CancellationToken cancel = default);
 
-        Task<BlogStory> GetWithBlogStoryTagsAsync(Int32 blogStoryId,
+        Task<BlogStory> GetWithBlogStoryTagsAsync(Guid blogStoryId,
                                                   CancellationToken cancel = default);
 
         Task<BlogStory> GetWithBlogStoryTagsAsync(String alias,

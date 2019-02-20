@@ -34,7 +34,7 @@ namespace Blog.Website.Areas.Author.Controllers
         }
 
         [HttpGet("{id:int}")]
-        public async Task<IActionResult> Edit([FromRoute] Int32 id)
+        public async Task<IActionResult> Edit([FromRoute] Guid id)
         {
             var cancel = HttpContext.RequestAborted;
             var tag = await _tagManager.GetAsync(id, cancel);

@@ -7,7 +7,7 @@ namespace Blog.Core.Entities
 {
     public class Tag : IEntityUpdate<Tag>
     {
-        public Int32 Id { get; set; }
+        public Guid Id { get; set; }
         public String Name { get; set; }
         public String Alias { get; set; }
 

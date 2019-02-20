@@ -81,7 +81,7 @@ namespace Blog.Website.Areas.Author.Controllers
         [HttpPost("unassign/story"), ValidateAntiForgeryToken]
         public async Task<IActionResult> UnassignTagFromBlogStory([FromBody] TagToBlogStoryRequest request)
         {
-            if (request == null || request.TagId <= 0 || request.BlogStoryId <= 0)
+            if (request == null)
                 return BadRequest();
 
             try
@@ -103,7 +103,7 @@ namespace Blog.Website.Areas.Author.Controllers
         }
 
         [HttpDelete("{id}"), ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(Int32 id)
+        public async Task<IActionResult> Delete(Guid id)
         {
             try
             {

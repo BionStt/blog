@@ -27,7 +27,7 @@ namespace Blog.Data.EntityFramework.Repository
                            .ToListAsync(cancel);
         }
 
-        public Task<BlogStory> GetAsync(Int32 id, CancellationToken cancel = default)
+        public Task<BlogStory> GetAsync(Guid id, CancellationToken cancel = default)
         {
             return FirstOrDefaultAsync(b => b.Id == id, cancel);
         }
@@ -67,7 +67,7 @@ namespace Blog.Data.EntityFramework.Repository
             return Entities.FirstOrDefaultAsync(b => b.Alias.Equals(alias), cancel);
         }
 
-        public Task<BlogStory> GetWithBlogStoryTagsAsync(Int32 id, CancellationToken cancel = default)
+        public Task<BlogStory> GetWithBlogStoryTagsAsync(Guid id, CancellationToken cancel = default)
         {
             return Entities.Include(x => x.BlogStoryTags)
                            .FirstOrDefaultAsync(x => x.Id == id, cancel);

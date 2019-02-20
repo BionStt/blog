@@ -52,7 +52,7 @@ namespace Blog.Website.Areas.Author.Controllers
         }
 
         [HttpGet("edit/{id?}")]
-        public async Task<IActionResult> Edit(Int32 id = 0)
+        public async Task<IActionResult> Edit(Guid id)
         {
             var tags = await _tagManager.GetAllAsync(Cancel);
             var story = await _blogStoryManager.GetWithTagsAsync(id, Cancel);
@@ -73,7 +73,7 @@ namespace Blog.Website.Areas.Author.Controllers
                 model.SetImageUrlIfNotExist(_defaultStoryImageUrl, _defaultThumbMaxWidth);
                 var blogStory = await _blogStoryManager.CreateOrUpdateAsync(model.ToDomain(), Cancel);
                 
-                var tagIds = model.TagsSelected?.GetIntegers(',').ToList();
+                var tagIds = model.TagsSelected?.GetGuids(',').ToList();
                 await _tagManager.UpdateBlogStoryTagsAsync(tagIds, blogStory, Cancel);
                 
                 return RedirectToAction("Edit", new {id = blogStory.Id});
@@ -111,7 +111,7 @@ namespace Blog.Website.Areas.Author.Controllers
         }
 
         [HttpPatch("{id}")]
-        public async Task<IActionResult> ChangeAvailability(Int32 id, Boolean isPublished = false)
+        public async Task<IActionResult> ChangeAvailability(Guid id, Boolean isPublished = false)
         {
             try
             {
@@ -134,8 +134,8 @@ namespace Blog.Website.Areas.Author.Controllers
             }
         }
 
-        [HttpPost("{storyId:int}/accesstoken")]
-        public async Task<IActionResult> UpdateAccessToken(Int32 storyId)
+        [HttpPost("{storyId}/accesstoken")]
+        public async Task<IActionResult> UpdateAccessToken(Guid storyId)
         {
             try
             {
@@ -154,8 +154,8 @@ namespace Blog.Website.Areas.Author.Controllers
             }
         }
         
-        [HttpDelete("{storyId:int}/accesstoken")]
-        public async Task<IActionResult> RemoveAccessToken(Int32 storyId)
+        [HttpDelete("{storyId}/accesstoken")]
+        public async Task<IActionResult> RemoveAccessToken(Guid storyId)
         {
             try
             {

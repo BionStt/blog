@@ -30,7 +30,7 @@ namespace Blog.Data.EntityFramework.Repository
             return tags.OrderByDescending(x => x.BlogStoryTags.Count).ToList();
         }
 
-        public Task<Tag> GetAsync(Int32 id, CancellationToken cancel = default)
+        public Task<Tag> GetAsync(Guid id, CancellationToken cancel = default)
         {
             return FirstOrDefaultAsync(x => x.Id == id, cancel);
         }
