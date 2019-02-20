@@ -10,7 +10,6 @@ using Blog.Data.EntityFramework.Repository;
 using Blog.Website.Core.Contracts;
 using Blog.Website.Core.Models;
 using Blog.Website.Core.ViewModels.Author.ViewComponents;
-//using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -28,7 +27,8 @@ namespace Blog.Website
         public IConfiguration Configuration { get; }
         public IHostingEnvironment Environment { get; }
 
-        public Startup(IConfiguration configuration, IHostingEnvironment env)
+        public Startup(IConfiguration configuration,
+                       IHostingEnvironment env)
         {
             Configuration = configuration;
             Environment = env;
@@ -36,11 +36,6 @@ namespace Blog.Website
 
         public void ConfigureServices(IServiceCollection services)
         {
-            if (!Environment.IsDevelopment())
-            {
-//                TelemetryConfiguration.Active.DisableTelemetry = true;
-            }
-
             services.AddDbContext<BlogContext>(options => { options.UseSqlServer(Configuration["connection-strings:blog"]); });
 
             using (var context = new BlogContext(Configuration["connection-strings:blog"]))
@@ -52,39 +47,39 @@ namespace Blog.Website
             services.AddRouting(options => options.LowercaseUrls = true);
 
             services.AddAuthentication(options =>
-                                       {
-                                           options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                                           options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                                       })
+                     {
+                         options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                         options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                     })
                     .AddGoogle(options =>
-                               {
-                                   options.ClientId = Configuration["logins:google:client-id"];
-                                   options.ClientSecret = Configuration["logins:google:client-secret"];
-                               })
+                     {
+                         options.ClientId = Configuration["logins:google:client-id"];
+                         options.ClientSecret = Configuration["logins:google:client-secret"];
+                     })
                     .AddTwitter(options =>
-                                {
-                                    options.ConsumerKey = Configuration["logins:twitter:client-id"];
-                                    options.ConsumerSecret = Configuration["logins:twitter:client-secret"];
-                                })
+                     {
+                         options.ConsumerKey = Configuration["logins:twitter:client-id"];
+                         options.ConsumerSecret = Configuration["logins:twitter:client-secret"];
+                     })
                     .AddMicrosoftAccount(options =>
-                                         {
-                                             options.ClientId = Configuration["logins:microsoft:client-id"];
-                                             options.ClientSecret = Configuration["logins:microsoft:client-secret"];
-                                         })
+                     {
+                         options.ClientId = Configuration["logins:microsoft:client-id"];
+                         options.ClientSecret = Configuration["logins:microsoft:client-secret"];
+                     })
                     .AddCookie(options =>
-                               {
-                                   options.LoginPath = "/account/login";
-                                   options.LogoutPath = "/account/logoff";
-                               });
+                     {
+                         options.LoginPath = "/account/login";
+                         options.LogoutPath = "/account/logoff";
+                     });
 
             services.AddMvc(options =>
-                            {
-                                options.MaxModelValidationErrors = 5;
-                                if (Environment.IsDevelopment())
-                                {
-                                    options.Filters.Add(typeof(GlobalExceptionFilter));
-                                }
-                            });
+            {
+                options.MaxModelValidationErrors = 5;
+                if(Environment.IsDevelopment())
+                {
+                    options.Filters.Add(typeof(GlobalExceptionFilter));
+                }
+            });
 
             services.AddTransient<IBlogStoryManager>(provider => new BlogStoryManager(provider.GetService<IBlogStoryRepository>(),
                                                                                       provider.GetService<ITagManager>(),
@@ -105,12 +100,14 @@ namespace Blog.Website
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app,
+                              IHostingEnvironment env)
         {
             var items = new List<MenuItemData>();
-            Configuration.GetSection("MainMenu").Bind(items);
+            Configuration.GetSection("MainMenu")
+                         .Bind(items);
 
-            if (env.IsDevelopment())
+            if(env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
@@ -123,28 +120,29 @@ namespace Blog.Website
             app.UseStaticFiles();
 
             app.UseForwardedHeaders(new ForwardedHeadersOptions
-                                    {
-                                        ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
-                                    });
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            });
 
-            app.Use((context, next) =>
-                    {
-                        context.Request.Scheme = "https";
-                        return next();
-                    });
+            app.Use((context,
+                     next) =>
+            {
+                context.Request.Scheme = "https";
+                return next();
+            });
 
             app.UseAuthentication();
 
             app.UseMvc(routes =>
-                       {
-                           routes.MapRoute(
-                                           name: "areaDefault",
-                                           template: "{area:exists}/{controller=Author}/{action=Index}");
+            {
+                routes.MapRoute(
+                                name: "areaDefault",
+                                template: "{area:exists}/{controller=Author}/{action=Index}");
 
-                           routes.MapRoute(
-                                           name: "default",
-                                           template: "{controller=BlogStory}/{action=Index}/{id?}");
-                       });
+                routes.MapRoute(
+                                name: "default",
+                                template: "{controller=BlogStory}/{action=Index}/{id?}");
+            });
         }
     }
 }

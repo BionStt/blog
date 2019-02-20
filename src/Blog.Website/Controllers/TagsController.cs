@@ -63,10 +63,6 @@ namespace Blog.Website.Controllers
             {
                 return NotFound();
             }
-            catch (Exception e)
-            {
-                throw;
-            }
         }
     }
 }
