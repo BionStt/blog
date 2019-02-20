@@ -10,7 +10,7 @@ using Blog.Data.EntityFramework.Repository;
 using Blog.Website.Core.Contracts;
 using Blog.Website.Core.Models;
 using Blog.Website.Core.ViewModels.Author.ViewComponents;
-using Microsoft.ApplicationInsights.Extensibility;
+//using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -38,7 +38,7 @@ namespace Blog.Website
         {
             if (!Environment.IsDevelopment())
             {
-                TelemetryConfiguration.Active.DisableTelemetry = true;
+//                TelemetryConfiguration.Active.DisableTelemetry = true;
             }
 
             services.AddDbContext<BlogContext>(options => { options.UseSqlServer(Configuration["connection-strings:blog"]); });

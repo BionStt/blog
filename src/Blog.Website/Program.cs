@@ -1,6 +1,7 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Reflection;
-using Blog.Website.Core.Helpers;
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -13,60 +14,60 @@ namespace Blog.Website
     {
         public static void Main(string[] args)
         {
-            BuildWebHost(args).Run();
+            CreateWebHostBuilder(args).Build().Run();
         }
+        
+        private static IWebHostBuilder CreateWebHostBuilder(String[] args) =>
+            WebHost.CreateDefaultBuilder(args)
+                   .UseContentRoot(Directory.GetCurrentDirectory())
+                   .ConfigureAppConfiguration((hostingContext, config) =>
+                    {
+                        var environment = hostingContext.HostingEnvironment;
 
-        public static IWebHost BuildWebHost(string[] args) =>
-            new WebHostBuilder().UseKestrel(options =>
-                                            {
-#if DEBUG
-                                                options.ConfigureEndpoints();
-#endif
-                                            })
-                                .UseContentRoot(Directory.GetCurrentDirectory())
-                                .ConfigureAppConfiguration((hostingContext, config) =>
-                                                           {
-                                                               var environment = hostingContext.HostingEnvironment;
+                        config.AddJsonFile("configs/public/appsettings.json", false, true)
+                              .AddJsonFile("configs/private/dbsettings.json", false, true)
+                              .AddJsonFile("configs/private/authSettings.json", false, true);
 
-                                                               config.AddJsonFile("configs/public/appsettings.json", false, true)
-                                                                     .AddJsonFile("configs/private/dbsettings.json", false, true)
-                                                                     .AddJsonFile("configs/private/authSettings.json", false, true);
+                        if (environment.IsDevelopment())
+                        {
+                            var appAssembly = Assembly.Load(new AssemblyName(environment.ApplicationName));
+                            if (appAssembly != null)
+                            {
+                                config.AddUserSecrets(appAssembly, true);
+                            }
+                        }
 
-                                                               if (environment.IsDevelopment())
-                                                               {
-                                                                   var appAssembly = Assembly.Load(new AssemblyName(environment.ApplicationName));
-                                                                   if (appAssembly != null)
-                                                                   {
-                                                                       config.AddUserSecrets(appAssembly, true);
-                                                                   }
-                                                               }
+                        config.AddEnvironmentVariables();
 
-                                                               config.AddEnvironmentVariables();
+                        if (args != null)
+                        {
+                            config.AddCommandLine(args);
+                        }
+                    })
+                   .ConfigureLogging((hostingContext,
+                                      logging) =>
+                    {
+                        if(hostingContext.HostingEnvironment.IsDevelopment())
+                        {
+                            logging.AddDebug();
+                        }
 
-                                                               if (args != null)
-                                                               {
-                                                                   config.AddCommandLine(args);
-                                                               }
-                                                           })
-                                .ConfigureLogging((hostingContext, logging) =>
-                                                  {
-                                                      if (hostingContext.HostingEnvironment.IsDevelopment())
-                                                      {
-                                                          logging.AddDebug();
-                                                      }
-                                                  })
-                                .UseDefaultServiceProvider((context, options) =>
-                                                           {
-                                                               options.ValidateScopes =
-                                                                   context.HostingEnvironment.IsDevelopment();
-                                                           })
-                                .UseStartup<Startup>()
-                                .UseSerilog((context, configuration) =>
-                                            {
-                                                configuration.MinimumLevel.Information()
-                                                             .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
-                                                             .WriteTo.Console();
-                                            })
-                                .Build();
+                        logging.AddConsole();
+                    })
+                   .UseSerilog((context, configuration) =>
+                    {
+                        if(context.HostingEnvironment.IsDevelopment())
+                        {
+                            configuration.MinimumLevel.Information()
+                                         .WriteTo.Console();
+                        }
+                        else
+                        {
+                            configuration.MinimumLevel.Information()
+                                         .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+                                         .WriteTo.Console();
+                        }
+                    })
+                   .UseStartup<Startup>();
     }
 }
