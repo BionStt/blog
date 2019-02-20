@@ -41,14 +41,15 @@ namespace Blog.BusinessLogic.Managers
                                         CancellationToken cancel = default)
         {
             return String.IsNullOrWhiteSpace(alias)
-                       ? null
-                       : _blogStoryRepository.GetByAliasAsync(alias, cancel);
+                ? null
+                : _blogStoryRepository.GetByAliasAsync(alias, cancel);
         }
 
-        public async Task<BlogStory> GetWithTagsAsync(Guid id, CancellationToken cancel = default)
+        public async Task<BlogStory> GetWithTagsAsync(Guid id,
+                                                      CancellationToken cancel = default)
         {
             var story = await _blogStoryRepository.GetWithBlogStoryTagsAsync(id, cancel);
-            if (story != null)
+            if(story != null)
             {
                 var tagIds = story.BlogStoryTags.Select(x => x.TagId);
                 var tags = await _tagManager.GetAsync(tagIds, cancel);
@@ -62,7 +63,7 @@ namespace Blog.BusinessLogic.Managers
                                                       CancellationToken cancel = default)
         {
             var story = await _blogStoryRepository.GetWithBlogStoryTagsAsync(alias, cancel);
-            if (story != null)
+            if(story != null)
             {
                 var tagIds = story.BlogStoryTags.Select(x => x.TagId);
                 var tags = await _tagManager.GetAsync(tagIds, cancel);
@@ -78,12 +79,12 @@ namespace Blog.BusinessLogic.Managers
                                               StoryFilter filter,
                                               CancellationToken cancel = default)
         {
-            if (skip < 0)
+            if(skip < 0)
             {
                 skip = DefaultSkip;
             }
 
-            if (top <= 0)
+            if(top <= 0)
             {
                 top = _defaultTop;
             }
@@ -98,23 +99,23 @@ namespace Blog.BusinessLogic.Managers
                                                                                  StoryFilter filter,
                                                                                  CancellationToken cancel = default)
         {
-            if (String.IsNullOrWhiteSpace(alias))
+            if(String.IsNullOrWhiteSpace(alias))
             {
                 throw new EntityNotFoundException();
             }
 
-            if (skip < 0)
+            if(skip < 0)
             {
                 skip = DefaultSkip;
             }
 
-            if (top <= 0)
+            if(top <= 0)
             {
                 top = _defaultTop;
             }
 
             var tag = await _tagManager.GetTagWithBlogStoryTagsAsync(alias, cancel);
-            if (tag == null)
+            if(tag == null)
             {
                 throw new EntityNotFoundException();
             }
@@ -123,13 +124,13 @@ namespace Blog.BusinessLogic.Managers
                                     .Select(x => x.BlogStoryId)
                                     .ToList();
 
-            if (!blogStoriesIds.Any())
+            if(!blogStoriesIds.Any())
             {
                 return new Tuple<Tag, List<BlogStory>>(null, new List<BlogStory>(0));
             }
 
-            var blogStories = await _blogStoryRepository.WhereWithTagsPerPageAsync(x => blogStoriesIds.Contains(x.Id), 
-                                                                                   skip, 
+            var blogStories = await _blogStoryRepository.WhereWithTagsPerPageAsync(x => blogStoriesIds.Contains(x.Id),
+                                                                                   skip,
                                                                                    top,
                                                                                    sort,
                                                                                    filter,
@@ -140,12 +141,12 @@ namespace Blog.BusinessLogic.Managers
         public async Task<BlogStory> CreateOrUpdateAsync(BlogStory blogStory,
                                                          CancellationToken cancel = default)
         {
-            if (blogStory == null)
+            if(blogStory == null)
             {
                 throw new ArgumentNullException(nameof(blogStory));
             }
 
-            if (blogStory.Id == Guid.Empty)
+            if(blogStory.Id == Guid.Empty)
             {
                 blogStory.InitializeOnCreate();
                 await _blogStoryRepository.AddAsync(blogStory, cancel);
@@ -153,7 +154,7 @@ namespace Blog.BusinessLogic.Managers
             }
 
             var originalBlogStory = await _blogStoryRepository.GetAsync(blogStory.Id, cancel);
-            if (originalBlogStory == null)
+            if(originalBlogStory == null)
             {
                 throw new EntityNotFoundException($"Can't edit story : {blogStory.Id}");
             }
@@ -167,7 +168,7 @@ namespace Blog.BusinessLogic.Managers
                                                             CancellationToken cancel = default)
         {
             var story = await _blogStoryRepository.GetAsync(id, cancel);
-            if (story == null)
+            if(story == null)
             {
                 throw new EntityNotFoundException($"Can't find story with id : {id}");
             }
@@ -175,42 +176,41 @@ namespace Blog.BusinessLogic.Managers
             var accessToken = Guid.NewGuid()
                                   .ToString("N")
                                   .Substring(0, 6);
-            
+
             story.AccessToken = accessToken;
-            
+
             await _blogStoryRepository.UpdateAsync(story, cancel);
             return story;
         }
 
-        public async Task<BlogStory> ChangeAvailabilityAsync(Guid id, Boolean isPublished,
+        public async Task<BlogStory> ChangeAvailabilityAsync(Guid id,
+                                                             Boolean isPublished,
                                                              CancellationToken cancel = default)
         {
             var story = await _blogStoryRepository.GetAsync(id, cancel);
-            if (story == null)
+            if(story == null)
             {
                 throw new EntityNotFoundException($"Can't find story with id : {id}");
             }
 
-            if (isPublished && !story.PublishedDate.HasValue)
-            {
-                story.PublishedDate = DateTime.UtcNow;
-            }
-
-            story.IsPublished = isPublished;
+            story.PublishedDate = isPublished
+                ? DateTime.UtcNow
+                : (DateTime?) null;
 
             await _blogStoryRepository.UpdateAsync(story, cancel);
             return story;
         }
 
-        public async Task DeleteAsync(String alias, CancellationToken cancel = default)
+        public async Task DeleteAsync(String alias,
+                                      CancellationToken cancel = default)
         {
-            if (String.IsNullOrWhiteSpace(alias))
+            if(String.IsNullOrWhiteSpace(alias))
             {
                 throw new ArgumentException("Incorrect value for story alias");
             }
 
             var story = await _blogStoryRepository.GetByAliasAsync(alias, cancel);
-            if (story == null)
+            if(story == null)
             {
                 throw new EntityNotFoundException($"Can't find story with alias : {alias}");
             }
@@ -224,13 +224,13 @@ namespace Blog.BusinessLogic.Managers
             var blogStories = await _blogStoryRepository.GetAllPublishedModifedDescAsync(cancel);
 
             var siteMapBuilder = new SitemapBuilder();
-            
-            var modifiedDate = blogStories.Any() 
-                                   ? (DateTime?) blogStories.First().ModifiedDate 
-                                   : null;
-            
+
+            var modifiedDate = blogStories.Any()
+                ? (DateTime?) blogStories.First().ModifiedDate
+                : null;
+
             siteMapBuilder.AddUrl(baseUrl, modifiedDate, ChangeFrequency.Daily);
-            
+
             var tags = await _tagManager.GetAllPublishedAsync(cancel);
 
             foreach (var tag in tags)
@@ -249,22 +249,24 @@ namespace Blog.BusinessLogic.Managers
 
         public Task<Int32> CountPublishedAsync(CancellationToken cancel = default)
         {
-            return _blogStoryRepository.CountAsync(x => x.IsPublished, cancel);
+            return _blogStoryRepository.CountAsync(x => x.PublishedDate.HasValue, cancel);
         }
 
-        public Task<Int32> CountStoriesForTagAsync(Guid tagId, CancellationToken cancel = default)
+        public Task<Int32> CountStoriesForTagAsync(Guid tagId,
+                                                   CancellationToken cancel = default)
         {
             return _tagManager.GetStoriesCountAsync(tagId, cancel);
         }
 
-        public async Task RemoveAccessTokenAsync(Guid id, CancellationToken cancel)
+        public async Task RemoveAccessTokenAsync(Guid id,
+                                                 CancellationToken cancel)
         {
             var story = await _blogStoryRepository.GetAsync(id, cancel);
-            if (story == null)
+            if(story == null)
             {
                 throw new EntityNotFoundException($"Can't find story with id : {id}");
             }
-            
+
             story.AccessToken = null;
             await _blogStoryRepository.UpdateAsync(story, cancel);
         }

@@ -15,6 +15,7 @@ namespace Blog.Core.Entities
         public String SeoDescription { get; set; }
         public String SeoKeywords { get; set; }
 
+        public Int32 Score { get; set; }
         public Boolean IsPublished { get; set; }
         
         public List<BlogStoryTag> BlogStoryTags { get; set; }

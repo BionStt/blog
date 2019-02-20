@@ -24,7 +24,7 @@ namespace Blog.Website.Core.ViewModels.Author.BlogStories
                 PublisheddDate = story.PublishedDate.Value.ToString("dd.MM.yyyy HH:mm");
             }
 
-            Status = story.IsPublished ? BlosStoryStatus.Published : BlosStoryStatus.Draft;
+            Status = story.PublishedDate.HasValue ? BlosStoryStatus.Published : BlosStoryStatus.Draft;
         }
     }
 }

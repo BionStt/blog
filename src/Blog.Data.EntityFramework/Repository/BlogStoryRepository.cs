@@ -22,7 +22,7 @@ namespace Blog.Data.EntityFramework.Repository
 
         public Task<List<BlogStory>> GetAllPublishedModifedDescAsync(CancellationToken cancel = default)
         {
-            return Entities.Where(x => x.IsPublished)
+            return Entities.Where(x => x.PublishedDate.HasValue)
                            .OrderByDescending(x => x.ModifiedDate)
                            .ToListAsync(cancel);
         }
@@ -41,11 +41,11 @@ namespace Blog.Data.EntityFramework.Repository
             IQueryable<BlogStory> query = Entities.Include(x => x.BlogStoryTags);
             if (filter == StoryFilter.Published)
             {
-                query = query.Where(x => x.IsPublished);
+                query = query.Where(x => x.PublishedDate.HasValue);
             }
             else if (filter == StoryFilter.UnPublished)
             {
-                query = query.Where(x => !x.IsPublished);
+                query = query.Where(x => !x.PublishedDate.HasValue);
             }
 
             query = sortType == StorySort.CreateDate
@@ -97,11 +97,11 @@ namespace Blog.Data.EntityFramework.Repository
                                                   .Where(predicate);
             if (filter == StoryFilter.Published)
             {
-                query = query.Where(x => x.IsPublished);
+                query = query.Where(x => x.PublishedDate.HasValue);
             }
             else if (filter == StoryFilter.UnPublished)
             {
-                query = query.Where(x => !x.IsPublished);
+                query = query.Where(x => !x.PublishedDate.HasValue);
             }
 
             query = sort == StorySort.CreateDate

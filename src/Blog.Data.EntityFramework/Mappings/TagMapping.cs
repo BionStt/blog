@@ -14,14 +14,16 @@ namespace Blog.Data.EntityFramework.Mappings
             builder.HasIndex(t => t.Alias)
                    .HasName("TagSlug")
                    .IsUnique();
+            
+            builder.Property(t => t.Alias)
+                   .HasMaxLength(256)
+                   .IsRequired();
 
             builder.Property(t => t.Name)
                    .HasMaxLength(256)
                    .IsRequired();
 
-            builder.Property(t => t.Alias)
-                   .HasMaxLength(256)
-                   .IsRequired();
+            
             builder.Property(t => t.SeoTitle);
             builder.Property(t => t.SeoDescription);
         }

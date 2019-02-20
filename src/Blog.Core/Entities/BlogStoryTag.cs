@@ -6,6 +6,7 @@ namespace Blog.Core.Entities
     {
         public Guid BlogStoryId { get; set; }
         public Guid TagId { get; set; }
+        public DateTime CreateDate { get; set; }
         
         public BlogStory BlogStory { get; set; }
         public Tag Tag { get; set; }

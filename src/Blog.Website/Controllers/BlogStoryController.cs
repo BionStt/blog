@@ -52,7 +52,7 @@ namespace Blog.Website.Controllers
         {
             var story = await _blogStoryManager.GetWithTagsAsync(alias, Cancel);
             if (story == null ||
-                !story.IsPublished)
+                !story.PublishedDate.HasValue)
             {
                 return NotFound();
             }
@@ -73,7 +73,7 @@ namespace Blog.Website.Controllers
             if (story == null)
                 return NotFound();
 
-            if (story.IsPublished)
+            if (story.PublishedDate.HasValue)
                 return NotFound();
 
             if (!User.Identity.IsAuthenticated && (String.IsNullOrWhiteSpace(story.AccessToken) ||

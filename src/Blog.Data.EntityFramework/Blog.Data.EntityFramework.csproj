@@ -18,4 +18,7 @@
     <ProjectReference Include="..\Blog.Core\Blog.Core.csproj" />
     <ProjectReference Include="..\Blog.Data.Contracts\Blog.Data.Contracts.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Migrations" />
+  </ItemGroup>
 </Project>

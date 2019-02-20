@@ -51,11 +51,11 @@ namespace Blog.Website.Areas.Author.Controllers
             return View(viewModel);
         }
 
-        [HttpGet("edit/{id?}")]
-        public async Task<IActionResult> Edit(Guid id)
+        [HttpGet("edit/{storyId:guid?}")]
+        public async Task<IActionResult> Edit(Guid storyId)
         {
             var tags = await _tagManager.GetAllAsync(Cancel);
-            var story = await _blogStoryManager.GetWithTagsAsync(id, Cancel);
+            var story = await _blogStoryManager.GetWithTagsAsync(storyId, Cancel);
             var viewModel = new EditBlogStoryViewModel(story, tags, Url);
             return View(viewModel);
         }
@@ -76,7 +76,7 @@ namespace Blog.Website.Areas.Author.Controllers
                 var tagIds = model.TagsSelected?.GetGuids(',').ToList();
                 await _tagManager.UpdateBlogStoryTagsAsync(tagIds, blogStory, Cancel);
                 
-                return RedirectToAction("Edit", new {id = blogStory.Id});
+                return RedirectToAction("Edit", new {storyId = blogStory.Id});
             }
             catch (ArgumentException exception)
             {
@@ -110,12 +110,12 @@ namespace Blog.Website.Areas.Author.Controllers
             }
         }
 
-        [HttpPatch("{id}")]
-        public async Task<IActionResult> ChangeAvailability(Guid id, Boolean isPublished = false)
+        [HttpPatch("{storyId}")]
+        public async Task<IActionResult> ChangeAvailability(Guid storyId, Boolean isPublished = false)
         {
             try
             {
-                var story = await _blogStoryManager.ChangeAvailabilityAsync(id, isPublished, Cancel);
+                var story = await _blogStoryManager.ChangeAvailabilityAsync(storyId, isPublished, Cancel);
                 var redirect = isPublished 
                                    ? Url.Action("Story", "BlogStory", new {alias = story.Alias}) 
                                    : String.Empty;
