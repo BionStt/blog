@@ -20,7 +20,6 @@ namespace Blog.Website.Areas.Author.Controllers
     [Area("author"), Route("author/stories")]
     public class BlogStoryController : BaseController
     {
-        private readonly Int32 _cachePeriod;
         private readonly String _defaultStoryImageUrl;
         private readonly Int32 _defaultThumbMaxWidth;
 
@@ -36,7 +35,6 @@ namespace Blog.Website.Areas.Author.Controllers
             _blogStoryManager = blogStoryManager;
             _tagManager = tagManager;
             _logger = loggerFactory.GetLogger();
-            _cachePeriod = configuration.GetValue<Int32>("cache-periods:default-sliding-minutes");
             _defaultStoryImageUrl = configuration.GetValue<String>("default-image-url-for-post");
             _defaultThumbMaxWidth = configuration.GetValue<Int32>("default-thumb-max-width");
         }

@@ -117,6 +117,10 @@ namespace Blog.Website
                 app.UseStatusCodePagesWithReExecute("/StatusCode/{0}");
             }
 
+            app.UseHsts();
+            app.UseHttpsRedirection();
+
+            
             app.UseStaticFiles();
 
             app.UseForwardedHeaders(new ForwardedHeadersOptions
@@ -124,15 +128,7 @@ namespace Blog.Website
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
             });
 
-            app.Use((context,
-                     next) =>
-            {
-                context.Request.Scheme = "https";
-                return next();
-            });
-
             app.UseAuthentication();
-
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
@@ -143,6 +139,7 @@ namespace Blog.Website
                                 name: "default",
                                 template: "{controller=BlogStory}/{action=Index}/{id?}");
             });
+            
         }
     }
 }
