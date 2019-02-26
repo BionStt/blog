@@ -38,11 +38,6 @@ namespace Blog.Website
         {
             services.AddDbContext<BlogContext>(options => { options.UseSqlServer(Configuration["connection-strings:blog"]); });
 
-            using (var context = new BlogContext(Configuration["connection-strings:blog"]))
-            {
-                context.Database.Migrate();
-            }
-
             services.Configure<WebEncoderOptions>(options => options.TextEncoderSettings = new TextEncoderSettings(UnicodeRanges.All));
             services.AddRouting(options => options.LowercaseUrls = true);
 
@@ -114,6 +109,9 @@ namespace Blog.Website
             }
             else
             {
+                var context = app.ApplicationServices.GetService<BlogContext>();
+                context?.Database.Migrate();
+                
                 app.UseStatusCodePagesWithReExecute("/StatusCode/{0}");
             }
 
@@ -127,7 +125,7 @@ namespace Blog.Website
             {
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
             });
-
+            
             app.UseAuthentication();
             app.UseMvc(routes =>
             {

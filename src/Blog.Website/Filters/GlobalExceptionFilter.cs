@@ -1,4 +1,5 @@
 ﻿using System;
+using Blog.Core.Exceptions;
 using Blog.Website.Core.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -19,6 +20,13 @@ namespace Blog.Website.Filters
         {
             _logger.UnhandledError(context.Exception);
             context.ExceptionHandled = true;
+
+            if(context.Exception is EntityNotFoundException)
+            {
+                context.Result = new ViewResult {ViewName = "Error-404"};
+                return;
+            }
+            
             context.Result = new ViewResult {ViewName = "Error-500"};
         }
     }
