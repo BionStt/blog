@@ -45,10 +45,7 @@ namespace Blog.Website.Areas.Author.Controllers
         public async Task<IActionResult> Index(GetStoriesRequest request)
         {
             var storiesPage = await _blogStoryManager.GetAsync(request.ToQuery(PageSize), Cancel);
-            
-            var stories = await _blogStoryManager.GetAsync(skip, PageSize, StorySort.CreateDate, StoryFilter.All, Cancel);
-            var storiesTotalCount = await _blogStoryManager.CountAsync(Cancel);
-            var viewModel = new AuthorStoriesPageViewModel(stories, request.Page, storiesTotalCount, PageSize);
+            var viewModel = new AuthorStoriesPageViewModel(storiesPage, request.Page, PageSize);
             return View(viewModel);
         }
 
