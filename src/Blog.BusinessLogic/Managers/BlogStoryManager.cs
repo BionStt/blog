@@ -32,17 +32,12 @@ namespace Blog.BusinessLogic.Managers
             _defaultTop = defaultTop;
         }
 
-        public Task<List<BlogStory>> GetAllAsync(CancellationToken cancel = default)
-        {
-            return _blogStoryRepository.GetAllAsync(cancel);
-        }
-
         public Task<BlogStory> GetAsync(String alias,
                                         CancellationToken cancel = default)
         {
             return String.IsNullOrWhiteSpace(alias)
-                ? null
-                : _blogStoryRepository.GetByAliasAsync(alias, cancel);
+                ? Task.FromResult<BlogStory>(null)
+                : _blogStoryRepository.GetAsync(alias, cancel);
         }
 
         public async Task<BlogStory> GetWithTagsAsync(Guid id,
@@ -209,7 +204,7 @@ namespace Blog.BusinessLogic.Managers
                 throw new ArgumentException("Incorrect value for story alias");
             }
 
-            var story = await _blogStoryRepository.GetByAliasAsync(alias, cancel);
+            var story = await _blogStoryRepository.GetAsync(alias, cancel);
             if(story == null)
             {
                 throw new EntityNotFoundException($"Can't find story with alias : {alias}");

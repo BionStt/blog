@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Blog.Core.Entities;
 using Blog.Data.Contracts.Repositories;
 using Blog.Data.EntityFramework.Context;
-using Blog.Data.EntityFramework.Repository.Base;
+using GenRep.EntityFramework;
 using Microsoft.EntityFrameworkCore;
 
 namespace Blog.Data.EntityFramework.Repository

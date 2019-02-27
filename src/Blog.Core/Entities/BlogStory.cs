@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using Blog.Core.Contracts.Entities;
 using Blog.Core.Enums;
 
 namespace Blog.Core.Entities
 {
-    public class BlogStory : IEntityUpdate<BlogStory>
+    public class BlogStory
     {
         public Guid Id { get; set; }
         public String Alias { get; set; }

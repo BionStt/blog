@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Threading.Tasks;
+using System.Diagnostics;
 using Blog.Core.Entities;
 using Blog.Data.Contracts.Repositories;
 using Blog.Data.EntityFramework.Context;
-using Blog.Data.EntityFramework.Repository.Base;
+using GenRep.EntityFramework;
 
 namespace Blog.Data.EntityFramework.Repository
 {

@@ -5,10 +5,12 @@ using Blog.Core.Contracts.Managers;
 using Blog.Core.Enums.Filtering;
 using Blog.Core.Enums.Sorting;
 using Blog.Core.Exceptions;
+using Blog.Core.Queries;
 using Blog.Extensions.Helpers;
 using Blog.Website.Controllers;
 using Blog.Website.Core.Helpers;
 using Blog.Website.Core.ViewModels.Author.BlogStories;
+using Blog.Website.Models.Requests.Author;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -40,12 +42,13 @@ namespace Blog.Website.Areas.Author.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index(Int32 page = 1)
+        public async Task<IActionResult> Index(GetStoriesRequest request)
         {
-            var skip = GetSkip(page, PageSize);
+            var storiesPage = await _blogStoryManager.GetAsync(request.ToQuery(PageSize), Cancel);
+            
             var stories = await _blogStoryManager.GetAsync(skip, PageSize, StorySort.CreateDate, StoryFilter.All, Cancel);
             var storiesTotalCount = await _blogStoryManager.CountAsync(Cancel);
-            var viewModel = new AuthorStoriesPageViewModel(stories, page, storiesTotalCount, PageSize);
+            var viewModel = new AuthorStoriesPageViewModel(stories, request.Page, storiesTotalCount, PageSize);
             return View(viewModel);
         }
 

@@ -92,7 +92,7 @@
             @if (Model.Page > 1)
             {
                 <li class="page-item">
-                    <a class="page-link" asp-area="author" asp-controller="BlogStory" asp-action="Index" asp-route-page="@(Model.Page - 1)">
+                    <a class="page-link" asp-area="author" asp-controller="BlogStory" asp-action="Index" asp-route-page="@(Model.Page - 1)" asp-route-orderBy="createDate:desc">
                         Prev
                     </a>
                 </li>
@@ -100,7 +100,7 @@
             @if (Model.Page < Model.TotalPageCount)
             {
                 <li class="page-item">
-                    <a class="page-link" asp-area="author" asp-controller="BlogStory" asp-action="Index" asp-route-page="@(Model.Page + 1)">
+                    <a class="page-link" asp-area="author" asp-controller="BlogStory" asp-action="Index" asp-route-page="@(Model.Page + 1)" asp-route-orderBy="createDate:desc">
                         Next
                     </a>
                 </li>

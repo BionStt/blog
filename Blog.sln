@@ -31,6 +31,8 @@ EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blog.Data.Mongo", "src\Blog.Data.Mongo\Blog.Data.Mongo.csproj", "{63B4038C-C0DC-4BDB-95F3-1C6BAE178D73}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blog.Website.Models", "src\Blog.Website.Models\Blog.Website.Models.csproj", "{01B4B5D2-1F5E-46DC-85A9-8973F027ADB5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -73,6 +75,10 @@ Global
 		{63B4038C-C0DC-4BDB-95F3-1C6BAE178D73}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{63B4038C-C0DC-4BDB-95F3-1C6BAE178D73}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{63B4038C-C0DC-4BDB-95F3-1C6BAE178D73}.Release|Any CPU.Build.0 = Release|Any CPU
+		{01B4B5D2-1F5E-46DC-85A9-8973F027ADB5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{01B4B5D2-1F5E-46DC-85A9-8973F027ADB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{01B4B5D2-1F5E-46DC-85A9-8973F027ADB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{01B4B5D2-1F5E-46DC-85A9-8973F027ADB5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

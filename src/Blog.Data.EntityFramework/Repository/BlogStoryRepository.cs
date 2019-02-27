@@ -9,7 +9,7 @@ using Blog.Core.Enums.Filtering;
 using Blog.Core.Enums.Sorting;
 using Blog.Data.Contracts.Repositories;
 using Blog.Data.EntityFramework.Context;
-using Blog.Data.EntityFramework.Repository.Base;
+using GenRep.EntityFramework;
 using Microsoft.EntityFrameworkCore;
 
 namespace Blog.Data.EntityFramework.Repository
@@ -57,14 +57,9 @@ namespace Blog.Data.EntityFramework.Repository
                         .ToListAsync(cancel);
         }
 
-        public Task<BlogStory> GetByAliasAsync(String alias, CancellationToken cancel = default)
+        public Task<BlogStory> GetAsync(String alias, CancellationToken cancel = default)
         {
             return FirstOrDefaultAsync(b => b.Alias.Equals(alias), cancel);
-        }
-
-        public Task<BlogStory> GetByAliasWithAuthorAsync(String alias, CancellationToken cancel = default)
-        {
-            return Entities.FirstOrDefaultAsync(b => b.Alias.Equals(alias), cancel);
         }
 
         public Task<BlogStory> GetWithBlogStoryTagsAsync(Guid id, CancellationToken cancel = default)
@@ -77,13 +72,6 @@ namespace Blog.Data.EntityFramework.Repository
         {
             return Entities.Include(x => x.BlogStoryTags)
                            .FirstOrDefaultAsync(x => x.Alias.Equals(alias), cancel);
-        }
-
-        public Task<List<BlogStory>> WhereWithTagsAsync(Expression<Func<BlogStory, Boolean>> predicate, CancellationToken cancel = default)
-        {
-            return Entities.Include(x => x.BlogStoryTags)
-                           .Where(predicate)
-                           .ToListAsync(cancel);
         }
 
         public Task<List<BlogStory>> WhereWithTagsPerPageAsync(Expression<Func<BlogStory, Boolean>> predicate,

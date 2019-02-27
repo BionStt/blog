@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using Blog.Core.Contracts.Entities;
 using Blog.Core.Converters;
 
 namespace Blog.Core.Entities
 {
-    public class Tag : IEntityUpdate<Tag>
+    public class Tag
     {
         public Guid Id { get; set; }
         public String Name { get; set; }

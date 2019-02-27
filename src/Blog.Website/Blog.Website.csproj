@@ -22,6 +22,7 @@
     <ProjectReference Include="..\Blog.Data.Contracts\Blog.Data.Contracts.csproj" />
     <ProjectReference Include="..\Blog.Data.EntityFramework\Blog.Data.EntityFramework.csproj" />
     <ProjectReference Include="..\Blog.Website.Core\Blog.Website.Core.csproj" />
+    <ProjectReference Include="..\Blog.Website.Models\Blog.Website.Models.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Content Update="configs\public\appsettings.json">

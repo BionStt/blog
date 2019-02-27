@@ -6,7 +6,7 @@ using Blog.Core.Entities;
 
 namespace Blog.Core.Contracts.Managers
 {
-    public interface ITagManager : IEntityManager<Tag>
+    public interface ITagManager
     {
         /// <summary>
         /// Get tag
