@@ -34,10 +34,10 @@ namespace Blog.BusinessLogic.Managers
             _defaultTop = defaultTop;
         }
 
-        public Task<Page<BlogStory>> GetAsync(StoriesQuery query,
+        public Task<Page<BlogStory>> GetPageAsync(StoriesQuery query,
                                               CancellationToken cancel = default)
         {
-            throw new NotImplementedException();
+            return _blogStoryRepository.GetPageAsync(query, cancel);
         }
 
         public Task<BlogStory> GetAsync(String alias,
@@ -102,7 +102,7 @@ namespace Blog.BusinessLogic.Managers
                                                                   StoriesIds = blogStoriesIds
                                                               },
                                                               cancel);
-            
+
             return new Tuple<Tag, List<BlogStory>>(tag, stories);
         }
 
@@ -214,12 +214,6 @@ namespace Blog.BusinessLogic.Managers
             return siteMapBuilder.ToString();
         }
 
-
-        public Task<Int32> CountPublishedAsync(CancellationToken cancel = default)
-        {
-            return _blogStoryRepository.CountAsync(x => x.PublishedDate.HasValue, cancel);
-        }
-
         public Task<Int32> CountStoriesForTagAsync(Guid tagId,
                                                    CancellationToken cancel = default)
         {
@@ -237,11 +231,6 @@ namespace Blog.BusinessLogic.Managers
 
             story.AccessToken = null;
             await _blogStoryRepository.UpdateAsync(story, cancel);
-        }
-
-        public Task<Int32> CountAsync(CancellationToken cancel = default)
-        {
-            return _blogStoryRepository.CountAsync(cancel);
         }
     }
 }

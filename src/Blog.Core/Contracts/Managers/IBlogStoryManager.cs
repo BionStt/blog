@@ -12,7 +12,7 @@ namespace Blog.Core.Contracts.Managers
 {
     public interface IBlogStoryManager
     {
-        Task<Page<BlogStory>> GetAsync(StoriesQuery query,
+        Task<Page<BlogStory>> GetPageAsync(StoriesQuery query,
                                        CancellationToken cancel = default);
 
         Task<BlogStory> GetAsync(String alias,
@@ -46,8 +46,6 @@ namespace Blog.Core.Contracts.Managers
 
         Task<String> GetSiteMapXmlAsync(String baseUrl,
                                         CancellationToken cancel = default);
-
-        Task<Int32> CountPublishedAsync(CancellationToken cancel = default);
         
         Task<Int32> CountStoriesForTagAsync(Guid tagId,
                                             CancellationToken cancel = default);

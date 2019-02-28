@@ -41,7 +41,7 @@ namespace Blog.Website.Areas.Author.Controllers
         [HttpGet]
         public async Task<IActionResult> Index(GetStoriesRequest request)
         {
-            var storiesPage = await _blogStoryManager.GetAsync(request.ToQuery(PageSize), Cancel);
+            var storiesPage = await _blogStoryManager.GetPageAsync(request.ToQuery(PageSize), Cancel);
             var viewModel = new AuthorStoriesPageViewModel(storiesPage, request.Page, PageSize);
             return View(viewModel);
         }
