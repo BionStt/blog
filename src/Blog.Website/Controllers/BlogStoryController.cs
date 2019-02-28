@@ -4,6 +4,7 @@ using Blog.Core.Contracts.Managers;
 using Blog.Core.Enums.Filtering;
 using Blog.Core.Enums.Sorting;
 using Blog.Website.Core.ViewModels.User;
+using Blog.Website.Models.Requests.Reader;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 
@@ -33,16 +34,20 @@ namespace Blog.Website.Controllers
         }
 
         [HttpGet("")]
-        public async Task<IActionResult> Index(Int32 page = 1)
+        public async Task<IActionResult> Index(GetStoriesRequest request)
         {
-            var skip = GetSkip(page, PageSize);
+            var storiesPage = await _blogStoryManager.GetAsync(request.ToQuery(PageSize), Cancel);
+            var topTags = await _tagManager.GetTopAsync(Cancel);
 
-            var stories = await _blogStoryManager.GetAsync(skip, PageSize, StorySort.PublishDate, StoryFilter.Published, Cancel);
-            var storiesTotalCount = await _blogStoryManager.CountPublishedAsync(Cancel);
-
-            var tags = await _tagManager.GetAllOrderedByUseAsync(Cancel);
-            var viewModel = new MainPageViewModel(stories, tags, page, PageSize, storiesTotalCount, _defaultTitle, _defaultPageNumberTitle,
-                                                  _defaultDescription, _defaultKeywords);
+            var viewModel = new MainPageViewModel(storiesPage.Items,
+                                                  topTags,
+                                                  request.Page,
+                                                  PageSize,
+                                                  storiesPage.TotalCount,
+                                                  _defaultTitle,
+                                                  _defaultPageNumberTitle,
+                                                  _defaultDescription,
+                                                  _defaultKeywords);
 
             return View("IndexPub", viewModel);
         }
@@ -51,8 +56,8 @@ namespace Blog.Website.Controllers
         public async Task<IActionResult> Story(String alias)
         {
             var story = await _blogStoryManager.GetWithTagsAsync(alias, Cancel);
-            if (story == null ||
-                !story.PublishedDate.HasValue)
+            if(story == null ||
+               !story.PublishedDate.HasValue)
             {
                 return NotFound();
             }
@@ -66,18 +71,19 @@ namespace Blog.Website.Controllers
         public async Task<IActionResult> Preview([FromRoute] String alias,
                                                  [FromQuery] String token)
         {
-            if (String.IsNullOrWhiteSpace(alias))
+            if(String.IsNullOrWhiteSpace(alias))
                 return NotFound();
 
             var story = await _blogStoryManager.GetAsync(alias, Cancel);
-            if (story == null)
+            if(story == null)
                 return NotFound();
 
-            if (story.PublishedDate.HasValue)
+            if(story.PublishedDate.HasValue)
                 return NotFound();
 
-            if (!User.Identity.IsAuthenticated && (String.IsNullOrWhiteSpace(story.AccessToken) ||
-                                                   !story.AccessToken.Equals(token, StringComparison.Ordinal)))
+            if(!User.Identity.IsAuthenticated &&
+               (String.IsNullOrWhiteSpace(story.AccessToken) ||
+                !story.AccessToken.Equals(token, StringComparison.Ordinal)))
                 return NotFound();
 
             var tags = await _tagManager.GetAllOrderedByUseAsync(Cancel);

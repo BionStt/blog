@@ -2,10 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Blog.Core.Contracts.Managers;
-using Blog.Core.Enums.Filtering;
-using Blog.Core.Enums.Sorting;
 using Blog.Core.Exceptions;
-using Blog.Core.Queries;
 using Blog.Extensions.Helpers;
 using Blog.Website.Controllers;
 using Blog.Website.Core.Helpers;

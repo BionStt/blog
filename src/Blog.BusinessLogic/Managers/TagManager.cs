@@ -1,17 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Blog.Core.Contracts.Managers;
 using Blog.Core.Entities;
 using Blog.Core.Exceptions;
+using Blog.Core.Queries;
 using Blog.Data.Contracts.Repositories;
 
 namespace Blog.BusinessLogic.Managers
 {
     public class TagManager : ITagManager
     {
+        private const Int32 NoLimit = Int32.MaxValue;
+
         private readonly ITagRepository _tagRepository;
         private readonly IBlogStoryRepository _blogStoryRepository;
         private readonly IBlogStoryTagRepository _blogStoryTagRepository;
@@ -121,7 +125,7 @@ namespace Blog.BusinessLogic.Managers
                                                                Guid blogStoryId,
                                                                CancellationToken cancel = default)
         {
-            var blogStory = await _blogStoryRepository.GetWithBlogStoryTagsAsync(blogStoryId, cancel);
+            var blogStory = await _blogStoryRepository.GetWithTagsAsync(blogStoryId, cancel);
             if(blogStory == null)
             {
                 throw new EntityNotFoundException();
@@ -152,7 +156,7 @@ namespace Blog.BusinessLogic.Managers
                                                                    Guid blogStoryId,
                                                                    CancellationToken cancel = default)
         {
-            var blogStoryWithTags = await _blogStoryRepository.GetWithBlogStoryTagsAsync(blogStoryId, cancel);
+            var blogStoryWithTags = await _blogStoryRepository.GetWithTagsAsync(blogStoryId, cancel);
             if(blogStoryWithTags == null)
             {
                 throw new EntityNotFoundException($"Can't find blog story with id : {blogStoryId} for unassign tag");
@@ -200,6 +204,15 @@ namespace Blog.BusinessLogic.Managers
                                                 CancellationToken cancel = default)
         {
             return _blogStoryTagRepository.CountAsync(x => x.TagId == tagId, cancel);
+        }
+
+        public Task<List<Tag>> GetTopAsync(CancellationToken cancel = default)
+        {
+            return _tagRepository.GetAsync(new TagsQuery(0, NoLimit)
+            {
+                WithScores = true,
+                IsPublished = true
+            }, cancel);
         }
     }
 }

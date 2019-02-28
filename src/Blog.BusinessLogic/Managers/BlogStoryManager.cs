@@ -5,12 +5,14 @@ using System.Threading;
 using System.Threading.Tasks;
 using Blog.BusinessLogic.Builders;
 using Blog.BusinessLogic.Helpers;
+using Blog.Core.Containers;
 using Blog.Core.Contracts.Managers;
 using Blog.Core.Entities;
 using Blog.Core.Enums;
 using Blog.Core.Enums.Filtering;
 using Blog.Core.Enums.Sorting;
 using Blog.Core.Exceptions;
+using Blog.Core.Queries;
 using Blog.Data.Contracts.Repositories;
 
 namespace Blog.BusinessLogic.Managers
@@ -32,6 +34,12 @@ namespace Blog.BusinessLogic.Managers
             _defaultTop = defaultTop;
         }
 
+        public Task<Page<BlogStory>> GetAsync(StoriesQuery query,
+                                              CancellationToken cancel = default)
+        {
+            throw new NotImplementedException();
+        }
+
         public Task<BlogStory> GetAsync(String alias,
                                         CancellationToken cancel = default)
         {
@@ -40,51 +48,16 @@ namespace Blog.BusinessLogic.Managers
                 : _blogStoryRepository.GetAsync(alias, cancel);
         }
 
-        public async Task<BlogStory> GetWithTagsAsync(Guid id,
-                                                      CancellationToken cancel = default)
+        public Task<BlogStory> GetWithTagsAsync(Guid id,
+                                                CancellationToken cancel = default)
         {
-            var story = await _blogStoryRepository.GetWithBlogStoryTagsAsync(id, cancel);
-            if(story != null)
-            {
-                var tagIds = story.BlogStoryTags.Select(x => x.TagId);
-                var tags = await _tagManager.GetAsync(tagIds, cancel);
-                story.BlogStoryTags.ForEach(tag => tag.Tag = tags.FirstOrDefault(x => x.Id == tag.TagId));
-            }
-
-            return story;
+            return _blogStoryRepository.GetWithTagsAsync(id, cancel);
         }
 
-        public async Task<BlogStory> GetWithTagsAsync(String alias,
-                                                      CancellationToken cancel = default)
+        public Task<BlogStory> GetWithTagsAsync(String alias,
+                                                CancellationToken cancel = default)
         {
-            var story = await _blogStoryRepository.GetWithBlogStoryTagsAsync(alias, cancel);
-            if(story != null)
-            {
-                var tagIds = story.BlogStoryTags.Select(x => x.TagId);
-                var tags = await _tagManager.GetAsync(tagIds, cancel);
-                story.BlogStoryTags.ForEach(tag => tag.Tag = tags.FirstOrDefault(x => x.Id == tag.TagId));
-            }
-
-            return story;
-        }
-
-        public Task<List<BlogStory>> GetAsync(Int32 skip,
-                                              Int32 top,
-                                              StorySort sort,
-                                              StoryFilter filter,
-                                              CancellationToken cancel = default)
-        {
-            if(skip < 0)
-            {
-                skip = DefaultSkip;
-            }
-
-            if(top <= 0)
-            {
-                top = _defaultTop;
-            }
-
-            return _blogStoryRepository.GetPerPageAsync(skip, top, sort, filter, cancel);
+            return _blogStoryRepository.GetWithTagsAsync(alias, cancel);
         }
 
         public async Task<Tuple<Tag, List<BlogStory>>> GetTagStoriesByAliasAsync(String alias,
@@ -117,20 +90,20 @@ namespace Blog.BusinessLogic.Managers
 
             var blogStoriesIds = tag.BlogStoryTags
                                     .Select(x => x.BlogStoryId)
-                                    .ToList();
+                                    .ToArray();
 
             if(!blogStoriesIds.Any())
             {
                 return new Tuple<Tag, List<BlogStory>>(null, new List<BlogStory>(0));
             }
 
-            var blogStories = await _blogStoryRepository.WhereWithTagsPerPageAsync(x => blogStoriesIds.Contains(x.Id),
-                                                                                   skip,
-                                                                                   top,
-                                                                                   sort,
-                                                                                   filter,
-                                                                                   cancel);
-            return new Tuple<Tag, List<BlogStory>>(tag, blogStories);
+            var stories = await _blogStoryRepository.GetAsync(new StoriesQuery(skip, top)
+                                                              {
+                                                                  StoriesIds = blogStoriesIds
+                                                              },
+                                                              cancel);
+            
+            return new Tuple<Tag, List<BlogStory>>(tag, stories);
         }
 
         public async Task<BlogStory> CreateOrUpdateAsync(BlogStory blogStory,

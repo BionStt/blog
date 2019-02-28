@@ -12,21 +12,34 @@ namespace Blog.Website.Core.ViewModels
         public Int32 PageSize { get; set; }
         public Int32 TotalPageCount { get; set; }
 
-        protected PageContextViewModel(Int32 pageNumber, Int32 pageSize, Int32 totalItemsCount, String mainTitlePart,
-            String pageTitlePart, String description, String keywords)
+        protected PageContextViewModel(Int32 pageNumber,
+                                       Int32 pageSize,
+                                       Int32 totalItemsCount,
+                                       String mainTitlePart,
+                                       String pageTitlePart,
+                                       String description,
+                                       String keywords)
         {
             SetPagingPart(pageNumber, pageSize, totalItemsCount);
             SetSeoContext(mainTitlePart, null, pageTitlePart, description, keywords);
         }
 
-        protected PageContextViewModel(Int32 pageNumber, Int32 pageSize, Int32 totalItemsCount, String mainTitlePart,
-            String extendTitlePart, String pageTitlePart, String description, String keywords)
+        protected PageContextViewModel(Int32 pageNumber,
+                                       Int32 pageSize,
+                                       Int32 totalItemsCount,
+                                       String mainTitlePart,
+                                       String extendTitlePart,
+                                       String pageTitlePart,
+                                       String description,
+                                       String keywords)
         {
             SetPagingPart(pageNumber, pageSize, totalItemsCount);
             SetSeoContext(mainTitlePart, extendTitlePart, pageTitlePart, description, keywords);
         }
 
-        private void SetPagingPart(Int32 pageNumber, Int32 pageSize, Int32 totalItemsCount)
+        private void SetPagingPart(Int32 pageNumber,
+                                   Int32 pageSize,
+                                   Int32 totalItemsCount)
         {
             var pageCount = (Int32) Math.Ceiling((Double) totalItemsCount / pageSize);
             TotalPageCount = pageCount;
@@ -34,8 +47,11 @@ namespace Blog.Website.Core.ViewModels
             PageSize = pageSize;
         }
 
-        private void SetSeoContext(String mainTitlePart, String extendTitlePart, String pageTitlePart,
-            String description, String keywords)
+        private void SetSeoContext(String mainTitlePart,
+                                   String extendTitlePart,
+                                   String pageTitlePart,
+                                   String description,
+                                   String keywords)
         {
             Title = PageNumber > 1
                 ? $"{mainTitlePart}{extendTitlePart}{pageTitlePart}{PageNumber.ToString()}"

@@ -24,12 +24,6 @@ namespace Blog.Core.Contracts.Managers
         Task<BlogStory> GetWithTagsAsync(String alias,
                                          CancellationToken cancel = default);
         
-        Task<List<BlogStory>> GetAsync(Int32 skip,
-                                       Int32 top,
-                                       StorySort sort,
-                                       StoryFilter filter,
-                                       CancellationToken cancel = default);
-
         Task<Tuple<Tag, List<BlogStory>>> GetTagStoriesByAliasAsync(String alias,
                                                                     Int32 skip,
                                                                     Int32 top,

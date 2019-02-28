@@ -115,5 +115,7 @@ namespace Blog.Core.Contracts.Managers
         /// <returns>Count of blog stories</returns>
         Task<Int32> GetStoriesCountAsync(Guid tagId,
                                          CancellationToken cancel = default);
+
+        Task<List<Tag>> GetTopAsync(CancellationToken cancel = default);
     }
 }

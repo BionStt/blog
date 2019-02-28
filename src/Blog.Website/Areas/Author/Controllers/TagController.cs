@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Blog.Core.Contracts.Managers;
+using Blog.Website.Controllers;
 using Blog.Website.Core.Requests;
 using Blog.Website.Core.ViewModels.Author.Tag;
 using Microsoft.AspNetCore.Authorization;
@@ -11,13 +12,13 @@ namespace Blog.Website.Areas.Author.Controllers
 {
     [Authorize]
     [Area("author"), Route("author/tags")]
-    public class TagController : Controller
+    public class TagController : BaseController
     {
         private readonly Int32 _pageSize;
 
         private readonly ITagManager _tagManager;
 
-        public TagController(ITagManager tagManager, IConfiguration configuration)
+        public TagController(ITagManager tagManager, IConfiguration configuration) : base(configuration)
         {
             _tagManager = tagManager;
             _pageSize = configuration.GetValue<Int32>("default-page-size");
@@ -26,9 +27,8 @@ namespace Blog.Website.Areas.Author.Controllers
         [HttpGet]
         public async Task<IActionResult> Index([FromRoute] Int32 page = 1)
         {
-            var cancel = HttpContext.RequestAborted;
-            var tags = await _tagManager.GetAllAsync(cancel);
-            var totalCount = await _tagManager.CountAsync(cancel);
+            var tags = await _tagManager.GetAllAsync(Cancel);
+            var totalCount = await _tagManager.CountAsync(Cancel);
             var viewModel = new TagsViewModel(tags, totalCount, page, _pageSize);
             return View(viewModel);
         }
@@ -36,8 +36,7 @@ namespace Blog.Website.Areas.Author.Controllers
         [HttpGet("{id:int}")]
         public async Task<IActionResult> Edit([FromRoute] Guid id)
         {
-            var cancel = HttpContext.RequestAborted;
-            var tag = await _tagManager.GetAsync(id, cancel);
+            var tag = await _tagManager.GetAsync(id, Cancel);
             if (tag == null)
             {
                 return NotFound();
@@ -56,8 +55,7 @@ namespace Blog.Website.Areas.Author.Controllers
 
             try
             {
-                var cancel = HttpContext.RequestAborted;
-                var tag = await _tagManager.UpdateAsync(model.ToDomain(), cancel);
+                var tag = await _tagManager.UpdateAsync(model.ToDomain(), Cancel);
                 return View(new TagEditViewModel(tag));
             }
             catch (Exception)
@@ -76,8 +74,7 @@ namespace Blog.Website.Areas.Author.Controllers
 
             try
             {
-                var cancel = HttpContext.RequestAborted;
-                var tag = await _tagManager.CreateTagAsync(model.Name, cancel);
+                var tag = await _tagManager.CreateTagAsync(model.Name, Cancel);
                 return Ok(tag);
             }
             catch (Exception)
