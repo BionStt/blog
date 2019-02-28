@@ -27,9 +27,8 @@ namespace Blog.Website.Areas.Author.Controllers
         [HttpGet]
         public async Task<IActionResult> Index([FromRoute] Int32 page = 1)
         {
-            var tags = await _tagManager.GetAllAsync(Cancel);
-            var totalCount = await _tagManager.CountAsync(Cancel);
-            var viewModel = new TagsViewModel(tags, totalCount, page, _pageSize);
+            var tags = await _tagManager.GetTopAsync(Cancel);
+            var viewModel = new TagsViewModel(tags, 10, page, _pageSize);
             return View(viewModel);
         }
 

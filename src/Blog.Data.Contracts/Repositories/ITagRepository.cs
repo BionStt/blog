@@ -25,5 +25,14 @@ namespace Blog.Data.Contracts.Repositories
 
         Task<Tag> GetTagWithBlogStoryTagsAsync(String alias,
                                                CancellationToken cancel = default);
+
+        Task DeleteAsync(Tag tag,
+                         CancellationToken cancel = default);
+
+        Task UpdateAsync(Tag tag,
+                         CancellationToken cancel);
+
+        Task<Tag> AddAsync(Tag tag,
+                           CancellationToken cancel);
     }
 }

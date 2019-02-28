@@ -19,7 +19,6 @@ namespace Blog.Data.EntityFramework.Repository
     public class TagRepository : BaseRepository<Tag>,
                                  ITagRepository
     {
-
         public TagRepository(BlogContext context) : base(context)
         {
         }
@@ -108,6 +107,24 @@ namespace Blog.Data.EntityFramework.Repository
         {
             return Entities.Include(x => x.BlogStoryTags)
                            .FirstOrDefaultAsync(x => x.Alias.Equals(alias), cancel);
+        }
+
+        public new Task DeleteAsync(Tag tag,
+                                    CancellationToken cancel = default)
+        {
+            return base.DeleteAsync(tag, cancel);
+        }
+
+        public new Task UpdateAsync(Tag tag,
+                                    CancellationToken cancel)
+        {
+            return base.UpdateAsync(tag, cancel);
+        }
+
+        public new Task<Tag> AddAsync(Tag tag,
+                                      CancellationToken cancel)
+        {
+            return base.AddAsync(tag, cancel);
         }
     }
 }

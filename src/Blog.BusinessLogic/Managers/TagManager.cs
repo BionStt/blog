@@ -41,18 +41,7 @@ namespace Blog.BusinessLogic.Managers
         {
             return _tagRepository.GetAllPublishedAsync(cancel);
         }
-
-        public Task<List<Tag>> GetAllAsync(CancellationToken cancel = default)
-        {
-            return _tagRepository.GetAllAsync(cancel);
-        }
-
-        public Task<List<Tag>> GetAsync(IEnumerable<Guid> ids,
-                                        CancellationToken cancel = default)
-        {
-            return _tagRepository.WhereAsync(x => ids.Contains(x.Id), cancel);
-        }
-
+        
         public Task<List<Tag>> GetAllOrderedByUseAsync(CancellationToken cancel = default)
         {
             return _tagRepository.GetAllOrderedByUseAsync(cancel);
@@ -70,11 +59,6 @@ namespace Blog.BusinessLogic.Managers
             await _tagRepository.DeleteAsync(originalTag, cancel);
         }
 
-        public Task<Int32> CountAsync(CancellationToken cancel = default)
-        {
-            return _tagRepository.CountAsync(cancel);
-        }
-
         public async Task UpdateBlogStoryTagsAsync(List<Guid> tagIds,
                                                    BlogStory story,
                                                    CancellationToken cancel = default)
@@ -84,7 +68,7 @@ namespace Blog.BusinessLogic.Managers
                 throw new ArgumentNullException(nameof(story));
             }
 
-            var existTags = await _blogStoryTagRepository.WhereAsync(x => x.BlogStoryId == story.Id, cancel);
+            var existTags = await _blogStoryTagRepository.GetByStoryIdAsync(story.Id, cancel);
             var isAllTagsRemoved = existTags.Any() && (tagIds == null || !tagIds.Any());
             if(isAllTagsRemoved)
             {
@@ -200,17 +184,11 @@ namespace Blog.BusinessLogic.Managers
             return exitingTag;
         }
 
-        public Task<Int32> GetStoriesCountAsync(Guid tagId,
-                                                CancellationToken cancel = default)
-        {
-            return _blogStoryTagRepository.CountAsync(x => x.TagId == tagId, cancel);
-        }
-
         public Task<List<Tag>> GetTopAsync(CancellationToken cancel = default)
         {
             return _tagRepository.GetAsync(new TagsQuery(0, NoLimit)
             {
-                WithScores = true,
+                WithScores = false,
                 IsPublished = true
             }, cancel);
         }

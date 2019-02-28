@@ -81,9 +81,27 @@ namespace Blog.Data.EntityFramework.Repository
                            .FirstOrDefaultAsync(x => x.Alias.Equals(alias), cancel);
         }
 
+        public new Task AddAsync(BlogStory blogStory,
+                                 CancellationToken cancel)
+        {
+            return base.AddAsync(blogStory, cancel);
+        }
+
+        public new Task UpdateAsync(BlogStory story,
+                                    CancellationToken cancel)
+        {
+            return base.UpdateAsync(story, cancel);
+        }
+
+        public new Task DeleteAsync(BlogStory story,
+                                    CancellationToken cancel)
+        {
+            return base.DeleteAsync(story, cancel);
+        }
+
         private IQueryable<BlogStory> GetDataQuery(StoriesQuery query)
         {
-            IQueryable<BlogStory> dataQuery = Entities;
+            IQueryable<BlogStory> dataQuery = Entities.Include(x=>x.BlogStoryTags);
 
             if(query.IsPublished.HasValue)
             {

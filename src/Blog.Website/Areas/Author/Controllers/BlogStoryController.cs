@@ -49,7 +49,7 @@ namespace Blog.Website.Areas.Author.Controllers
         [HttpGet("edit/{storyId:guid?}")]
         public async Task<IActionResult> Edit(Guid storyId)
         {
-            var tags = await _tagManager.GetAllAsync(Cancel);
+            var tags = await _tagManager.GetTopAsync(Cancel);
             var story = await _blogStoryManager.GetWithTagsAsync(storyId, Cancel);
             var viewModel = new EditBlogStoryViewModel(story, tags, Url);
             return View(viewModel);

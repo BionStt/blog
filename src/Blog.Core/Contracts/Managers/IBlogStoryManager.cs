@@ -46,9 +46,6 @@ namespace Blog.Core.Contracts.Managers
 
         Task<String> GetSiteMapXmlAsync(String baseUrl,
                                         CancellationToken cancel = default);
-        
-        Task<Int32> CountStoriesForTagAsync(Guid tagId,
-                                            CancellationToken cancel = default);
 
         Task RemoveAccessTokenAsync(Guid storyId, CancellationToken cancel);
     }

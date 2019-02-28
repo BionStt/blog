@@ -1,4 +1,5 @@
 using System;
+using Blog.Core.Containers;
 using Blog.Core.Queries;
 
 namespace Blog.Website.Models.Requests.Reader
@@ -9,6 +10,11 @@ namespace Blog.Website.Models.Requests.Reader
         
         public StoriesQuery ToQuery(Int32 pageSize)
         {
+            if(Page <= 0)
+            {
+                Page = 1;
+            }
+            
             return new StoriesQuery(GetOffset(Page, pageSize) , pageSize);
         }
     }

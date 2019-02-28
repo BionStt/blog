@@ -25,15 +25,6 @@ namespace Blog.Core.Contracts.Managers
         Task<List<Tag>> GetAllPublishedAsync(CancellationToken cancel = default);
 
         /// <summary>
-        /// Get tags collection
-        /// </summary>
-        /// <param name="ids">Tag ids for getting</param>
-        /// <param name="cancel">Cancellation token</param>
-        /// <returns>Tags collection</returns>
-        Task<List<Tag>> GetAsync(IEnumerable<Guid> ids,
-                                 CancellationToken cancel = default);
-
-        /// <summary>
         /// Get tags ordered by usage
         /// </summary>
         /// <param name="cancel">Cancellation token</param>
@@ -106,15 +97,6 @@ namespace Blog.Core.Contracts.Managers
         /// <returns>Tag entity</returns>
         Task<Tag> UpdateAsync(Tag tag,
                               CancellationToken cancel = default);
-
-        /// <summary>
-        /// Get blog stories count assigned for tag
-        /// </summary>
-        /// <param name="tagId">Tag id</param>
-        /// <param name="cancel">Cancellation tocken</param>
-        /// <returns>Count of blog stories</returns>
-        Task<Int32> GetStoriesCountAsync(Guid tagId,
-                                         CancellationToken cancel = default);
 
         Task<List<Tag>> GetTopAsync(CancellationToken cancel = default);
     }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -35,7 +36,7 @@ namespace Blog.BusinessLogic.Managers
         }
 
         public Task<Page<BlogStory>> GetPageAsync(StoriesQuery query,
-                                              CancellationToken cancel = default)
+                                                  CancellationToken cancel = default)
         {
             return _blogStoryRepository.GetPageAsync(query, cancel);
         }
@@ -189,7 +190,7 @@ namespace Blog.BusinessLogic.Managers
         public async Task<String> GetSiteMapXmlAsync(String baseUrl,
                                                      CancellationToken cancel = default)
         {
-            var blogStories = await _blogStoryRepository.GetAllPublishedModifedDescAsync(cancel);
+            var blogStories = await _blogStoryRepository.GetAsync(StoriesQuery.AllPublished, cancel);
 
             var siteMapBuilder = new SitemapBuilder();
 
@@ -212,12 +213,6 @@ namespace Blog.BusinessLogic.Managers
             }
 
             return siteMapBuilder.ToString();
-        }
-
-        public Task<Int32> CountStoriesForTagAsync(Guid tagId,
-                                                   CancellationToken cancel = default)
-        {
-            return _tagManager.GetStoriesCountAsync(tagId, cancel);
         }
 
         public async Task RemoveAccessTokenAsync(Guid id,

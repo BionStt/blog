@@ -42,7 +42,6 @@ namespace Blog.Website.Controllers
                 var skip = GetSkip(page, PageSize);
                 var tagAndStories = await _blogStoryManager.GetTagStoriesByAliasAsync(alias, skip, PageSize, StorySort.PublishDate,
                                                                                       StoryFilter.Published, Cancel);
-                var storiesTotalCount = await _blogStoryManager.CountStoriesForTagAsync(tagAndStories.Item1.Id, Cancel);
 
                 var tag = tagAndStories.Item1;
                 var tags = await _tagManager.GetAllOrderedByUseAsync(Cancel);
@@ -51,7 +50,7 @@ namespace Blog.Website.Controllers
                                                       tags,
                                                       page,
                                                       PageSize,
-                                                      storiesTotalCount,
+                                                      1,
                                                       tag.SeoTitle,
                                                       _defaultPageNumberTitle,
                                                       tag.SeoDescription,
