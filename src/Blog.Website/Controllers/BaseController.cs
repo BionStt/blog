@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Threading;
+using Blog.Website.Core.ConfigurationOptions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 
 namespace Blog.Website.Controllers
 {
@@ -10,9 +12,9 @@ namespace Blog.Website.Controllers
         protected CancellationToken Cancel => HttpContext.RequestAborted;
         protected readonly Int32 PageSize;
 
-        public BaseController(IConfiguration configuration)
+        public BaseController(IOptions<DefaultPageInfoOption> pageInfo)
         {
-            PageSize = configuration.GetValue<Int32>("default-page-size");
+            PageSize = pageInfo.Value.PageSize;
         }
 
         public Int32 GetSkip(Int32 page, Int32 pageSize)

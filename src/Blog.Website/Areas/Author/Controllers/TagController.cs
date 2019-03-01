@@ -2,11 +2,13 @@
 using System.Threading.Tasks;
 using Blog.Core.Contracts.Managers;
 using Blog.Website.Controllers;
+using Blog.Website.Core.ConfigurationOptions;
 using Blog.Website.Core.Requests;
 using Blog.Website.Core.ViewModels.Author.Tag;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 
 namespace Blog.Website.Areas.Author.Controllers
 {
@@ -18,7 +20,7 @@ namespace Blog.Website.Areas.Author.Controllers
 
         private readonly ITagManager _tagManager;
 
-        public TagController(ITagManager tagManager, IConfiguration configuration) : base(configuration)
+        public TagController(ITagManager tagManager, IConfiguration configuration,IOptions<DefaultPageInfoOption> pageInfo) : base(pageInfo)
         {
             _tagManager = tagManager;
             _pageSize = configuration.GetValue<Int32>("default-page-size");

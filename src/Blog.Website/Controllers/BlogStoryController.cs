@@ -3,10 +3,12 @@ using System.Threading.Tasks;
 using Blog.Core.Contracts.Managers;
 using Blog.Core.Enums.Filtering;
 using Blog.Core.Enums.Sorting;
+using Blog.Website.Core.ConfigurationOptions;
 using Blog.Website.Core.ViewModels.User;
 using Blog.Website.Models.Requests.Reader;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 
 namespace Blog.Website.Controllers
 {
@@ -22,7 +24,8 @@ namespace Blog.Website.Controllers
 
         public BlogStoryController(IBlogStoryManager blogStoryManager,
                                    ITagManager tagManager,
-                                   IConfiguration configuration) : base(configuration)
+                                   IConfiguration configuration,
+        IOptions<DefaultPageInfoOption> pageInfo) : base(pageInfo)
         {
             _blogStoryManager = blogStoryManager;
             _tagManager = tagManager;

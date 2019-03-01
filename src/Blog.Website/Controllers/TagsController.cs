@@ -4,9 +4,11 @@ using Blog.Core.Contracts.Managers;
 using Blog.Core.Enums.Filtering;
 using Blog.Core.Enums.Sorting;
 using Blog.Core.Exceptions;
+using Blog.Website.Core.ConfigurationOptions;
 using Blog.Website.Core.ViewModels.User;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 
 namespace Blog.Website.Controllers
 {
@@ -22,8 +24,11 @@ namespace Blog.Website.Controllers
         private readonly String _defaultPageTagTitle;
         private readonly String _defaultPageNumberTitle;
 
-        public TagsController(ITagManager tagManager, IBlogStoryManager blogStoryManager, IConfiguration configuration)
-            : base(configuration)
+        public TagsController(ITagManager tagManager,
+                              IBlogStoryManager blogStoryManager,
+                              IOptions<DefaultPageInfoOption> pageInfo,
+                              IConfiguration configuration)
+            : base(pageInfo)
         {
             _tagManager = tagManager;
             _blogStoryManager = blogStoryManager;
@@ -35,13 +40,18 @@ namespace Blog.Website.Controllers
         }
 
         [HttpGet("{alias}")]
-        public async Task<IActionResult> Tags([FromRoute] String alias, [FromQuery] Int32 page = 1)
+        public async Task<IActionResult> Tags([FromRoute] String alias,
+                                              [FromQuery] Int32 page = 1)
         {
             try
             {
                 var skip = GetSkip(page, PageSize);
-                var tagAndStories = await _blogStoryManager.GetTagStoriesByAliasAsync(alias, skip, PageSize, StorySort.PublishDate,
-                                                                                      StoryFilter.Published, Cancel);
+                var tagAndStories = await _blogStoryManager.GetTagStoriesByAliasAsync(alias,
+                                                                                      skip,
+                                                                                      PageSize,
+                                                                                      StorySort.PublishDate,
+                                                                                      StoryFilter.Published,
+                                                                                      Cancel);
 
                 var tag = tagAndStories.Item1;
                 var tags = await _tagManager.GetAllOrderedByUseAsync(Cancel);

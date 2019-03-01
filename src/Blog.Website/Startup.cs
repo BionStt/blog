@@ -7,6 +7,7 @@ using Blog.Core.Contracts.Managers;
 using Blog.Data.Contracts.Repositories;
 using Blog.Data.EntityFramework.Context;
 using Blog.Data.EntityFramework.Repository;
+using Blog.Website.Core.ConfigurationOptions;
 using Blog.Website.Core.Contracts;
 using Blog.Website.Core.Models;
 using Blog.Website.Core.ViewModels.Author.ViewComponents;
@@ -87,6 +88,9 @@ namespace Blog.Website
             services.AddSingleton<IStoryEditMenuContainer>(provider =>
                                                                new StoryEditMenuContainer(Configuration.GetSection("menus:story-edit-top-menu")));
 
+            var pageInfoSec = Configuration.GetSection("DefaultPageInfo");
+            services.Configure<DefaultPageInfoOption>(pageInfoSec);
+            
             var loginRestriction = new List<LoginRestriction>();
             var section = Configuration.GetSection("logins-restrictions");
             section.Bind(loginRestriction);

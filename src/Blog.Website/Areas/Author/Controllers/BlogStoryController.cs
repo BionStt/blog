@@ -5,6 +5,7 @@ using Blog.Core.Contracts.Managers;
 using Blog.Core.Exceptions;
 using Blog.Extensions.Helpers;
 using Blog.Website.Controllers;
+using Blog.Website.Core.ConfigurationOptions;
 using Blog.Website.Core.Helpers;
 using Blog.Website.Core.ViewModels.Author.BlogStories;
 using Blog.Website.Models.Requests.Author;
@@ -12,6 +13,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace Blog.Website.Areas.Author.Controllers
 {
@@ -29,7 +31,8 @@ namespace Blog.Website.Areas.Author.Controllers
         public BlogStoryController(IBlogStoryManager blogStoryManager,
                                    ITagManager tagManager,
                                    IConfiguration configuration,
-                                   ILoggerFactory loggerFactory) : base(configuration)
+                                   IOptions<DefaultPageInfoOption> pageInfo,
+                                   ILoggerFactory loggerFactory) : base(pageInfo)
         {
             _blogStoryManager = blogStoryManager;
             _tagManager = tagManager;

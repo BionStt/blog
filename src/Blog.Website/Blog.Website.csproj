@@ -7,7 +7,6 @@
     <PublishWithAspNetCoreTargetManifest>false</PublishWithAspNetCoreTargetManifest>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="configs\public" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
   <ItemGroup>

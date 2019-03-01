@@ -1,20 +1,24 @@
 using System.Text;
 using System.Threading.Tasks;
 using Blog.Core.Contracts.Managers;
+using Blog.Website.Core.ConfigurationOptions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 
 namespace Blog.Website.Controllers
 {
     public class RobotsController : BaseController
     {
         private readonly IBlogStoryManager _blogStoryManager;
-        
-        public RobotsController(IConfiguration configuration, IBlogStoryManager blogStoryManager) : base(configuration)
+
+        public RobotsController(IConfiguration configuration,
+                                IOptions<DefaultPageInfoOption> pageInfo,
+                                IBlogStoryManager blogStoryManager) : base(pageInfo)
         {
             _blogStoryManager = blogStoryManager;
         }
-        
+
         [HttpGet("sitemap.xml")]
         public async Task<IActionResult> SiteMap()
         {
