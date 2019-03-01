@@ -8,14 +8,14 @@ namespace Blog.Website.Models.Requests.Reader
     {
         public Int32 Page { get; set; }
         
-        public StoriesQuery ToQuery(Int32 pageSize)
+        public BlogStoryQuery ToQuery(Int32 pageSize)
         {
             if(Page <= 0)
             {
                 Page = 1;
             }
             
-            return new StoriesQuery(GetOffset(Page, pageSize) , pageSize);
+            return new BlogStoryQuery(GetOffset(Page, pageSize) , pageSize);
         }
     }
 }

@@ -2,11 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Blog.Core.Helpers;
-using Blog.Data.EntityFramework.OrderMappings;
 
-namespace Blog.Data.EntityFramework.Helpers
+namespace Blog.Data.EntityFramework.OrderMappings
 {
-    public static class IQueriableHelper
+    public static class IQueriableOrder
     {
         public static IQueryable<T> ApplyOrder<T>(this IQueryable<T> query,
                                                   List<(OrderMapping<T> map, Boolean isAsc)> orderParameters)

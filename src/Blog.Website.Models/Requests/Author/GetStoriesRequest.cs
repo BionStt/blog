@@ -8,9 +8,9 @@ namespace Blog.Website.Models.Requests.Author
         public Int32 Page { get; set; }
         public String State { get; set; }
 
-        public StoriesQuery ToQuery(Int32 pageSize)
+        public BlogStoryQuery ToQuery(Int32 pageSize)
         {
-            return new StoriesQuery(GetOffset(Page, pageSize) , pageSize);
+            return new BlogStoryQuery(GetOffset(Page, pageSize) , pageSize);
         }
     }
 }

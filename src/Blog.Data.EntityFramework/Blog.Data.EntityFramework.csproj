@@ -19,6 +19,7 @@
     <ProjectReference Include="..\Blog.Data.Contracts\Blog.Data.Contracts.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Helpers" />
     <Folder Include="Migrations" />
   </ItemGroup>
 </Project>

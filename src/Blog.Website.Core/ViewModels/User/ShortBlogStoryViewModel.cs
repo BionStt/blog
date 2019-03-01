@@ -38,6 +38,8 @@ namespace Blog.Website.Core.ViewModels.User
                 CreateDayDate = blogStory.CreateDate.Day.ToString();
                 CreateMonthYearDate = $"{blogStory.CreateDate.GetShorMonthName()} {blogStory.CreateDate.Year.ToString()}";
             }
+            
+            Tags = new List<TagViewModel>(0);
         }
 
         public ShortBlogStoryViewModel(BlogStory blogStory, List<TagViewModel> tags) : this(blogStory)

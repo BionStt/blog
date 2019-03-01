@@ -10,12 +10,15 @@ namespace Blog.Data.Contracts.Repositories
 {
     public interface IBlogStoryRepository
     {
-        Task<Page<BlogStory>> GetPageAsync(StoriesQuery query,
+        Task<Page<BlogStory>> GetPageAsync(BlogStoryQuery query,
+                                           CancellationToken cancel = default);
+
+        Task<Page<BlogStory>> GetPageWithTagsAsync(BlogStoryQuery query,
+                                                   CancellationToken cancel = default);
+
+        Task<List<BlogStory>> GetAsync(BlogStoryQuery query,
                                        CancellationToken cancel = default);
 
-        Task<List<BlogStory>> GetAsync(StoriesQuery query,
-                                       CancellationToken cancel = default);
-        
         Task<BlogStory> GetAsync(Guid id,
                                  CancellationToken cancel = default);
 

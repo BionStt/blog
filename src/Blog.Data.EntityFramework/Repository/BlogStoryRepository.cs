@@ -9,7 +9,6 @@ using Blog.Core.Helpers;
 using Blog.Core.Queries;
 using Blog.Data.Contracts.Repositories;
 using Blog.Data.EntityFramework.Context;
-using Blog.Data.EntityFramework.Helpers;
 using Blog.Data.EntityFramework.OrderMappings;
 using GenRep.EntityFramework;
 using Microsoft.EntityFrameworkCore;
@@ -23,14 +22,14 @@ namespace Blog.Data.EntityFramework.Repository
         {
         }
 
-        public async Task<Page<BlogStory>> GetPageAsync(StoriesQuery query,
+        public async Task<Page<BlogStory>> GetPageAsync(BlogStoryQuery query,
                                                         CancellationToken cancel = default)
         {
-            var dataQuery = GetDataQuery(query);
+            var dataQuery = ExtendQuery(Entities, query);
 
             var totalCount = await dataQuery.CountAsync(cancel);
 
-            dataQuery = GetOrderedQuery(query, dataQuery);
+            dataQuery = OrderQuery(dataQuery, query);
 
             var stories = await dataQuery.Skip(query.Offset)
                                          .Take(query.Limit)
@@ -43,10 +42,33 @@ namespace Blog.Data.EntityFramework.Repository
             };
         }
 
-        public Task<List<BlogStory>> GetAsync(StoriesQuery query,
+        public async Task<Page<BlogStory>> GetPageWithTagsAsync(BlogStoryQuery query,
+                                                                CancellationToken cancel = default)
+        {
+            IQueryable<BlogStory> dataQuery = Entities.Include(x => x.BlogStoryTags)
+                                                      .ThenInclude(x => x.Tag);
+
+            dataQuery = ExtendQuery(dataQuery, query);
+
+            var totalCount = await dataQuery.CountAsync(cancel);
+
+            dataQuery = OrderQuery(dataQuery, query);
+
+            var stories = await dataQuery.Skip(query.Offset)
+                                         .Take(query.Limit)
+                                         .ToListAsync(cancel);
+
+            return new Page<BlogStory>
+            {
+                TotalCount = totalCount,
+                Items = stories
+            };
+        }
+
+        public Task<List<BlogStory>> GetAsync(BlogStoryQuery query,
                                               CancellationToken cancel = default)
         {
-            var dataQuery = GetOrderedQuery(query);
+            var dataQuery = ExtendAndOrderQuery(Entities, query);
 
             return dataQuery.Skip(query.Offset)
                             .Take(query.Limit)
@@ -99,10 +121,9 @@ namespace Blog.Data.EntityFramework.Repository
             return base.DeleteAsync(story, cancel);
         }
 
-        private IQueryable<BlogStory> GetDataQuery(StoriesQuery query)
+        private IQueryable<BlogStory> ExtendQuery(IQueryable<BlogStory> dataQuery,
+                                                  BlogStoryQuery query)
         {
-            IQueryable<BlogStory> dataQuery = Entities.Include(x=>x.BlogStoryTags);
-
             if(query.IsPublished.HasValue)
             {
                 dataQuery = query.IsPublished.Value
@@ -118,8 +139,8 @@ namespace Blog.Data.EntityFramework.Repository
             return dataQuery;
         }
 
-        private IQueryable<BlogStory> GetOrderedQuery(StoriesQuery query,
-                                                      IQueryable<BlogStory> dataQuery)
+        private IQueryable<BlogStory> OrderQuery(IQueryable<BlogStory> dataQuery,
+                                                 BlogStoryQuery query)
         {
             var orderParameters = query.OrderParameters;
             if(orderParameters.IsEmpty())
@@ -131,10 +152,11 @@ namespace Blog.Data.EntityFramework.Repository
                                                        .ToList());
         }
 
-        private IQueryable<BlogStory> GetOrderedQuery(StoriesQuery query)
+        private IQueryable<BlogStory> ExtendAndOrderQuery(IQueryable<BlogStory> dataQuery,
+                                                          BlogStoryQuery query)
         {
-            var dataQuery = GetDataQuery(query);
-            return GetOrderedQuery(query, dataQuery);
+            dataQuery = ExtendQuery(dataQuery, query);
+            return OrderQuery(dataQuery, query);
         }
     }
 }

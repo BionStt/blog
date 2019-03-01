@@ -54,10 +54,14 @@ namespace Blog.Website.Core.ViewModels.User
                 ? new List<ShortBlogStoryViewModel>(0)
                 : stories.Select(b =>
                           {
-                              var tagIds = b.BlogStoryTags.Select(st => st.TagId);
-                              var tagsViewModels = tags.Where(t => tagIds.Contains(t.Id))
-                                                       .Select(t => new TagViewModel(t))
-                                                       .ToList();
+                              if(b.BlogStoryTags.IsEmpty())
+                              {
+                                  return new ShortBlogStoryViewModel(b);
+                              }
+
+                              var tagsViewModels = b.BlogStoryTags
+                                                    .Select(t => new TagViewModel(t.Tag))
+                                                    .ToList();
 
                               return new ShortBlogStoryViewModel(b, tagsViewModels);
                           })

@@ -36,7 +36,7 @@ namespace Blog.Website.Controllers
         [HttpGet("")]
         public async Task<IActionResult> Index(GetStoriesRequest request)
         {
-            var storiesPage = await _blogStoryManager.GetPageAsync(request.ToQuery(PageSize), Cancel);
+            var storiesPage = await _blogStoryManager.GetPageWithTagsAsync(request.ToQuery(PageSize), Cancel);
             var topTags = await _tagManager.GetTopAsync(Cancel);
 
             var viewModel = new MainPageViewModel(storiesPage.Items,

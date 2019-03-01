@@ -35,10 +35,16 @@ namespace Blog.BusinessLogic.Managers
             _defaultTop = defaultTop;
         }
 
-        public Task<Page<BlogStory>> GetPageAsync(StoriesQuery query,
+        public Task<Page<BlogStory>> GetPageAsync(BlogStoryQuery query,
                                                   CancellationToken cancel = default)
         {
             return _blogStoryRepository.GetPageAsync(query, cancel);
+        }
+
+        public Task<Page<BlogStory>> GetPageWithTagsAsync(BlogStoryQuery query,
+                                                          CancellationToken cancel = default)
+        {
+            return _blogStoryRepository.GetPageWithTagsAsync(query, cancel);
         }
 
         public Task<BlogStory> GetAsync(String alias,
@@ -98,7 +104,7 @@ namespace Blog.BusinessLogic.Managers
                 return new Tuple<Tag, List<BlogStory>>(null, new List<BlogStory>(0));
             }
 
-            var stories = await _blogStoryRepository.GetAsync(new StoriesQuery(skip, top)
+            var stories = await _blogStoryRepository.GetAsync(new BlogStoryQuery(skip, top)
                                                               {
                                                                   StoriesIds = blogStoriesIds
                                                               },
@@ -190,7 +196,7 @@ namespace Blog.BusinessLogic.Managers
         public async Task<String> GetSiteMapXmlAsync(String baseUrl,
                                                      CancellationToken cancel = default)
         {
-            var blogStories = await _blogStoryRepository.GetAsync(StoriesQuery.AllPublished, cancel);
+            var blogStories = await _blogStoryRepository.GetAsync(BlogStoryQuery.AllPublished, cancel);
 
             var siteMapBuilder = new SitemapBuilder();
 

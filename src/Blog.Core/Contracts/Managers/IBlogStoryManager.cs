@@ -12,18 +12,21 @@ namespace Blog.Core.Contracts.Managers
 {
     public interface IBlogStoryManager
     {
-        Task<Page<BlogStory>> GetPageAsync(StoriesQuery query,
-                                       CancellationToken cancel = default);
+        Task<Page<BlogStory>> GetPageAsync(BlogStoryQuery query,
+                                           CancellationToken cancel = default);
+
+        Task<Page<BlogStory>> GetPageWithTagsAsync(BlogStoryQuery query,
+                                                   CancellationToken cancel = default);
 
         Task<BlogStory> GetAsync(String alias,
                                  CancellationToken cancel = default);
-        
+
         Task<BlogStory> GetWithTagsAsync(Guid id,
                                          CancellationToken cancel = default);
-        
+
         Task<BlogStory> GetWithTagsAsync(String alias,
                                          CancellationToken cancel = default);
-        
+
         Task<Tuple<Tag, List<BlogStory>>> GetTagStoriesByAliasAsync(String alias,
                                                                     Int32 skip,
                                                                     Int32 top,
@@ -40,13 +43,14 @@ namespace Blog.Core.Contracts.Managers
         Task<BlogStory> ChangeAvailabilityAsync(Guid id,
                                                 Boolean isPublished,
                                                 CancellationToken cancel = default);
-        
+
         Task DeleteAsync(String alias,
                          CancellationToken cancel = default);
 
         Task<String> GetSiteMapXmlAsync(String baseUrl,
                                         CancellationToken cancel = default);
 
-        Task RemoveAccessTokenAsync(Guid storyId, CancellationToken cancel);
+        Task RemoveAccessTokenAsync(Guid storyId,
+                                    CancellationToken cancel);
     }
 }

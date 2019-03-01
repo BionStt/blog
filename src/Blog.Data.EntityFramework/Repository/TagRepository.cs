@@ -9,7 +9,6 @@ using Blog.Core.Helpers;
 using Blog.Core.Queries;
 using Blog.Data.Contracts.Repositories;
 using Blog.Data.EntityFramework.Context;
-using Blog.Data.EntityFramework.Helpers;
 using Blog.Data.EntityFramework.OrderMappings;
 using GenRep.EntityFramework;
 using Microsoft.EntityFrameworkCore;
