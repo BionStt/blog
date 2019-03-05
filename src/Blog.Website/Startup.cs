@@ -90,6 +90,11 @@ namespace Blog.Website
 
             var pageInfoSec = Configuration.GetSection("DefaultPageInfo");
             services.Configure<DefaultPageInfoOption>(pageInfoSec);
+
+            var storyImgSec = Configuration.GetSection("DefaultPageInfo:StoryImage");
+            services.Configure<StoryImageOption>(storyImgSec);
+            
+            
             
             var loginRestriction = new List<LoginRestriction>();
             var section = Configuration.GetSection("logins-restrictions");
