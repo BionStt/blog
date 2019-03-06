@@ -54,8 +54,8 @@ namespace Blog.Website.Core.ViewModels
                                    String keywords)
         {
             Title = PageNumber > 1
-                ? $"{mainTitlePart}{extendTitlePart}{pageTitlePart}{PageNumber.ToString()}"
-                : $"{mainTitlePart}{extendTitlePart}";
+                ? $"{mainTitlePart}{pageTitlePart}{PageNumber.ToString()}"
+                : $"{mainTitlePart}";
 
             Description = description;
             Keywords = keywords;

@@ -11,6 +11,7 @@ using Blog.Website.Core.ConfigurationOptions;
 using Blog.Website.Core.Contracts;
 using Blog.Website.Core.Models;
 using Blog.Website.Core.ViewModels.Author.ViewComponents;
+using Blog.Website.Filters;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -19,7 +20,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.WebEncoders;
-using GlobalExceptionFilter = Blog.Website.Filters.GlobalExceptionFilter;
 
 namespace Blog.Website
 {
@@ -73,7 +73,7 @@ namespace Blog.Website
                 options.MaxModelValidationErrors = 5;
                 if(Environment.IsDevelopment())
                 {
-                    options.Filters.Add(typeof(GlobalExceptionFilter));
+                    options.Filters.Add(typeof(GlobalException));
                 }
             });
 

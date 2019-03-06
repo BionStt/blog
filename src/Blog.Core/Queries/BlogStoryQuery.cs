@@ -10,7 +10,7 @@ namespace Blog.Core.Queries
         public Guid[] StoriesIds { get; set; }
 
         public BlogStoryQuery(Int32 offset = DefaultOffset,
-                            Int32 limit = DefaultLimit) : base(offset, limit)
+                              Int32 limit = DefaultLimit) : base(offset, limit)
         {
             DefaultOrder = ("create", false);
         }

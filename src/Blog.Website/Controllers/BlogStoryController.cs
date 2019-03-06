@@ -5,6 +5,7 @@ using Blog.Core.Enums.Filtering;
 using Blog.Core.Enums.Sorting;
 using Blog.Website.Core.ConfigurationOptions;
 using Blog.Website.Core.ViewModels.User;
+using Blog.Website.Filters;
 using Blog.Website.Models.Requests.Reader;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -36,15 +37,15 @@ namespace Blog.Website.Controllers
             _defaultPageNumberTitle = configuration.GetValue<String>("default-page-number-title");
         }
 
-        [HttpGet("")]
-        public async Task<IActionResult> Index(GetStoriesRequest request)
+        [HttpGet(""), DefaultSeoContent]
+        public async Task<IActionResult> Index([FromQuery] Int32 page = 1)
         {
-            var storiesPage = await _blogStoryManager.GetPageWithTagsAsync(request.ToQuery(PageSize), Cancel);
+            var storiesPage = await _blogStoryManager.GetPageWithTagsAsync(GetStoriesRequest.ToQuery(page, PageSize), Cancel);
             var topTags = await _tagManager.GetTopAsync(Cancel);
 
             var viewModel = new MainPageViewModel(storiesPage.Items,
                                                   topTags,
-                                                  request.Page,
+                                                  page,
                                                   PageSize,
                                                   storiesPage.TotalCount,
                                                   _defaultTitle,

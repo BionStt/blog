@@ -7,11 +7,11 @@ using Microsoft.Extensions.Logging;
 
 namespace Blog.Website.Filters
 {
-    public class GlobalExceptionFilter : IExceptionFilter
+    public class GlobalException : IExceptionFilter
     {
         private readonly ILogger _logger;
 
-        public GlobalExceptionFilter(ILoggerFactory factory)
+        public GlobalException(ILoggerFactory factory)
         {
             _logger = factory.GetUnhandledLogger();
         }

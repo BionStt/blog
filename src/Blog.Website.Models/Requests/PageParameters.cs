@@ -10,7 +10,7 @@ namespace Blog.Website.Models.Requests
 
         public String OrderBy { get; set; }
 
-        protected Int32 GetOffset(Int32 pageNumber, Int32 pageSize)
+        protected static Int32 GetOffset(Int32 pageNumber, Int32 pageSize)
         {
             if (pageNumber <= 0)
             {
