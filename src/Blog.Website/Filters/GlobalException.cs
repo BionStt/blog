@@ -24,9 +24,11 @@ namespace Blog.Website.Filters
             if(context.Exception is EntityNotFoundException)
             {
                 context.Result = new ViewResult {ViewName = "Error-404"};
+                context.HttpContext.Response.StatusCode = 404;
                 return;
             }
-            
+
+            context.HttpContext.Response.StatusCode = 500;
             context.Result = new ViewResult {ViewName = "Error-500"};
         }
     }

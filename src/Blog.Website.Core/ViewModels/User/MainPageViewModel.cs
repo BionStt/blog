@@ -14,39 +14,12 @@ namespace Blog.Website.Core.ViewModels.User
                                  List<Tag> tags,
                                  Int32 page,
                                  Int32 pageSize,
-                                 Int32 totalBlogStoriesCount,
-                                 String mainTitlePart,
-                                 String pageTitlePart,
-                                 String description,
-                                 String keywords)
-            : base(tags, page, pageSize, totalBlogStoriesCount, mainTitlePart, pageTitlePart, description, keywords)
+                                 Int32 totalBlogStoriesCount)
+            : base(tags, page, pageSize, totalBlogStoriesCount)
         {
             SetStories(stories, tags);
         }
-
-        public MainPageViewModel(List<BlogStory> stories,
-                                 List<Tag> tags,
-                                 Int32 page,
-                                 Int32 pageSize,
-                                 Int32 totalBlogStoriesCount,
-                                 String mainTitlePart,
-                                 String extendTitlePart,
-                                 String pageTitlePart,
-                                 String description,
-                                 String keywords)
-            : base(tags,
-                   page,
-                   pageSize,
-                   totalBlogStoriesCount,
-                   mainTitlePart,
-                   extendTitlePart,
-                   pageTitlePart,
-                   description,
-                   keywords)
-        {
-            SetStories(stories, tags);
-        }
-
+        
         private void SetStories(List<BlogStory> stories,
                                 List<Tag> tags)
         {

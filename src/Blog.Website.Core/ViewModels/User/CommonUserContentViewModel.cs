@@ -13,26 +13,8 @@ namespace Blog.Website.Core.ViewModels.User
         protected CommonUserContentViewModel(List<Tag> tags,
                                              Int32 page,
                                              Int32 pageSize,
-                                             Int32 totalBlogStoriesCount,
-                                             String mainTitlePart,
-                                             String pageTitlePart,
-                                             String description,
-                                             String keywords)
-            : base(page, pageSize, totalBlogStoriesCount, mainTitlePart, pageTitlePart, description, keywords)
-        {
-            SetTags(tags);
-        }
-
-        protected CommonUserContentViewModel(List<Tag> tags,
-                                             Int32 page,
-                                             Int32 pageSize,
-                                             Int32 totalBlogStoriesCount,
-                                             String mainTitlePart,
-                                             String extendTitlePart,
-                                             String pageTitlePart,
-                                             String description,
-                                             String keywords)
-            : base(page, pageSize, totalBlogStoriesCount, mainTitlePart, extendTitlePart, pageTitlePart, description, keywords)
+                                             Int32 totalBlogStoriesCount)
+            : base(page, pageSize, totalBlogStoriesCount)
         {
             SetTags(tags);
         }

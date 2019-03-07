@@ -18,60 +18,41 @@ namespace Blog.Website.Controllers
         private readonly IBlogStoryManager _blogStoryManager;
         private readonly ITagManager _tagManager;
 
-        private readonly String _defaultTitle;
-        private readonly String _defaultDescription;
-        private readonly String _defaultKeywords;
-        private readonly String _defaultPageTagTitle;
-        private readonly String _defaultPageNumberTitle;
-
         public TagsController(ITagManager tagManager,
                               IBlogStoryManager blogStoryManager,
-                              IOptions<DefaultPageInfoOption> pageInfo,
-                              IConfiguration configuration)
+                              IOptions<DefaultPageInfoOption> pageInfo)
             : base(pageInfo)
         {
             _tagManager = tagManager;
             _blogStoryManager = blogStoryManager;
-
-            _defaultTitle = configuration.GetValue<String>("default-page-title");
-            _defaultDescription = configuration.GetValue<String>("default-page-description");
-            _defaultKeywords = configuration.GetValue<String>("default-page-keywords");
-            _defaultPageNumberTitle = configuration.GetValue<String>("default-page-number-title");
         }
 
         [HttpGet("{alias}")]
         public async Task<IActionResult> Tags([FromRoute] String alias,
                                               [FromQuery] Int32 page = 1)
         {
-            try
-            {
-                var skip = GetSkip(page, PageSize);
-                var tagAndStories = await _blogStoryManager.GetTagStoriesByAliasAsync(alias,
-                                                                                      skip,
-                                                                                      PageSize,
-                                                                                      StorySort.PublishDate,
-                                                                                      StoryFilter.Published,
-                                                                                      Cancel);
+            var skip = GetSkip(page, PageSize);
+            var tagAndStories = await _blogStoryManager.GetTagStoriesByAliasAsync(alias,
+                                                                                  skip,
+                                                                                  PageSize,
+                                                                                  StorySort.PublishDate,
+                                                                                  StoryFilter.Published,
+                                                                                  Cancel);
 
-                var tag = tagAndStories.Item1;
-                var tags = await _tagManager.GetAllOrderedByUseAsync(Cancel);
+            var tag = tagAndStories.Item1;
+            var tags = await _tagManager.GetAllOrderedByUseAsync(Cancel);
 
-                var viewModel = new MainPageViewModel(tagAndStories.Item2,
-                                                      tags,
-                                                      page,
-                                                      PageSize,
-                                                      1,
-                                                      tag.SeoTitle,
-                                                      _defaultPageNumberTitle,
-                                                      tag.SeoDescription,
-                                                      tag.SeoKeywords);
-                ViewBag.NoFollowForTags = true;
-                return View("~/Views/BlogStory/IndexPub.cshtml", viewModel);
-            }
-            catch (EntityNotFoundException)
-            {
-                return NotFound();
-            }
+            var viewModel = new MainPageViewModel(tagAndStories.Item2,
+                                                  tags,
+                                                  page,
+                                                  PageSize,
+                                                  1);
+
+            ViewBag.Title = tag.SeoTitle;
+            ViewBag.SeoDescription = tag.SeoDescription;
+            ViewBag.Keywords = tag.SeoKeywords;
+            ViewBag.NoFollowForTags = true;
+            return View("~/Views/BlogStory/IndexPub.cshtml", viewModel);
         }
     }
 }
