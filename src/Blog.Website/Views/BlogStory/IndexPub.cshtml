@@ -1,7 +1,5 @@
 ﻿@model Blog.Website.Core.ViewModels.User.MainPageViewModel
-@{
-    Layout = "_Layout";
-}
+@{ Layout = "_Layout"; }
 
 <div class="b-post__posts j-masonry">
     <div class="b-post__h1">
@@ -19,10 +17,7 @@
                     </div>
                 </div>
                 <div class="b-post__block">
-                    <a href="@Url.Action("Story", "BlogStory", new
-                             {
-                                 alias = story.Alias
-                             })">
+                    <a href="@Url.Action("Story", "BlogStory", new { alias = story.Alias })">
                         <h2 class="b-post__ttl">@story.Title</h2>
                     </a>
                     <div class="b-post__info">
@@ -30,10 +25,7 @@
                             @foreach (var tag in story.Tags)
                             {
                                 <li class="b-post__tag">
-                                    <a href="@Url.Action("Tags", "Tags", new
-                                             {
-                                                 alias = tag.Alias
-                                             })" class="b-post__tag-link">
+                                    <a href="@Url.Action("Tags", "Tags", new { alias = tag.Alias })" class="b-post__tag-link">
                                         <svg class="b-icon__tag b-post__tag-icon">
                                             <use xlink:href="/img/sprite/sprite.svg#tag"></use>
                                         </svg>
@@ -44,16 +36,11 @@
                         </ul>
                     </div>
                     <div>
-                        @Html.Raw(story.ShrotContent)
+                        @Html.Raw(story.ShortContent)
                     </div>
                 </div>
                 <div class="b-post__btn">
-                    <a href="@Url.Action("Story", "BlogStory", new
-                             {
-                                 alias = story.Alias
-                             })" class="b-btn">
-                        Читать
-                    </a>
+                    <a href="@Url.Action("Story", "BlogStory", new { alias = story.Alias })" class="b-btn">Читать</a>
                 </div>
             </div>
         </div>

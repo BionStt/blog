@@ -10,7 +10,7 @@ namespace Blog.Website.Core.ViewModels.User
     {
         public Guid Id { get; set; }
         public String Title { get; set; }
-        public String ShrotContent { get; }
+        public String ShortContent { get; }
         public String StoryThumbUrl { get; set; }
         public DateTime CreateDate { get; set; }
         public String Alias { get; set; }
@@ -25,7 +25,7 @@ namespace Blog.Website.Core.ViewModels.User
         {
             Id = blogStory.Id;
             Title = blogStory.Title;
-            ShrotContent = blogStory.Description;
+            ShortContent = blogStory.Description;
             StoryThumbUrl = blogStory.StoryThumbUrl;
             Alias = blogStory.Alias;
             if (blogStory.PublishedDate.HasValue)
