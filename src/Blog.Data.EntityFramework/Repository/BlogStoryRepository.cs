@@ -136,6 +136,11 @@ namespace Blog.Data.EntityFramework.Repository
                 dataQuery = dataQuery.Where(x => query.StoriesIds.Contains(x.Id));
             }
 
+            if(query.TagId.HasValue)
+            {
+                dataQuery = dataQuery.Where(x => x.BlogStoryTags.Any(t=>t.TagId == query.TagId));
+            }
+
             return dataQuery;
         }
 

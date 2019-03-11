@@ -37,6 +37,12 @@ namespace Blog.BusinessLogic.Managers
                 : _tagRepository.GetAsync(id, cancel);
         }
 
+        public Task<Tag> GetAsync(String alias,
+                             CancellationToken cancel = default)
+        {
+            return _tagRepository.GetAsync(alias, cancel);
+        }
+
         public Task<List<Tag>> GetAllPublishedAsync(CancellationToken cancel = default)
         {
             return _tagRepository.GetAllPublishedAsync(cancel);
@@ -191,6 +197,12 @@ namespace Blog.BusinessLogic.Managers
                 WithScores = false,
                 IsPublished = true
             }, cancel);
+        }
+
+        public Task<Guid> GetTagIdAsync(String alias,
+                                  CancellationToken cancel = default)
+        {
+            return _tagRepository.GetTagIdAsync(alias, cancel);
         }
     }
 }

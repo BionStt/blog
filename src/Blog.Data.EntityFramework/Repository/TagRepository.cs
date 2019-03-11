@@ -101,6 +101,12 @@ namespace Blog.Data.EntityFramework.Repository
             return FirstOrDefaultAsync(x => x.Id == id, cancel);
         }
 
+        public Task<Tag> GetAsync(String alias,
+                                  CancellationToken cancel = default)
+        {
+            return FirstOrDefaultAsync(x => x.Alias == alias, cancel);
+        }
+
         public Task<Tag> GetTagWithBlogStoryTagsAsync(String alias,
                                                       CancellationToken cancel = default)
         {
@@ -124,6 +130,14 @@ namespace Blog.Data.EntityFramework.Repository
                                       CancellationToken cancel)
         {
             return base.AddAsync(tag, cancel);
+        }
+
+        public Task<Guid> GetTagIdAsync(String alias,
+                                        CancellationToken cancel)
+        {
+            return Entities.Where(x => x.Alias == alias)
+                           .Select(x => x.Id)
+                           .FirstOrDefaultAsync(cancel);
         }
     }
 }

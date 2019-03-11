@@ -46,21 +46,21 @@
         </div>
     }
 </div>
-@if(Model.TotalPageCount > 1)
+@if(Model.PageCount > 1)
 {
     <div class="b-post__navigation">
-        <a class="b-post__navigation-btn b-post__navigation-prev @(Model.PageNumber > 1
+        <a class="b-post__navigation-btn b-post__navigation-prev @(Model.PageNumberNumber > 1
                                                                        ? ("is-active")
                                                                        : (""))"
-           href="@this.Context.Request.Path.ToString()?page=@((Model.PageNumber - 1).ToString())">
+           href="@this.Context.Request.Path.ToString()?page=@((Model.PageNumberNumber - 1).ToString())">
             <svg class="b-icon__prev b-post__nav">
                 <use xlink:href="/img/sprite/sprite.svg#prev"></use>
             </svg>
         </a>
-        <a class="b-post__navigation-btn b-post__navigation-next @(Model.PageNumber < Model.TotalPageCount
+        <a class="b-post__navigation-btn b-post__navigation-next @(Model.PageNumberNumber < Model.PageCount
                                                                        ? ("is-active")
                                                                        : (""))"
-           href="@this.Context.Request.Path.ToString()?page=@((Model.PageNumber + 1).ToString())">
+           href="@this.Context.Request.Path.ToString()?page=@((Model.PageNumberNumber + 1).ToString())">
             <svg class="b-icon__next b-post__nav">
                 <use xlink:href="/img/sprite/sprite.svg#next"></use>
             </svg>

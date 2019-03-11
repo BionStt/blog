@@ -18,6 +18,15 @@ namespace Blog.Core.Contracts.Managers
                            CancellationToken cancel = default);
 
         /// <summary>
+        /// Get tag
+        /// </summary>
+        /// <param name="alias">Tag alias</param>
+        /// <param name="cancel">Cancellation token</param>
+        /// <returns>Tag entities</returns>
+        Task<Tag> GetAsync(String alias,
+                           CancellationToken cancel = default);
+
+        /// <summary>
         /// Get all published
         /// </summary>
         /// <param name="cancel">Cancellation token</param>
@@ -99,5 +108,8 @@ namespace Blog.Core.Contracts.Managers
                               CancellationToken cancel = default);
 
         Task<List<Tag>> GetTopAsync(CancellationToken cancel = default);
+
+        Task<Guid> GetTagIdAsync(String alias,
+                                 CancellationToken cancel = default);
     }
 }

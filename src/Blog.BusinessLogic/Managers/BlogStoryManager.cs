@@ -20,19 +20,14 @@ namespace Blog.BusinessLogic.Managers
 {
     public class BlogStoryManager : IBlogStoryManager
     {
-        private const Int32 DefaultSkip = 0;
-        private readonly Int32 _defaultTop;
-
         private readonly IBlogStoryRepository _blogStoryRepository;
         private readonly ITagManager _tagManager;
 
         public BlogStoryManager(IBlogStoryRepository blogStoryRepository,
-                                ITagManager tagManager,
-                                Int32 defaultTop)
+                                ITagManager tagManager)
         {
             _blogStoryRepository = blogStoryRepository;
             _tagManager = tagManager;
-            _defaultTop = defaultTop;
         }
 
         public Task<Page<BlogStory>> GetPageAsync(BlogStoryQuery query,
@@ -65,52 +60,6 @@ namespace Blog.BusinessLogic.Managers
                                                 CancellationToken cancel = default)
         {
             return _blogStoryRepository.GetWithTagsAsync(alias, cancel);
-        }
-
-        public async Task<Tuple<Tag, List<BlogStory>>> GetTagStoriesByAliasAsync(String alias,
-                                                                                 Int32 skip,
-                                                                                 Int32 top,
-                                                                                 StorySort sort,
-                                                                                 StoryFilter filter,
-                                                                                 CancellationToken cancel = default)
-        {
-            if(String.IsNullOrWhiteSpace(alias))
-            {
-                throw new EntityNotFoundException();
-            }
-
-            if(skip < 0)
-            {
-                skip = DefaultSkip;
-            }
-
-            if(top <= 0)
-            {
-                top = _defaultTop;
-            }
-
-            var tag = await _tagManager.GetTagWithBlogStoryTagsAsync(alias, cancel);
-            if(tag == null)
-            {
-                throw new EntityNotFoundException();
-            }
-
-            var blogStoriesIds = tag.BlogStoryTags
-                                    .Select(x => x.BlogStoryId)
-                                    .ToArray();
-
-            if(!blogStoriesIds.Any())
-            {
-                return new Tuple<Tag, List<BlogStory>>(null, new List<BlogStory>(0));
-            }
-
-            var stories = await _blogStoryRepository.GetAsync(new BlogStoryQuery(skip, top)
-                                                              {
-                                                                  StoriesIds = blogStoriesIds
-                                                              },
-                                                              cancel);
-
-            return new Tuple<Tag, List<BlogStory>>(tag, stories);
         }
 
         public async Task<BlogStory> CreateOrUpdateAsync(BlogStory blogStory,

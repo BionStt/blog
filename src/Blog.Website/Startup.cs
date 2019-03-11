@@ -78,8 +78,7 @@ namespace Blog.Website
             });
 
             services.AddTransient<IBlogStoryManager>(provider => new BlogStoryManager(provider.GetService<IBlogStoryRepository>(),
-                                                                                      provider.GetService<ITagManager>(),
-                                                                                      Configuration.GetValue<Int32>("default-page-size")));
+                                                                                      provider.GetService<ITagManager>()));
             services.AddTransient<ITagManager, TagManager>();
             services.AddTransient<IBlogStoryRepository, BlogStoryRepository>();
             services.AddTransient<ITagRepository, TagRepository>();

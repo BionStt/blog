@@ -6,7 +6,7 @@ namespace Blog.Core.Queries
     {
         public Boolean? IsPublished { get; set; }
 
-        public String[] Tags { get; set; }
+        public Guid? TagId { get; set; }
         public Guid[] StoriesIds { get; set; }
 
         public BlogStoryQuery(Int32 offset = DefaultOffset,

@@ -6,18 +6,26 @@ using Blog.Core.Helpers;
 
 namespace Blog.Website.Core.ViewModels.User
 {
-    public class MainPageViewModel : PageContextViewModel
+    public class MainPageViewModel
     {
+        public Int32 PageSize { get; set; }
+        public Int32 PageNumberNumber { get; set; }
+        public Int32 PageCount { get; set; }
+
         public List<ShortBlogStoryViewModel> Stories { get; set; }
         public List<TagViewModel> Tags { get; set; }
-
+        
         public MainPageViewModel(List<BlogStory> stories,
                                  List<Tag> tags,
-                                 Int32 page,
+                                 Int32 pageNumber,
                                  Int32 pageSize,
-                                 Int32 totalBlogStoriesCount)
-            : base(page, pageSize, totalBlogStoriesCount)
+                                 Int32 storiesCount)
         {
+            var pageCount = (Int32) Math.Ceiling((Double) storiesCount / pageSize);
+            PageCount = pageCount;
+            PageNumberNumber = pageNumber;
+            PageSize = pageSize;
+            
             SetStories(stories, tags);
             SetTags(tags);
         }

@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Blog.Core.Containers;
 using Blog.Core.Contracts.Managers;
 using Blog.Core.Enums.Filtering;
 using Blog.Core.Enums.Sorting;
 using Blog.Core.Exceptions;
 using Blog.Website.Core.ConfigurationOptions;
 using Blog.Website.Core.ViewModels.User;
+using Blog.Website.Models.Requests.Reader;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
@@ -31,22 +33,21 @@ namespace Blog.Website.Controllers
         public async Task<IActionResult> Tags([FromRoute] String alias,
                                               [FromQuery] Int32 page = 1)
         {
-            var skip = GetSkip(page, PageSize);
-            var tagAndStories = await _blogStoryManager.GetTagStoriesByAliasAsync(alias,
-                                                                                  skip,
-                                                                                  PageSize,
-                                                                                  StorySort.PublishDate,
-                                                                                  StoryFilter.Published,
-                                                                                  Cancel);
+            var tag = await _tagManager.GetAsync(alias, Cancel);
+            if(tag == null)
+            {
+                return NotFound();
+            }
 
-            var tag = tagAndStories.Item1;
-            var tags = await _tagManager.GetAllOrderedByUseAsync(Cancel);
+            var storiesByTag = await _blogStoryManager.GetPageWithTagsAsync(GetStoriesRequest.ToQuery(tag.Id, page, PageSize));
 
-            var viewModel = new MainPageViewModel(tagAndStories.Item2,
-                                                  tags,
+            var topTags = await _tagManager.GetTopAsync(Cancel);
+
+            var viewModel = new MainPageViewModel(storiesByTag.Items,
+                                                  topTags,
                                                   page,
                                                   PageSize,
-                                                  1);
+                                                  storiesByTag.TotalCount);
 
             ViewBag.Title = tag.SeoTitle;
             ViewBag.SeoDescription = tag.SeoDescription;
