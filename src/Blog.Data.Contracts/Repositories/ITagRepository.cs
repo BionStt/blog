@@ -18,8 +18,6 @@ namespace Blog.Data.Contracts.Repositories
 
         Task<List<Tag>> GetAllPublishedAsync(CancellationToken cancel = default);
 
-        Task<List<Tag>> GetAllOrderedByUseAsync(CancellationToken cancel = default);
-
         Task<Tag> GetAsync(Guid id,
                            CancellationToken cancel = default);
 

@@ -16,15 +16,5 @@ namespace Blog.Website.Controllers
         {
             PageSize = pageInfo.Value.PageSize;
         }
-
-        public Int32 GetSkip(Int32 page, Int32 pageSize)
-        {
-            if (page <= 0)
-            {
-                return 0;
-            }
-
-            return (page - 1) * pageSize;
-        }
     }
 }

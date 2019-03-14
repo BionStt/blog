@@ -56,10 +56,10 @@ namespace Blog.BusinessLogic.Managers
             return _blogStoryRepository.GetWithTagsAsync(id, cancel);
         }
 
-        public Task<BlogStory> GetWithTagsAsync(String alias,
+        public Task<BlogStory> GetPublishedWithTagsAsync(String alias,
                                                 CancellationToken cancel = default)
         {
-            return _blogStoryRepository.GetWithTagsAsync(alias, cancel);
+            return _blogStoryRepository.GetPublishedWithTagsAsync(alias, cancel);
         }
 
         public async Task<BlogStory> CreateOrUpdateAsync(BlogStory blogStory,

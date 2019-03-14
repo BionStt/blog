@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Blog.Core.Containers;
 using Blog.Core.Entities;
 using Blog.Core.Helpers;
 
@@ -15,21 +16,19 @@ namespace Blog.Website.Core.ViewModels.User
         public List<ShortBlogStoryViewModel> Stories { get; set; }
         public List<TagViewModel> Tags { get; set; }
         
-        public MainPageViewModel(List<BlogStory> stories,
+        public MainPageViewModel(Page<BlogStory> storiesPage,
                                  List<Tag> tags,
-                                 Int32 pageNumber,
-                                 Int32 pageSize,
-                                 Int32 storiesCount)
+                                 Int32 pageNumber)
         {
-            var pageCount = (Int32) Math.Ceiling((Double) storiesCount / pageSize);
+            var pageCount = (Int32) Math.Ceiling((Double) storiesPage.TotalCount / storiesPage.PageSize);
             PageCount = pageCount;
             PageNumberNumber = pageNumber;
-            PageSize = pageSize;
+            PageSize = storiesPage.PageSize;
             
-            SetStories(stories, tags);
+            SetStories(storiesPage.Items, tags);
             SetTags(tags);
         }
-
+        
         private void SetStories(List<BlogStory> stories,
                                 List<Tag> tags)
         {

@@ -1,15 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Blog.Core.Containers;
 using Blog.Core.Contracts.Managers;
-using Blog.Core.Enums.Filtering;
-using Blog.Core.Enums.Sorting;
-using Blog.Core.Exceptions;
 using Blog.Website.Core.ConfigurationOptions;
 using Blog.Website.Core.ViewModels.User;
 using Blog.Website.Models.Requests.Reader;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 
 namespace Blog.Website.Controllers
@@ -43,17 +38,15 @@ namespace Blog.Website.Controllers
 
             var topTags = await _tagManager.GetTopAsync(Cancel);
 
-            var viewModel = new MainPageViewModel(storiesByTag.Items,
-                                                  topTags,
-                                                  page,
-                                                  PageSize,
-                                                  storiesByTag.TotalCount);
-
             ViewBag.Title = tag.SeoTitle;
             ViewBag.SeoDescription = tag.SeoDescription;
             ViewBag.Keywords = tag.SeoKeywords;
             ViewBag.NoFollowForTags = true;
-            return View("~/Views/BlogStory/IndexPub.cshtml", viewModel);
+
+            return View("~/Views/BlogStory/IndexPub.cshtml",
+                        new MainPageViewModel(storiesByTag,
+                                              topTags,
+                                              page));
         }
     }
 }

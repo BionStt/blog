@@ -38,6 +38,7 @@ namespace Blog.Data.EntityFramework.Repository
             return new Page<Tag>
             {
                 TotalCount = totalCount,
+                PageSize = query.Limit,
                 Items = tags
             };
         }
@@ -85,14 +86,6 @@ namespace Blog.Data.EntityFramework.Repository
         public Task<List<Tag>> GetAllPublishedAsync(CancellationToken cancel = default)
         {
             return Entities.Where(x => x.IsPublished).ToListAsync(cancel);
-        }
-
-        public async Task<List<Tag>> GetAllOrderedByUseAsync(CancellationToken cancel = default)
-        {
-            var tags = await Entities.Include(x => x.BlogStoryTags)
-                                     .ToListAsync(cancel);
-
-            return tags.OrderByDescending(x => x.BlogStoryTags.Count).ToList();
         }
 
         public Task<Tag> GetAsync(Guid id,

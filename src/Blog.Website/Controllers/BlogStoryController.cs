@@ -29,52 +29,43 @@ namespace Blog.Website.Controllers
             var storiesPage = await _blogStoryManager.GetPageWithTagsAsync(GetStoriesRequest.ToQuery(page, PageSize), Cancel);
             var topTags = await _tagManager.GetTopAsync(Cancel);
 
-            var viewModel = new MainPageViewModel(storiesPage.Items,
-                                                  topTags,
-                                                  page,
-                                                  PageSize,
-                                                  storiesPage.TotalCount);
-
-            return View("IndexPub", viewModel);
+            return View("IndexPub", new MainPageViewModel(storiesPage,
+                                                          topTags,
+                                                          page));
         }
 
         [HttpGet("{alias}")]
         public async Task<IActionResult> Story(String alias)
         {
-            var story = await _blogStoryManager.GetWithTagsAsync(alias, Cancel);
-            if(story == null ||
-               !story.PublishedDate.HasValue)
+            var story = await _blogStoryManager.GetPublishedWithTagsAsync(alias, Cancel);
+            if(story == null)
             {
                 return NotFound();
             }
 
-            var tags = await _tagManager.GetAllOrderedByUseAsync(Cancel);
-            var viewModel = new FullStoryViewModel(story, tags);
-            return View(viewModel);
+            var tags = await _tagManager.GetTopAsync(Cancel);
+            
+            return View(new FullStoryViewModel(story, tags));
         }
 
         [HttpGet("drafts/{alias}")]
         public async Task<IActionResult> Preview([FromRoute] String alias,
                                                  [FromQuery] String token)
         {
-            if(String.IsNullOrWhiteSpace(alias))
-                return NotFound();
-
             var story = await _blogStoryManager.GetAsync(alias, Cancel);
             if(story == null)
+            {
                 return NotFound();
-
-            if(story.PublishedDate.HasValue)
-                return NotFound();
+            }
 
             if(!User.Identity.IsAuthenticated &&
                (String.IsNullOrWhiteSpace(story.AccessToken) ||
                 !story.AccessToken.Equals(token, StringComparison.Ordinal)))
                 return NotFound();
 
-            var tags = await _tagManager.GetAllOrderedByUseAsync(Cancel);
-            var viewModel = new FullStoryViewModel(story, tags);
-            return View("Story", viewModel);
+            var tags = await _tagManager.GetTopAsync(Cancel);
+            
+            return View("Story", new FullStoryViewModel(story, tags));
         }
     }
 }

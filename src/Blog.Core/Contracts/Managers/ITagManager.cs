@@ -34,13 +34,6 @@ namespace Blog.Core.Contracts.Managers
         Task<List<Tag>> GetAllPublishedAsync(CancellationToken cancel = default);
 
         /// <summary>
-        /// Get tags ordered by usage
-        /// </summary>
-        /// <param name="cancel">Cancellation token</param>
-        /// <returns>Tags collection</returns>
-        Task<List<Tag>> GetAllOrderedByUseAsync(CancellationToken cancel = default);
-
-        /// <summary>
         /// Delete tag
         /// </summary>
         /// <param name="id">Tag id</param>
@@ -88,15 +81,6 @@ namespace Blog.Core.Contracts.Managers
         Task<BlogStory> UnassignTagFromBlogStoryAsync(Guid tagId,
                                                       Guid blogStoryId,
                                                       CancellationToken cancel = default);
-
-        /// <summary>
-        /// Get tag with assigned blog stories
-        /// </summary>
-        /// <param name="alias">Tag alias</param>
-        /// <param name="cancel">Cancellation token</param>
-        /// <returns>Tag entity</returns>
-        Task<Tag> GetTagWithBlogStoryTagsAsync(String alias,
-                                               CancellationToken cancel = default);
 
         /// <summary>
         /// Update tag

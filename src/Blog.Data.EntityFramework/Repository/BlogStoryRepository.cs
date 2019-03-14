@@ -38,6 +38,7 @@ namespace Blog.Data.EntityFramework.Repository
             return new Page<BlogStory>
             {
                 TotalCount = totalCount,
+                PageSize = query.Limit,
                 Items = stories
             };
         }
@@ -61,6 +62,7 @@ namespace Blog.Data.EntityFramework.Repository
             return new Page<BlogStory>
             {
                 TotalCount = totalCount,
+                PageSize = query.Limit,
                 Items = stories
             };
         }
@@ -95,12 +97,12 @@ namespace Blog.Data.EntityFramework.Repository
                            .FirstOrDefaultAsync(x => x.Id == id, cancel);
         }
 
-        public Task<BlogStory> GetWithTagsAsync(String alias,
+        public Task<BlogStory> GetPublishedWithTagsAsync(String alias,
                                                 CancellationToken cancel = default)
         {
             return Entities.Include(x => x.BlogStoryTags)
                            .ThenInclude(x => x.Tag)
-                           .FirstOrDefaultAsync(x => x.Alias.Equals(alias), cancel);
+                           .FirstOrDefaultAsync(x => x.Alias.Equals(alias) && x.PublishedDate.HasValue, cancel);
         }
 
         public new Task AddAsync(BlogStory blogStory,

@@ -24,7 +24,7 @@ namespace Blog.Core.Contracts.Managers
         Task<BlogStory> GetWithTagsAsync(Guid id,
                                          CancellationToken cancel = default);
 
-        Task<BlogStory> GetWithTagsAsync(String alias,
+        Task<BlogStory> GetPublishedWithTagsAsync(String alias,
                                          CancellationToken cancel = default);
 
         Task<BlogStory> CreateOrUpdateAsync(BlogStory story,

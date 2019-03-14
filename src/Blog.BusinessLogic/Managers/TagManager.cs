@@ -38,7 +38,7 @@ namespace Blog.BusinessLogic.Managers
         }
 
         public Task<Tag> GetAsync(String alias,
-                             CancellationToken cancel = default)
+                                  CancellationToken cancel = default)
         {
             return _tagRepository.GetAsync(alias, cancel);
         }
@@ -46,11 +46,6 @@ namespace Blog.BusinessLogic.Managers
         public Task<List<Tag>> GetAllPublishedAsync(CancellationToken cancel = default)
         {
             return _tagRepository.GetAllPublishedAsync(cancel);
-        }
-        
-        public Task<List<Tag>> GetAllOrderedByUseAsync(CancellationToken cancel = default)
-        {
-            return _tagRepository.GetAllOrderedByUseAsync(cancel);
         }
 
         public async Task DeleteAsync(Guid tagId,
@@ -163,14 +158,6 @@ namespace Blog.BusinessLogic.Managers
             return blogStoryWithTags;
         }
 
-        public Task<Tag> GetTagWithBlogStoryTagsAsync(String alias,
-                                                      CancellationToken cancel = default)
-        {
-            return String.IsNullOrWhiteSpace(alias)
-                ? null
-                : _tagRepository.GetTagWithBlogStoryTagsAsync(alias, cancel);
-        }
-
         public async Task<Tag> UpdateAsync(Tag tag,
                                            CancellationToken cancel = default)
         {
@@ -193,14 +180,15 @@ namespace Blog.BusinessLogic.Managers
         public Task<List<Tag>> GetTopAsync(CancellationToken cancel = default)
         {
             return _tagRepository.GetAsync(new TagsQuery(0, NoLimit)
-            {
-                WithScores = false,
-                IsPublished = true
-            }, cancel);
+                                           {
+                                               WithScores = true,
+                                               IsPublished = true,
+                                           },
+                                           cancel);
         }
 
         public Task<Guid> GetTagIdAsync(String alias,
-                                  CancellationToken cancel = default)
+                                        CancellationToken cancel = default)
         {
             return _tagRepository.GetTagIdAsync(alias, cancel);
         }
