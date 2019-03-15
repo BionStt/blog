@@ -332,3 +332,4 @@ ASALocalRun/
 # Custom
 src/Blog.Website/UI/plugins/
 src/Blog.Website/configs/private/
+src/Blog\.Website/package-lock\.json

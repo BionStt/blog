@@ -36,7 +36,7 @@ var adminJsFiles = [
     paths.uiPlugins + 'bootstrap/dist/js/bootstrap.min.js',
     paths.uiPlugins + 'responsive-bootstrap-toolkit/dist/bootstrap-toolkit.min.js',
     paths.uiPlugins + 'jquery-validation/dist/jquery.validate.min.js',
-    paths.uiPlugins + 'jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js',
+    paths.uiPlugins + 'jquery-validation-unobtrusive/src/jquery.validate.unobtrusive.js',
     paths.uiPlugins + 'metisMenu/dist/metisMenu.min.js',
     paths.uiPlugins + 'nprogress/nprogress.js',
     paths.uiPlugins + 'Sortable/Sortable.min.js',
@@ -61,7 +61,7 @@ var adminCssFiles = [
     paths.uiCss + 'admin.custom.css'
 ];
 
-gulp.task("min:admin-managers", function () {
+gulp.task("min:admin-managers", function (done) {
     var files = [
         'blog-story-index',
         'blog-story-edit',
@@ -77,7 +77,7 @@ gulp.task("min:admin-managers", function () {
             .pipe(gulp.dest(paths.webroot));
     });
 
-    return 0;
+    done();
 });
 
 gulp.task("min:admin-base", function () {
@@ -87,7 +87,7 @@ gulp.task("min:admin-base", function () {
         .pipe(gulp.dest("."));
 });
 
-gulp.task("min:admin-js", ["min:admin-base", "min:admin-managers"]);
+gulp.task("min:admin-js", gulp.series("min:admin-base", "min:admin-managers"));
 
 gulp.task("clean-admin-js", function (cb) {
     rimraf(paths.adminJs, cb);
@@ -105,8 +105,8 @@ gulp.task("clean-admin-css", function (cb) {
     rimraf(paths.adminCss, cb);
 });
 
-gulp.task("min-admin", ["min:admin-js", "min:admin-css"]);
-gulp.task("clean-admin", ["clean-admin-js", "clean-admin-css"]);
+gulp.task("min-admin", gulp.series("min:admin-js", "min:admin-css"));
+gulp.task("clean-admin", gulp.series("clean-admin-js", "clean-admin-css"));
 
 
 var frontJsFiles = [
@@ -119,7 +119,6 @@ var frontJsFiles = [
     paths.uiPlugins + 'magnific-popup/dist/jquery.magnific-popup.min.js',
     paths.uiJs + 'jquery.disqusloader.js',
     paths.uiJs + 'frontend.js',
-    paths.uiJs + 'google-analytic.js'
 ];
 
 var frontCssFiles = [
@@ -153,8 +152,8 @@ gulp.task("clean-front-js", function (cb) {
     rimraf(paths.frontJs, cb);
 });
 
-gulp.task("min-front", ["min-front-js", "min-front-css"]);
-gulp.task("clean-front", ["clean-front-js", "clean-front-css"]);
+gulp.task("min-front", gulp.series("min-front-js", "min-front-css"));
+gulp.task("clean-front", gulp.series("clean-front-js", "clean-front-css"));
 
-gulp.task("min", ["min-admin", "min-front"]);
-gulp.task("clean", ["clean-admin", "clean-front"]);
+gulp.task("min", gulp.series("min-admin", "min-front"));
+gulp.task("clean", gulp.series("clean-admin", "clean-front"));
