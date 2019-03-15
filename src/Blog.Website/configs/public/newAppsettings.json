@@ -5,14 +5,11 @@
     "Keywords": "d2funlife, ASP.NET Core, ASP.NET MVC, C#, .NET Framework, .NET Core, Docker, Teamcity",
     "TagTitle": "d2funlife | ",
     "PageNumberTitle": ". Страница : ",
-    "PageSize" : 10,
-    "StoryImage" : {
+    "PageSize": 10,
+    "StoryImage": {
       "Width": 570,
-      "Url" : "https://pbvmlg-bn1305.files.1drv.com/y4m1hBh3MUsDOI32ZWXLQqVN0Of9gsC6yKisz6sA5IOA2uBUIAb4zq5BsjWAnZVC_z3TP5v_pG-91HXfpFWblOW9Dvk31heQddgaNhye946xuNObxl0ad7g7VdMquHVzFZm9M23JC-nCMhHTUGIyRAfdRAFYaVGcv_p_zaGKVPR3GdKaNZLkHFhKPlF7F2ocyHWbD93kjKd6y2LGlNILEN7yw?width=950&height=464&cropmode=none"
+      "Url": "https://pbvmlg-bn1305.files.1drv.com/y4m1hBh3MUsDOI32ZWXLQqVN0Of9gsC6yKisz6sA5IOA2uBUIAb4zq5BsjWAnZVC_z3TP5v_pG-91HXfpFWblOW9Dvk31heQddgaNhye946xuNObxl0ad7g7VdMquHVzFZm9M23JC-nCMhHTUGIyRAfdRAFYaVGcv_p_zaGKVPR3GdKaNZLkHFhKPlF7F2ocyHWbD93kjKd6y2LGlNILEN7yw?width=950&height=464&cropmode=none"
     }
-  },
-  "cache-periods": {
-    "default-sliding-minutes": 1440
   },
   "menus": {
     "main-nav-menu": [

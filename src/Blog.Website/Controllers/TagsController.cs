@@ -10,7 +10,7 @@ using Microsoft.Extensions.Options;
 namespace Blog.Website.Controllers
 {
     [Route("tags")]
-    public class TagsController : BaseController
+    public class TagsController : BaseReaderController
     {
         private readonly IBlogStoryManager _blogStoryManager;
         private readonly ITagManager _tagManager;

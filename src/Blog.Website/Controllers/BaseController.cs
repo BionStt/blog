@@ -1,20 +1,10 @@
-﻿using System;
-using System.Threading;
-using Blog.Website.Core.ConfigurationOptions;
+﻿using System.Threading;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
 
 namespace Blog.Website.Controllers
 {
     public class BaseController : Controller
     {
         protected CancellationToken Cancel => HttpContext.RequestAborted;
-        protected readonly Int32 PageSize;
-
-        public BaseController(IOptions<DefaultPageInfoOption> pageInfo)
-        {
-            PageSize = pageInfo.Value.PageSize;
-        }
     }
 }

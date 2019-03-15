@@ -10,7 +10,7 @@ using Microsoft.Extensions.Options;
 
 namespace Blog.Website.Controllers
 {
-    public class BlogStoryController : BaseController
+    public class BlogStoryController : BaseReaderController
     {
         private readonly IBlogStoryManager _blogStoryManager;
         private readonly ITagManager _tagManager;

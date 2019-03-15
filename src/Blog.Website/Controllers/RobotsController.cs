@@ -12,9 +12,7 @@ namespace Blog.Website.Controllers
     {
         private readonly IBlogStoryManager _blogStoryManager;
 
-        public RobotsController(IConfiguration configuration,
-                                IOptions<DefaultPageInfoOption> pageInfo,
-                                IBlogStoryManager blogStoryManager) : base(pageInfo)
+        public RobotsController(IBlogStoryManager blogStoryManager)
         {
             _blogStoryManager = blogStoryManager;
         }
