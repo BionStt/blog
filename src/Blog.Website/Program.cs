@@ -25,7 +25,6 @@ namespace Blog.Website
                         var environment = hostingContext.HostingEnvironment;
 
                         config.AddJsonFile("configs/public/appsettings.json", false, true)
-                              .AddJsonFile("configs/public/newAppsettings.json", false, true)
                               .AddJsonFile("configs/private/dbsettings.json", false, true)
                               .AddJsonFile("configs/private/authSettings.json", false, true);
 
