@@ -1,45 +1,61 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Blog.Core.Containers;
 using Blog.Core.Entities;
 using Blog.Core.Helpers;
 
 namespace Blog.Website.Core.ViewModels.User
 {
-    public class MainPageViewModel : CommonUserContentViewModel
+    public class MainPageViewModel
     {
-        public List<ShortBlogStoryViewModel> Stories { get; set; }
+        public Int32 PageSize { get; set; }
+        public Int32 PageNumberNumber { get; set; }
+        public Int32 PageCount { get; set; }
 
-        public MainPageViewModel(List<BlogStory> stories, List<Tag> tags, Int32 page, Int32 pageSize,
-            Int32 totalBlogStoriesCount, String mainTitlePart, String pageTitlePart, String description,
-            String keywords)
-            : base(tags, page, pageSize, totalBlogStoriesCount, mainTitlePart, pageTitlePart, description, keywords)
+        public List<ShortBlogStoryViewModel> Stories { get; set; }
+        public List<TagViewModel> Tags { get; set; }
+        
+        public MainPageViewModel(Page<BlogStory> storiesPage,
+                                 List<Tag> tags,
+                                 Int32 pageNumber)
         {
-            SetStories(stories, tags);
+            var pageCount = (Int32) Math.Ceiling((Double) storiesPage.TotalCount / storiesPage.PageSize);
+            PageCount = pageCount;
+            PageNumberNumber = pageNumber;
+            PageSize = storiesPage.PageSize;
+            
+            SetStories(storiesPage.Items, tags);
+            SetTags(tags);
         }
         
-        public MainPageViewModel(List<BlogStory> stories, List<Tag> tags, Int32 page, Int32 pageSize,
-            Int32 totalBlogStoriesCount, String mainTitlePart, String extendTitlePart, String pageTitlePart,
-            String description, String keywords)
-            : base(tags, page, pageSize, totalBlogStoriesCount, mainTitlePart, extendTitlePart, pageTitlePart,
-                description, keywords)
-        {
-            SetStories(stories, tags);
-        }
-
-        private void SetStories(List<BlogStory> stories, List<Tag> tags)
+        private void SetStories(List<BlogStory> stories,
+                                List<Tag> tags)
         {
             Stories = stories.IsEmpty()
                 ? new List<ShortBlogStoryViewModel>(0)
                 : stories.Select(b =>
-                {
-                    var tagIds = b.BlogStoryTags.Select(st => st.TagId);
-                    var tagsViewModels = tags.Where(t => tagIds.Contains(t.Id))
-                        .Select(t => new TagViewModel(t))
-                        .ToList();
+                          {
+                              if(b.BlogStoryTags.IsEmpty())
+                              {
+                                  return new ShortBlogStoryViewModel(b);
+                              }
 
-                    return new ShortBlogStoryViewModel(b, tagsViewModels);
-                }).ToList();
+                              var tagsViewModels = b.BlogStoryTags
+                                                    .Select(t => new TagViewModel(t.Tag))
+                                                    .ToList();
+
+                              return new ShortBlogStoryViewModel(b, tagsViewModels);
+                          })
+                         .ToList();
+        }
+
+        private void SetTags(List<Tag> tags)
+        {
+            Tags = tags.IsEmpty()
+                ? new List<TagViewModel>(0)
+                : tags.Select(x => new TagViewModel(x))
+                      .ToList();
         }
     }
 }

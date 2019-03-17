@@ -17,8 +17,7 @@ namespace Blog.Website.Core.ViewModels.Author.BlogStories
 {
     public class EditBlogStoryViewModel
     {
-        [Range(0, Int32.MaxValue)]
-        public Int32 Id { get; set; }
+        public Guid Id { get; set; }
 
         [Required, MinLength(4)]
         public String Title { get; set; }
@@ -70,14 +69,13 @@ namespace Blog.Website.Core.ViewModels.Author.BlogStories
                 Title = blogStory.Title;
                 Alias = blogStory.Alias;
                 Description = blogStory.Description;
-                Keywords = blogStory.Keywords;
+                Keywords = blogStory.SeoKeywords;
                 Content = blogStory.Content;
                 StoryImageUrl = blogStory.StoryImageUrl;
                 StoryThumbUrl = blogStory.StoryThumbUrl;
                 CreateDate = blogStory.CreateDate.ToString("dd.MM.yyyy HH:mm");
                 ModifiedDate = blogStory.ModifiedDate.ToString("dd.MM.yyyy HH:mm");
-                IsPublished = blogStory.IsPublished;
-                CategoryId = blogStory.CategoryId;
+                IsPublished = blogStory.PublishedDate.HasValue;
                 AccessToken = blogStory.AccessToken;
                 Tags = "[]";
 
@@ -103,7 +101,7 @@ namespace Blog.Website.Core.ViewModels.Author.BlogStories
 
             if (String.IsNullOrWhiteSpace(Alias))
             {
-                slug = StringToUrlStandart.Convert(Title.Trim());
+                slug = StringToUrlStandard.Convert(Title.Trim());
             }
             else
             {
@@ -116,14 +114,12 @@ namespace Blog.Website.Core.ViewModels.Author.BlogStories
                        Title = Title.Trim(),
                        Alias = slug ?? Alias,
                        Description = Description.Trim(),
-                       Keywords = Keywords,
+                       SeoKeywords = Keywords,
                        Content = Content ?? String.Empty,
                        StoryImageUrl = StoryImageUrl?.Trim(),
                        StoryThumbUrl = StoryThumbUrl?.Trim(),
                        CreateDate = String.IsNullOrWhiteSpace(CreateDate) ? DateTime.Now : DateTime.Parse(CreateDate),
                        ModifiedDate = DateTime.Now,
-                       IsPublished = IsPublished,
-                       CategoryId = CategoryId,
                        AccessToken = AccessToken
                    };
         }

@@ -18,12 +18,12 @@ namespace Blog.Data.EntityFramework.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.0.2-rtm-10011")
+                .HasAnnotation("ProductVersion", "2.0.1-rtm-125")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("Blog.Core.Entities.BlogStory", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("AccessToken")
@@ -33,25 +33,21 @@ namespace Blog.Data.EntityFramework.Migrations
                         .IsRequired()
                         .HasMaxLength(256);
 
-                    b.Property<int?>("CategoryId");
-
-                    b.Property<int>("CommentsCount");
-
                     b.Property<string>("Content");
 
                     b.Property<DateTime>("CreateDate");
 
                     b.Property<string>("Description");
 
-                    b.Property<bool>("IsPublished");
-
-                    b.Property<string>("Keywords");
-
                     b.Property<int>("Language");
 
                     b.Property<DateTime>("ModifiedDate");
 
                     b.Property<DateTime?>("PublishedDate");
+
+                    b.Property<string>("SeoDescription");
+
+                    b.Property<string>("SeoKeywords");
 
                     b.Property<string>("StoryImageUrl");
 
@@ -71,9 +67,11 @@ namespace Blog.Data.EntityFramework.Migrations
 
             modelBuilder.Entity("Blog.Core.Entities.BlogStoryTag", b =>
                 {
-                    b.Property<int>("BlogStoryId");
+                    b.Property<Guid>("BlogStoryId");
 
-                    b.Property<int>("TagId");
+                    b.Property<Guid>("TagId");
+
+                    b.Property<DateTime>("CreateDate");
 
                     b.HasKey("BlogStoryId", "TagId");
 
@@ -84,7 +82,7 @@ namespace Blog.Data.EntityFramework.Migrations
 
             modelBuilder.Entity("Blog.Core.Entities.Tag", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Alias")
@@ -96,6 +94,8 @@ namespace Blog.Data.EntityFramework.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(256);
+
+                    b.Property<int>("Score");
 
                     b.Property<string>("SeoDescription");
 

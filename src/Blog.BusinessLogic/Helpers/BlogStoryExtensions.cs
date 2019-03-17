@@ -20,11 +20,11 @@ namespace Blog.BusinessLogic.Helpers
 
             if (filter == StoryFilter.Published)
             {
-                query = query.Where(x => x.IsPublished);
+                query = query.Where(x => x.PublishedDate.HasValue);
             }
             else if (filter == StoryFilter.UnPublished)
             {
-                query = query.Where(x => !x.IsPublished);
+                query = query.Where(x => !x.PublishedDate.HasValue);
             }
 
             query = sortType == StorySort.CreateDate

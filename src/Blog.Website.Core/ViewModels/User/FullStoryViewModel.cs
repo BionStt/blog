@@ -9,7 +9,7 @@ namespace Blog.Website.Core.ViewModels.User
 {
     public class FullStoryViewModel
     {
-        public Int32 Id { get; set; }
+        public Guid Id { get; set; }
         public String Title { get; set; }
         public String Description { get; set; }
         public String Keywords { get; set; }
@@ -21,10 +21,8 @@ namespace Blog.Website.Core.ViewModels.User
         public String Slug { get; set; }
         public Int32 AutorId { get; set; }
         public String StoryImageUrl { get; set; }
-        public String StorySrcUrl { get; set; }
         public DateTime ModifiedDate { get; set; }
         public Boolean IsPublished { get; set; }
-        public Int32 CommentsCount { get; set; }
         public List<TagViewModel> StoryTags { get; set; }
         public List<TagViewModel> MenuTags { get; set; }
         
@@ -36,7 +34,7 @@ namespace Blog.Website.Core.ViewModels.User
         {
             Id = story.Id;
             Title = story.Title;
-            Keywords = story.Keywords;
+            Keywords = story.SeoKeywords;
             Description = story.Description;
             StoryThumbUrl = story.StoryThumbUrl;
             CreateDate = story.CreateDate;
@@ -55,8 +53,7 @@ namespace Blog.Website.Core.ViewModels.User
             Content = story.Content;
             StoryImageUrl = story.StoryImageUrl;
             ModifiedDate = story.ModifiedDate;
-            IsPublished = story.IsPublished;
-            CommentsCount = story.CommentsCount;
+            IsPublished = story.PublishedDate.HasValue;
 
             StoryTags = story.BlogStoryTags.IsNotEmpty() 
                 ? story.BlogStoryTags.Select(x=> new TagViewModel(x.Tag)).ToList() 

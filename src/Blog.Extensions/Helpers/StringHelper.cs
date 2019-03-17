@@ -16,6 +16,15 @@ namespace Blog.Extensions.Helpers
             var tagIdStrings = value.Split(new[] { delimiter }, StringSplitOptions.RemoveEmptyEntries);
             return tagIdStrings.Select(Int32.Parse).ToArray();
         }
+        
+        public static Guid[] GetGuids(this String value, Char delimiter)
+        {
+            if(String.IsNullOrEmpty(value))
+                return new Guid[0];
+
+            var tagIdStrings = value.Split(new[] { delimiter }, StringSplitOptions.RemoveEmptyEntries);
+            return tagIdStrings.Select(Guid.Parse).ToArray();
+        }
 
         public static string FirstCharToUpper(string input)
         {

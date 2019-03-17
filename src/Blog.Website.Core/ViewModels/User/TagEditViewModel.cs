@@ -5,11 +5,11 @@ namespace Blog.Website.Core.ViewModels.User
 {
     public class TagEditViewModel : TagViewModel
     {
-        public Int32 Id { get; set; }
-        public Int32 BlogStoryId { get; set; }
+        public Guid Id { get; set; }
+        public Guid BlogStoryId { get; set; }
 
         public TagEditViewModel() { }
-        public TagEditViewModel(Tag tag, Int32 blogStoryId) : base(tag)
+        public TagEditViewModel(Tag tag, Guid blogStoryId) : base(tag)
         {
             BlogStoryId = blogStoryId;
         }

@@ -18,9 +18,8 @@ namespace Blog.Website.Controllers
         private readonly ILogger _logger;
         private readonly List<LoginRestriction> _loginRestriction;
 
-        public AccountController(
-            ILoggerFactory loggerFactory,
-            List<LoginRestriction> loginRestriction)
+        public AccountController(ILoggerFactory loggerFactory,
+                                 List<LoginRestriction> loginRestriction)
         {
             _loginRestriction = loginRestriction;
             _logger = loggerFactory.GetLogger();
@@ -46,29 +45,32 @@ namespace Blog.Website.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public IActionResult ExternalLogin(String provider, String returnUrl = null)
+        public IActionResult ExternalLogin(String provider,
+                                           String returnUrl = null)
         {
             // Request a redirect to the external login provider.
-            var redirectUrl = Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl });
-            var properties = new AuthenticationProperties { RedirectUri = redirectUrl };
+            var redirectUrl = Url.Action("ExternalLoginCallback", "Account", new {ReturnUrl = returnUrl});
+            var properties = new AuthenticationProperties {RedirectUri = redirectUrl};
             return Challenge(properties, provider);
         }
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> ExternalLoginCallback(String returnUrl = null, String remoteError = null)
+        public async Task<IActionResult> ExternalLoginCallback(String returnUrl = null,
+                                                               String remoteError = null)
         {
-            if (remoteError != null)
+            if(remoteError != null)
             {
                 ModelState.AddModelError(String.Empty, $"Error from external provider: {remoteError}");
                 return View(nameof(Login));
             }
 
             var loginApproved = _loginRestriction.Any(x => x.Login.Equals(HttpContext.User.Claims.FirstOrDefault(p => p.Type == x.PrincipalType)?.Value));
-            if (loginApproved)
+            if(loginApproved)
             {
                 var authenticateResult = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-                if (authenticateResult == null || !authenticateResult.Succeeded)
+                if(authenticateResult == null ||
+                   !authenticateResult.Succeeded)
                 {
                     return RedirectToAction(nameof(Login));
                 }
@@ -79,10 +81,10 @@ namespace Blog.Website.Controllers
             await HttpContext.SignOutAsync();
             return RedirectToAction(nameof(Login));
         }
-        
+
         private IActionResult RedirectToLocal(String returnUrl)
         {
-            if (Url.IsLocalUrl(returnUrl))
+            if(Url.IsLocalUrl(returnUrl))
             {
                 return Redirect(returnUrl);
             }

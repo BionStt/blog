@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using Blog.Core.Contracts.Entities;
 using Blog.Core.Converters;
 
 namespace Blog.Core.Entities
 {
-    public class Tag : IEntityUpdate<Tag>
+    public class Tag
     {
-        public Int32 Id { get; set; }
+        public Guid Id { get; set; }
         public String Name { get; set; }
         public String Alias { get; set; }
 
@@ -15,6 +14,7 @@ namespace Blog.Core.Entities
         public String SeoDescription { get; set; }
         public String SeoKeywords { get; set; }
 
+        public Int32 Score { get; set; }
         public Boolean IsPublished { get; set; }
         
         public List<BlogStoryTag> BlogStoryTags { get; set; }
@@ -24,7 +24,7 @@ namespace Blog.Core.Entities
         public Tag(String name)
         {
             Name = name;
-            Alias = StringToUrlStandart.Convert(name.ToLowerInvariant());
+            Alias = StringToUrlStandard.Convert(name.ToLowerInvariant());
         }
 
         public void Update(Tag targetEntity)

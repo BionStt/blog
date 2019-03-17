@@ -4,15 +4,16 @@ namespace Blog.Core.Entities
 {
     public class BlogStoryTag
     {
-        public Int32 BlogStoryId { get; set; }
-        public Int32 TagId { get; set; }
+        public Guid BlogStoryId { get; set; }
+        public Guid TagId { get; set; }
+        public DateTime CreateDate { get; set; }
         
         public BlogStory BlogStory { get; set; }
         public Tag Tag { get; set; }
 
         public BlogStoryTag() { }
 
-        public BlogStoryTag(Int32 blogStoryId, Int32 tagId)
+        public BlogStoryTag(Guid blogStoryId, Guid tagId)
         {
             BlogStoryId = blogStoryId;
             TagId = tagId;

@@ -1,48 +1,43 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
+using Blog.Core.Containers;
 using Blog.Core.Entities;
-using Blog.Core.Enums.Filtering;
-using Blog.Core.Enums.Sorting;
-using Blog.Data.Contracts.Repositories.Base;
+using Blog.Core.Queries;
 
 namespace Blog.Data.Contracts.Repositories
 {
-    public interface IBlogStoryRepository : IRepository<BlogStory>, IRepositoryAsync<BlogStory>
+    public interface IBlogStoryRepository
     {
-        Task<BlogStory> GetAsync(Int32 id,
+        Task<Page<BlogStory>> GetPageAsync(BlogStoryQuery query,
+                                           CancellationToken cancel = default);
+
+        Task<Page<BlogStory>> GetPageWithTagsAsync(BlogStoryQuery query,
+                                                   CancellationToken cancel = default);
+
+        Task<List<BlogStory>> GetAsync(BlogStoryQuery query,
+                                       CancellationToken cancel = default);
+
+        Task<BlogStory> GetAsync(Guid id,
                                  CancellationToken cancel = default);
 
-        Task<List<BlogStory>> GetAllPublishedModifedDescAsync(CancellationToken cancel = default);
+        Task<BlogStory> GetAsync(String alias,
+                                 CancellationToken cancel = default);
 
-        Task<List<BlogStory>> GetPerPageAsync(Int32 skip,
-                                              Int32 top,
-                                              StorySort sortType,
-                                              StoryFilter filter,
-                                              CancellationToken cancel = default);
+        Task<BlogStory> GetWithTagsAsync(Guid id,
+                                         CancellationToken cancel = default);
 
-        Task<BlogStory> GetByAliasAsync(String alias,
-                                        CancellationToken cancel = default);
+        Task<BlogStory> GetPublishedWithTagsAsync(String alias,
+                                         CancellationToken cancel = default);
 
-        Task<BlogStory> GetByAliasWithAuthorAsync(String alias,
-                                                  CancellationToken cancel = default);
+        Task AddAsync(BlogStory blogStory,
+                      CancellationToken cancel);
 
-        Task<BlogStory> GetWithBlogStoryTagsAsync(Int32 blogStoryId,
-                                                  CancellationToken cancel = default);
+        Task UpdateAsync(BlogStory story,
+                         CancellationToken cancel);
 
-        Task<BlogStory> GetWithBlogStoryTagsAsync(String alias,
-                                                  CancellationToken cancel = default);
-
-        Task<List<BlogStory>> WhereWithTagsAsync(Expression<Func<BlogStory, Boolean>> predicate,
-                                                 CancellationToken cancel = default);
-
-        Task<List<BlogStory>> WhereWithTagsPerPageAsync(Expression<Func<BlogStory, Boolean>> predicate,
-                                                        Int32 skip,
-                                                        Int32 top,
-                                                        StorySort sort,
-                                                        StoryFilter filter,
-                                                        CancellationToken cancel = default);
+        Task DeleteAsync(BlogStory story,
+                         CancellationToken cancel);
     }
 }

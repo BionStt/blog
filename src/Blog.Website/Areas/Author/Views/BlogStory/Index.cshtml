@@ -41,7 +41,7 @@
                         <div class="item-col fixed pull-left item-col-title no-overflow">
                             <div class="item-heading">Title</div>
                             <div>
-                                <a asp-area="author" asp-controller="BlogStory" asp-action="Edit" asp-route-id="@story.Id">
+                                <a asp-area="author" asp-controller="BlogStory" asp-action="Edit" asp-route-storyId="@story.Id">
                                     <h4 class="item-title"> @story.Title </h4>
                                 </a>
                             </div>
@@ -92,7 +92,7 @@
             @if (Model.Page > 1)
             {
                 <li class="page-item">
-                    <a class="page-link" asp-area="author" asp-controller="BlogStory" asp-action="Index" asp-route-page="@(Model.Page - 1)">
+                    <a class="page-link" asp-area="author" asp-controller="BlogStory" asp-action="Index" asp-route-page="@(Model.Page - 1)" asp-route-orderBy="createDate:desc">
                         Prev
                     </a>
                 </li>
@@ -100,7 +100,7 @@
             @if (Model.Page < Model.TotalPageCount)
             {
                 <li class="page-item">
-                    <a class="page-link" asp-area="author" asp-controller="BlogStory" asp-action="Index" asp-route-page="@(Model.Page + 1)">
+                    <a class="page-link" asp-area="author" asp-controller="BlogStory" asp-action="Index" asp-route-page="@(Model.Page + 1)" asp-route-orderBy="createDate:desc">
                         Next
                     </a>
                 </li>

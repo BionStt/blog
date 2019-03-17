@@ -50,7 +50,7 @@ namespace Blog.Website.Core.Helpers
 
         public static void SetStoryPageSliding(this IMemoryCache cache, MainPageViewModel viewModel, StorySort sort, Int32 minutesCount)
         {
-            var key = $"{CacheKeys.StoriesPagePrefix}{viewModel.PageNumber}-{viewModel.PageSize}-{sort}";
+            var key = $"{CacheKeys.StoriesPagePrefix}{viewModel.PageNumberNumber}-{viewModel.PageSize}-{sort}";
             var pages = cache.Get<List<String>>(CacheKeys.DefaultPagesStories);
             if (pages == null)
             {
@@ -67,7 +67,7 @@ namespace Blog.Website.Core.Helpers
 
         public static void SetStoryCategoryPageSliding(this IMemoryCache cache, MainPageViewModel viewModel, String alias, StorySort sort, Int32 minutesCount)
         {
-            var key = $"{CacheKeys.CategoryStoriesPagePrefix}{alias}-{viewModel.PageNumber}-{viewModel.PageSize}-{sort}";
+            var key = $"{CacheKeys.CategoryStoriesPagePrefix}{alias}-{viewModel.PageNumberNumber}-{viewModel.PageSize}-{sort}";
             var pages = cache.Get<List<String>>(CacheKeys.CategoryPagesStories);
             if (pages == null)
             {
@@ -84,7 +84,7 @@ namespace Blog.Website.Core.Helpers
 
         public static void SetStoryTagPageSliding(this IMemoryCache cache, MainPageViewModel viewModel, String alias, StorySort sort, Int32 minutesCount)
         {
-            var key = $"{CacheKeys.TagStoriesPagePrefix}{alias}-{viewModel.PageNumber}-{viewModel.PageSize}-{sort}";
+            var key = $"{CacheKeys.TagStoriesPagePrefix}{alias}-{viewModel.PageNumberNumber}-{viewModel.PageSize}-{sort}";
             var pages = cache.Get<List<String>>(CacheKeys.TagPagesStories);
             if (pages == null)
             {

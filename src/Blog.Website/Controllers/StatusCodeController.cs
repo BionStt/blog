@@ -6,7 +6,7 @@ namespace Blog.Website.Controllers
 {
     public class StatusCodeController : Controller
     {
-        private Int32[] _availableCodes = new Int32[] { 400, 404, 500 };
+        private Int32[] _availableCodes = { 400, 404, 500 };
 
         [Route("/StatusCode/{statusCode}")]
         public IActionResult Index(Int32 statusCode)

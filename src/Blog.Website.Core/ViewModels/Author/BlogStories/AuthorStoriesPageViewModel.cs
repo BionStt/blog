@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Blog.Core.Containers;
 using Blog.Core.Entities;
 
 namespace Blog.Website.Core.ViewModels.Author.BlogStories
@@ -25,6 +26,20 @@ namespace Blog.Website.Core.ViewModels.Author.BlogStories
             {
                 Stories = stories.Select(story => new AuthorShortBlogStoryViewModel(story)).ToList();
             }
+        }
+
+        public AuthorStoriesPageViewModel(Page<BlogStory> page,
+                                          Int32 pageNumber,
+                                          Int32 pageSize)
+        {
+            if(page == null)
+            {
+                Stories = new List<AuthorShortBlogStoryViewModel>(0);
+            }
+            
+            TotalPageCount = (Int32) Math.Ceiling(page.TotalCount / (Double) pageSize);
+            Page = pageNumber;
+            Stories = page.Items.Select(x => new AuthorShortBlogStoryViewModel(x)).ToList();
         }
     }
 }

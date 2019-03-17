@@ -6,7 +6,7 @@ namespace Blog.Website.Core.ViewModels.Author.BlogStories
 {
     public class AuthorShortBlogStoryViewModel
     {
-        public Int32 Id { get; set; }
+        public Guid Id { get; set; }
         public String Alias { get; set; }
         public String Title { get; set; }
         public String CreatedDate { get; set; }
@@ -24,7 +24,7 @@ namespace Blog.Website.Core.ViewModels.Author.BlogStories
                 PublisheddDate = story.PublishedDate.Value.ToString("dd.MM.yyyy HH:mm");
             }
 
-            Status = story.IsPublished ? BlosStoryStatus.Published : BlosStoryStatus.Draft;
+            Status = story.PublishedDate.HasValue ? BlosStoryStatus.Published : BlosStoryStatus.Draft;
         }
     }
 }

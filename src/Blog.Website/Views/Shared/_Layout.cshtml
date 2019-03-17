@@ -9,12 +9,17 @@
     <base href="/">
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <title>@ViewBag.Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <link rel="stylesheet" href="/front.min.css?v=@Versioning.Current">
+    <meta name="theme-color" content="#5c6bd0">
+    <meta name="robots" content="index, follow">
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+    <link rel="dns-prefetch preconnect" href="https://i.imgur.com"/>
     <meta name="title" content="@ViewBag.Title">
     <meta name="description" content="@ViewBag.Description">
     <meta name="keywords" content="@ViewBag.Keywords">
     <meta name="author" content="Даниил Павлов">
     <meta name="copyright" content="Даниил Павлов">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
     <meta property="og:type" content="article">
     <meta property="og:url" content="@url">
     <meta property="og:title" content="@ViewBag.Title">
@@ -42,10 +47,8 @@
     <meta name="msapplication-TileImage" content="/img/favicons/144x144.png">
     <meta name="msvalidate.01" content="C951B123C6A25E3E148BF3ABCC25F3F9"/>
     <meta name="yandex-verification" content="61c7a513bd27c444"/>
-    <meta name="theme-color" content="#5c6bd0">
     <link rel="canonical" href="@Context.Request.GetDisplayUrl()"/>
-    <meta name="robots" content="index, follow">
-    <link rel="stylesheet" href="/front.min.css?v=@Versioning.Current">
+    <script async="" src="//www.google-analytics.com/analytics.js"></script>
 </head>
 <body>
 <div class="l-wrap">
@@ -111,13 +114,6 @@
                             </svg>
                         </a>
                     </li>
-                    <li class="b-menu__social-item">
-                        <a href="https://plus.google.com/+%D0%94%D0%B0%D0%BD%D0%B8%D0%B8%D0%BB%D0%9F%D0%B0%D0%B2%D0%BB%D0%BE%D0%B2%D0%9D%D0%B8%D0%BA%D0%BE%D0%BB%D0%B0%D0%B5%D0%B2%D0%B8%D1%87" target="_blank" rel="nofollow">
-                            <svg class="b-icon__google ">
-                                <use xlink:href="/img/sprite/sprite.svg#google"></use>
-                            </svg>
-                        </a>
-                    </li>
                 </ul>
                 @RenderSection("publicMainMenu", true)
             </div>
@@ -132,8 +128,8 @@
     <div class="b-accent-block_position_bottom"></div>
     <div class="l-container b-post__footer">
         <div class="b-copy">
-            <div>d2funlife | Даниил Павлов 2015-2018</div>
-            <div>Создано с использованием ASP.NET Core 2.0, Entity Framework Core 2.0. <a href="https://github.com/d2funlife/blog" class="b-copy__link" rel="nofollow">Исходный код</a></div>
+            <div>d2funlife | Даниил Павлов 2015-@DateTime.Now.Year.ToString()</div>
+            <div>Создано с использованием ASP.NET Core 2.2, Entity Framework Core 2.2. <a href="https://github.com/d2funlife/blog" class="b-copy__link" rel="nofollow">Исходный код</a></div>
         </div>
     </div>
     <a href="#" class="back-to-top j-btn-top" rel="nofollow">
