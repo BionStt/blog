@@ -113,8 +113,6 @@ namespace Blog.Website
         public void Configure(IApplicationBuilder app,
                               IHostingEnvironment env)
         {
-            app.UseHsts();
-            app.UseHttpsRedirection();
             app.UseForwardedHeaders();
             
             var items = new List<MenuItemData>();
@@ -137,6 +135,13 @@ namespace Blog.Website
             app.UseStaticFiles();
             
             app.UseAuthentication();
+            
+            app.Use((context, next) =>
+            {
+                context.Request.Scheme = "https";
+                return next();
+            });
+            
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
