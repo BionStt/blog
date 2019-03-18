@@ -26,7 +26,7 @@ namespace Blog.Website.Controllers
         [HttpGet(""), DefaultSeoContent]
         public async Task<IActionResult> Index([FromQuery] Int32 page = 1)
         {
-            var storiesPage = await _blogStoryManager.GetPageWithTagsAsync(GetStoriesRequest.ToQuery(page, PageSize), Cancel);
+            var storiesPage = await _blogStoryManager.GetPageWithTagsAsync(GetStoriesRequest.ToPublishedQuery(page, PageSize), Cancel);
             var topTags = await _tagManager.GetTopAsync(Cancel);
 
             return View("IndexPub", new MainPageViewModel(storiesPage,
@@ -48,7 +48,7 @@ namespace Blog.Website.Controllers
             return View(new FullStoryViewModel(story, tags));
         }
 
-        [HttpGet("drafts/{alias}")]
+        [HttpGet("author/drafts/{alias}")]
         public async Task<IActionResult> Preview([FromRoute] String alias,
                                                  [FromQuery] String token)
         {

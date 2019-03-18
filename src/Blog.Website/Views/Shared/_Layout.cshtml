@@ -1,7 +1,11 @@
 ﻿@using Microsoft.AspNetCore.Http.Extensions
 @{
-    var url = ViewBag.Url != null ? ViewBag.Url : "https://d2funlife.com/";
-    var imageLink = ViewBag.ImageLink != null ? ViewBag.ImageLink : "https://d2funlife.com/img/hello.png";
+    var url = ViewBag.Url != null
+        ? ViewBag.Url
+        : "https://d2funlife.com/";
+    var imageLink = ViewBag.ImageLink != null
+        ? ViewBag.ImageLink
+        : "https://d2funlife.com/img/hello.png";
 }
 <!DOCTYPE html>
 <html lang="ru">
@@ -48,7 +52,7 @@
     <meta name="msvalidate.01" content="C951B123C6A25E3E148BF3ABCC25F3F9"/>
     <meta name="yandex-verification" content="61c7a513bd27c444"/>
     <link rel="canonical" href="@Context.Request.GetDisplayUrl()"/>
-    <script async="" src="//www.google-analytics.com/analytics.js"></script>
+    <script async src='https://www.google-analytics.com/analytics.js'></script>
 </head>
 <body>
 <div class="l-wrap">
@@ -139,7 +143,10 @@
     </a>
 </div>
 <script src="/front.min.js?v=@Versioning.Current"></script>
-<script>var lozadObeserver = lozad();lozadObeserver.observe();</script>
+<script>
+    var lozadObeserver = lozad();
+    lozadObeserver.observe();
+</script>
 @RenderSection("additionalScripts", false)
 </body>
 </html>

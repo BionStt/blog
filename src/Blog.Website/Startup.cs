@@ -52,17 +52,19 @@ namespace Blog.Website
                      {
                          options.ClientId = Configuration["logins:google:client-id"];
                          options.ClientSecret = Configuration["logins:google:client-secret"];
+                         options.CallbackPath = new PathString("/account/signin-google");
                      })
                     .AddTwitter(options =>
                      {
                          options.ConsumerKey = Configuration["logins:twitter:client-id"];
                          options.ConsumerSecret = Configuration["logins:twitter:client-secret"];
-
+                         options.CallbackPath = new PathString("/account/signin-twitter");
                      })
                     .AddMicrosoftAccount(options =>
                      {
                          options.ClientId = Configuration["logins:microsoft:client-id"];
                          options.ClientSecret = Configuration["logins:microsoft:client-secret"];
+                         options.CallbackPath = new PathString("/account/signin-microsoft");
                      })
                     .AddCookie(options =>
                      {

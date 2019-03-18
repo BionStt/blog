@@ -68,6 +68,6 @@
     @await Component.InvokeAsync("PublicMainMenu", Model.MenuTags)
 }
 @section additionalScripts{
-    <script src="//yastatic.net/share2/share.js"></script>
-    <script>var pathSegments = window.location.pathname.split('/');if (pathSegments.length >= 2 && pathSegments[1] !== 'drafts') {var options = {scriptUrl: '//d2funlife.disqus.com/embed.js',disqusConfig: function () {this.page.title = $("title").text();this.page.url = window.location.href;this.page.identifier = window.location.pathname.replace("/", "");}};$.disqusLoader("#disqus", options);}</script>
+    <script async src="https://yastatic.net/share2/share.js"></script>
+    <script>var pathSegments = window.location.pathname.split('/');if (pathSegments.length >= 3 && pathSegments[2] !== 'drafts') {var options = {scriptUrl: 'https://d2funlife.disqus.com/embed.js',disqusConfig: function () {this.page.title = $("title").text();this.page.url = window.location.href;this.page.identifier = window.location.pathname.replace("/", "");}};$.disqusLoader("#disqus", options);}</script>
 }
