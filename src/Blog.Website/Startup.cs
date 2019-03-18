@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
 using Blog.BusinessLogic.Managers;
@@ -116,9 +115,10 @@ namespace Blog.Website
         {
             var forwardingOptions = new ForwardedHeadersOptions()
             {
-                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto,
-                KnownProxies = { IPAddress.Parse("127.0.0.1") }
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
             };
+            forwardingOptions.KnownNetworks.Clear();
+            forwardingOptions.KnownProxies.Clear();
             
             app.UseForwardedHeaders(forwardingOptions);
             
