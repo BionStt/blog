@@ -113,10 +113,14 @@ namespace Blog.Website
         public void Configure(IApplicationBuilder app,
                               IHostingEnvironment env)
         {
-            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            var forwardingOptions = new ForwardedHeadersOptions()
             {
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
-            });
+            };
+            forwardingOptions.KnownNetworks.Clear();
+            forwardingOptions.KnownProxies.Clear();
+            
+            app.UseForwardedHeaders(forwardingOptions);
             
             var items = new List<MenuItemData>();
             Configuration.GetSection("MainMenu")
