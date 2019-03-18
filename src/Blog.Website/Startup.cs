@@ -72,7 +72,7 @@ namespace Blog.Website
 
             services.Configure<ForwardedHeadersOptions>(options =>
             {
-                options.ForwardedHeaders = ForwardedHeaders.All;
+                options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
             });
             
             services.AddMvc(options =>
@@ -113,7 +113,10 @@ namespace Blog.Website
         public void Configure(IApplicationBuilder app,
                               IHostingEnvironment env)
         {
-            app.UseForwardedHeaders();
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            });
             
             var items = new List<MenuItemData>();
             Configuration.GetSection("MainMenu")
@@ -135,12 +138,6 @@ namespace Blog.Website
             app.UseStaticFiles();
             
             app.UseAuthentication();
-            
-            app.Use((context, next) =>
-            {
-                context.Request.Scheme = "https";
-                return next();
-            });
             
             app.UseMvc(routes =>
             {
