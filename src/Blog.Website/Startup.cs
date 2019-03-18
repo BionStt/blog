@@ -18,6 +18,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.WebEncoders;
 
@@ -56,6 +57,7 @@ namespace Blog.Website
                      {
                          options.ConsumerKey = Configuration["logins:twitter:client-id"];
                          options.ConsumerSecret = Configuration["logins:twitter:client-secret"];
+
                      })
                     .AddMicrosoftAccount(options =>
                      {
@@ -68,6 +70,11 @@ namespace Blog.Website
                          options.LogoutPath = "/account/logoff";
                      });
 
+            services.Configure<ForwardedHeadersOptions>(options =>
+            {
+                options.ForwardedHeaders = ForwardedHeaders.All;
+            });
+            
             services.AddMvc(options =>
             {
                 options.MaxModelValidationErrors = 5;
@@ -106,6 +113,10 @@ namespace Blog.Website
         public void Configure(IApplicationBuilder app,
                               IHostingEnvironment env)
         {
+            app.UseHsts();
+            app.UseHttpsRedirection();
+            app.UseForwardedHeaders();
+            
             var items = new List<MenuItemData>();
             Configuration.GetSection("MainMenu")
                          .Bind(items);
@@ -123,16 +134,7 @@ namespace Blog.Website
                 app.UseStatusCodePagesWithReExecute("/StatusCode/{0}");
             }
 
-            app.UseHsts();
-            app.UseHttpsRedirection();
-
-            
             app.UseStaticFiles();
-
-            app.UseForwardedHeaders(new ForwardedHeadersOptions
-            {
-                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
-            });
             
             app.UseAuthentication();
             app.UseMvc(routes =>
