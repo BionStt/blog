@@ -5,8 +5,12 @@
     ViewBag.Title = Model.Title;
     ViewBag.Description = Model.Description;
     ViewBag.Keywords = Model.Keywords;
-    ViewBag.Url = Context.Request.GetDisplayUrl();
     ViewBag.ImageLink = Model.StoryImageUrl;
+
+    var displayUrl = Context.Request.GetDisplayUrl();
+    ViewBag.Url = displayUrl.Last() == '/'
+        ? displayUrl.Substring(0, displayUrl.Length - 1)
+        : displayUrl;
 }
 <div class="b-single-post" itemscope itemtype="http://schema.org/BlogPosting">
     <meta itemprop="author" content="d2funlife Даниил Павлов"/>
