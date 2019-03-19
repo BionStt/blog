@@ -17,11 +17,11 @@
     <meta itemprop="datePublished" content="@Model.CreateDate.ToString("yyyy-MM-dd")"/>
     <meta itemprop="dateModified" content="@Model.ModifiedDate.ToString("yyyy-MM-dd")"/>
     <meta itemprop="headline" content="@Model.Title"/>
-    <a itemprop="mainEntityOfPage" href="/" style="display:none;"></a>
+    <a itemprop="mainEntityOfPage" href="/" style="display: none;"></a>
     <div itemprop="publisher" itemscope itemtype="https://schema.org/Organization">
         <div itemprop="logo" itemscope itemtype="https://schema.org/ImageObject">
-            <img itemprop="image" src="https://d2funlife.com/img/favicons/152x152.png" style="display:none;" />
-            <a itemprop="url" href="https://d2funlife.com" style="display:none;"></a>
+            <img itemprop="image" src="https://d2funlife.com/img/favicons/152x152.png" style="display: none;"/>
+            <a itemprop="url" href="https://d2funlife.com" style="display: none;"></a>
             <meta itemprop="width" content="152">
             <meta itemprop="height" content="152">
         </div>
@@ -45,7 +45,7 @@
                                 @foreach (var tag in Model.StoryTags)
                                 {
                                     <li class="b-post__tag">
-                                        <a href="@Url.Action("Tags", "Tags", new {alias = tag.Alias})" class="b-post__tag-link">
+                                        <a href="@Url.Action("Tags", "Tags", new { alias = tag.Alias})" class="b-post__tag-link">
                                             <svg class="b-icon__tag b-post__tag-icon">
                                                 <use xlink:href="/img/sprite/sprite.svg#tag"></use>
                                             </svg>
@@ -67,11 +67,13 @@
         </div>
     </div>
 </div>
+
 @section publicMainMenu
 {
     @await Component.InvokeAsync("PublicMainMenu", Model.MenuTags)
 }
+
 @section additionalScripts{
     <script async src="https://yastatic.net/share2/share.js"></script>
-    <script>var pathSegments = window.location.pathname.split('/');if (pathSegments.length >= 3 && pathSegments[2] !== 'drafts') {var options = {scriptUrl: 'https://d2funlife.disqus.com/embed.js',disqusConfig: function () {this.page.title = $("title").text();this.page.url = window.location.href;this.page.identifier = window.location.pathname.replace("/", "");}};$.disqusLoader("#disqus", options);}</script>
+    <script>var pathSegments = window.location.pathname.split('/'); if (pathSegments.length === 2) { var options = { scriptUrl: 'https://d2funlife.disqus.com/embed.js', disqusConfig: function() { this.page.title = $("title").text(); this.page.url = window.location.href; this.page.identifier = window.location.pathname.replace("/", ""); } }; $.disqusLoader("#disqus", options); }</script>
 }
