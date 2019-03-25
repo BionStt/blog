@@ -2,16 +2,13 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Blog.Core.Contracts.Managers;
-using Blog.Core.Exceptions;
 using Blog.Extensions.Helpers;
 using Blog.Website.Controllers;
 using Blog.Website.Core.ConfigurationOptions;
-using Blog.Website.Core.Helpers;
 using Blog.Website.Core.ViewModels.Author.BlogStories;
 using Blog.Website.Models.Requests.Author;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace Blog.Website.Areas.Author.Controllers
@@ -22,20 +19,17 @@ namespace Blog.Website.Areas.Author.Controllers
     {
         private readonly IBlogStoryManager _blogStoryManager;
         private readonly ITagManager _tagManager;
-        private readonly ILogger _logger;
 
         private IOptions<StoryImageOption> _defaultStoryImage;
 
         public BlogStoryController(IBlogStoryManager blogStoryManager,
                                    ITagManager tagManager,
                                    IOptions<DefaultPageInfoOption> pageInfo,
-                                   IOptions<StoryImageOption> defaultStoryImage,
-                                   ILoggerFactory loggerFactory)
+                                   IOptions<StoryImageOption> defaultStoryImage)
             : base(pageInfo)
         {
             _blogStoryManager = blogStoryManager;
             _tagManager = tagManager;
-            _logger = loggerFactory.GetLogger();
             _defaultStoryImage = defaultStoryImage;
         }
 
