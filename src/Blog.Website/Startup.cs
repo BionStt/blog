@@ -72,18 +72,12 @@ namespace Blog.Website
                          options.LogoutPath = "/account/logoff";
                      });
 
-            services.Configure<ForwardedHeadersOptions>(options =>
-            {
-                options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
-            });
-            
+            services.Configure<ForwardedHeadersOptions>(options => { options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto; });
+
             services.AddMvc(options =>
             {
                 options.MaxModelValidationErrors = 5;
-                if(Environment.IsDevelopment())
-                {
-                    options.Filters.Add(typeof(GlobalException));
-                }
+                options.Filters.Add(typeof(GlobalException));
             });
 
             services.AddTransient<IBlogStoryManager>(provider => new BlogStoryManager(provider.GetService<IBlogStoryRepository>(),
@@ -101,9 +95,8 @@ namespace Blog.Website
 
             var storyImgSec = Configuration.GetSection("DefaultPageInfo:StoryImage");
             services.Configure<StoryImageOption>(storyImgSec);
-            
-            
-            
+
+
             var loginRestriction = new List<LoginRestriction>();
             var section = Configuration.GetSection("logins-restrictions");
             section.Bind(loginRestriction);
@@ -121,9 +114,9 @@ namespace Blog.Website
             };
             forwardingOptions.KnownNetworks.Clear();
             forwardingOptions.KnownProxies.Clear();
-            
+
             app.UseForwardedHeaders(forwardingOptions);
-            
+
             var items = new List<MenuItemData>();
             Configuration.GetSection("MainMenu")
                          .Bind(items);
@@ -137,14 +130,14 @@ namespace Blog.Website
             {
                 var context = app.ApplicationServices.GetService<BlogContext>();
                 context?.Database.Migrate();
-                
+
                 app.UseStatusCodePagesWithReExecute("/StatusCode/{0}");
             }
 
             app.UseStaticFiles();
-            
+
             app.UseAuthentication();
-            
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
@@ -155,7 +148,6 @@ namespace Blog.Website
                                 name: "default",
                                 template: "{controller=BlogStory}/{action=Index}/{id?}");
             });
-            
         }
     }
 }

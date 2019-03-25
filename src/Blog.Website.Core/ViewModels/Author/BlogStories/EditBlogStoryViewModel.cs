@@ -124,6 +124,13 @@ namespace Blog.Website.Core.ViewModels.Author.BlogStories
                    };
         }
 
+        public BlogStory ToDomain(Guid storyId)
+        {
+            var story = ToDomain();
+            story.Id = storyId;
+            return story;
+        }
+
         public void SetImageUrlIfNotExist(String url, Int32 thumbMaxWidth)
         {
             if (String.IsNullOrWhiteSpace(StoryImageUrl))
