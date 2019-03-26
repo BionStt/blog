@@ -39,7 +39,7 @@ namespace Blog.Website.Controllers
             var topTags = await _tagManager.GetTopAsync(Cancel);
 
             ViewBag.Title = tag.SeoTitle;
-            ViewBag.SeoDescription = tag.SeoDescription;
+            ViewBag.Description = tag.SeoDescription;
             ViewBag.Keywords = tag.SeoKeywords;
             ViewBag.NoFollowForTags = true;
 
