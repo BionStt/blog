@@ -69,10 +69,10 @@ namespace Blog.Website.Areas.Author.Controllers
             return RedirectToAction("Edit", new {storyId = blogStory.Id});
         }
 
-        [HttpDelete("{alias}"), ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(String alias)
+        [HttpDelete("{storyId:guid}")]
+        public async Task<IActionResult> Delete([FromRoute]Guid storyId)
         {
-            await _blogStoryManager.DeleteAsync(alias, Cancel);
+            await _blogStoryManager.DeleteAsync(storyId, Cancel);
             return Ok();
         }
 

@@ -62,17 +62,17 @@ var blogStoryManager = {
         $('#confirm-modal').on('show.bs.modal',
             function (event) {
                 var button = $(event.relatedTarget);
-                var story = button.data('story');
+                var storyId = button.data('story');
                 var modal = $(this);
                 modal.find('.btn-primary').click(function () {
-                    blogStoryManager.removeStory(story);
+                    blogStoryManager.removeStory(storyId);
                 });
             });
     },
-    removeStory: function (alias) {
+    removeStory: function (storyId) {
         $.ajax({
             type: "DELETE",
-            url: "/author/stories/" + alias,
+            url: "/author/stories/" + storyId,
             success: function (data) {
                 location.reload();
             },

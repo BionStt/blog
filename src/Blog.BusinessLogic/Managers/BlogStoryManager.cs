@@ -125,18 +125,18 @@ namespace Blog.BusinessLogic.Managers
             return story;
         }
 
-        public async Task DeleteAsync(String alias,
+        public async Task DeleteAsync(Guid storyId,
                                       CancellationToken cancel = default)
         {
-            if(String.IsNullOrWhiteSpace(alias))
+            if(storyId == Guid.Empty)
             {
-                throw new ArgumentException("Incorrect value for story alias");
+                throw new ArgumentException("Incorrect value for story id");
             }
 
-            var story = await _blogStoryRepository.GetAsync(alias, cancel);
+            var story = await _blogStoryRepository.GetAsync(storyId, cancel);
             if(story == null)
             {
-                throw new EntityNotFoundException($"Can't find story with alias : {alias}");
+                throw new EntityNotFoundException($"Can't find story with id : {storyId}");
             }
 
             await _blogStoryRepository.DeleteAsync(story, cancel);
