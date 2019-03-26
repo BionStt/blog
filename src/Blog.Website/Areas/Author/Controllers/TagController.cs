@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using Blog.Core.Contracts.Managers;
 using Blog.Website.Controllers;
 using Blog.Website.Core.ConfigurationOptions;
-using Blog.Website.Core.Requests;
 using Blog.Website.Core.ViewModels.Author.Tag;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -48,13 +47,6 @@ namespace Blog.Website.Areas.Author.Controllers
         {
             var tag = await _tagManager.UpdateAsync(model.ToDomain(), Cancel);
             return View(new TagEditViewModel(tag));
-        }
-
-        [HttpPut]
-        public async Task<IActionResult> Edit([FromBody] TagCreateRequest model)
-        {
-            var tag = await _tagManager.CreateTagAsync(model.Name, Cancel);
-            return Ok(tag);
         }
     }
 }

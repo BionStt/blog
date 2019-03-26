@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Blog.Core.Contracts.Managers;
+using Blog.Website.Controllers;
 using Blog.Website.Core.Requests;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,16 +11,13 @@ namespace Blog.Website.Areas.Author.Controllers
 {
     [Authorize]
     [Area("author"), Route("api/{version:int}/author/tags")]
-    public class TagApiController : Controller
+    public class TagApiController : BaseController
     {
         private readonly ITagManager _tagManager;
-        private readonly ILogger<TagApiController> _logger;
 
-        public TagApiController(ITagManager tagManager,
-                                ILogger<TagApiController> logger)
+        public TagApiController(ITagManager tagManager)
         {
             _tagManager = tagManager;
-            _logger = logger;
         }
 
         [HttpPost, ValidateAntiForgeryToken]
@@ -53,6 +51,13 @@ namespace Blog.Website.Areas.Author.Controllers
             var cancel = HttpContext.RequestAborted;
             await _tagManager.DeleteAsync(id, cancel);
             return Ok();
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> Edit([FromBody] TagCreateRequest model)
+        {
+            var tag = await _tagManager.CreateTagAsync(model.Name, Cancel);
+            return Ok(tag);
         }
     }
 }

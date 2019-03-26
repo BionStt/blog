@@ -20,7 +20,7 @@ namespace Blog.Website.Areas.Author.Controllers
         private readonly IBlogStoryManager _blogStoryManager;
         private readonly ITagManager _tagManager;
 
-        private IOptions<StoryImageOption> _defaultStoryImage;
+        private readonly IOptions<StoryImageOption> _defaultStoryImage;
 
         public BlogStoryController(IBlogStoryManager blogStoryManager,
                                    ITagManager tagManager,
@@ -67,39 +67,6 @@ namespace Blog.Website.Areas.Author.Controllers
             await _tagManager.UpdateBlogStoryTagsAsync(tagIds, blogStory, Cancel);
 
             return RedirectToAction("Edit", new {storyId = blogStory.Id});
-        }
-
-        [HttpDelete("{storyId:guid}")]
-        public async Task<IActionResult> Delete([FromRoute]Guid storyId)
-        {
-            await _blogStoryManager.DeleteAsync(storyId, Cancel);
-            return Ok();
-        }
-
-        [HttpPatch("{storyId}")]
-        public async Task<IActionResult> ChangeAvailability(Guid storyId,
-                                                            Boolean isPublished = false)
-        {
-            var story = await _blogStoryManager.ChangeAvailabilityAsync(storyId, isPublished, Cancel);
-            var redirect = isPublished
-                ? Url.Action("Story", "BlogStory", new {alias = story.Alias})
-                : String.Empty;
-
-            return Ok(new {redirect = redirect});
-        }
-
-        [HttpPost("{storyId}/accesstoken")]
-        public async Task<IActionResult> UpdateAccessToken(Guid storyId)
-        {
-            var story = await _blogStoryManager.UpdateAccessTokenAsync(storyId, Cancel);
-            return Ok();
-        }
-
-        [HttpDelete("{storyId}/accesstoken")]
-        public async Task<IActionResult> RemoveAccessToken(Guid storyId)
-        {
-            await _blogStoryManager.RemoveAccessTokenAsync(storyId, Cancel);
-            return Ok();
         }
     }
 }
