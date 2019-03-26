@@ -17,6 +17,20 @@ namespace Blog.Website.Models.Requests.Reader
 
             return new BlogStoryQuery(GetOffset(Page, pageSize), pageSize);
         }
+        
+        public static BlogStoryQuery ToPublishedQuery(Int32 pageNumber,
+                                             Int32 pageSize)
+        {
+            if(pageNumber <= 0)
+            {
+                pageNumber = 1;
+            }
+
+            return new BlogStoryQuery(GetOffset(pageNumber, pageSize), pageSize)
+            {
+                IsPublished = true
+            };
+        }
 
         public static BlogStoryQuery ToQuery(Int32 pageNumber,
                                              Int32 pageSize)

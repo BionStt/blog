@@ -1,7 +1,11 @@
 ﻿@using Microsoft.AspNetCore.Http.Extensions
 @{
-    var url = ViewBag.Url != null ? ViewBag.Url : "https://d2funlife.com/";
-    var imageLink = ViewBag.ImageLink != null ? ViewBag.ImageLink : "https://d2funlife.com/img/hello.png";
+    var url = ViewBag.Url != null
+        ? ViewBag.Url
+        : "https://d2funlife.com/";
+    var imageLink = ViewBag.ImageLink != null
+        ? ViewBag.ImageLink
+        : "https://d2funlife.com/img/hello.png";
 }
 <!DOCTYPE html>
 <html lang="ru">
@@ -47,8 +51,8 @@
     <meta name="msapplication-TileImage" content="/img/favicons/144x144.png">
     <meta name="msvalidate.01" content="C951B123C6A25E3E148BF3ABCC25F3F9"/>
     <meta name="yandex-verification" content="61c7a513bd27c444"/>
-    <link rel="canonical" href="@Context.Request.GetDisplayUrl()"/>
-    <script async="" src="//www.google-analytics.com/analytics.js"></script>
+    <link rel="canonical" href="@url"/>
+    <script async src='/g-analytics'></script>
 </head>
 <body>
 <div class="l-wrap">
@@ -80,35 +84,35 @@
             <div class="b-menu__block-inner">
                 <ul class="b-menu__social">
                     <li class="b-menu__social-item">
-                        <a href="https://github.com/d2funlife" target="_blank" rel="nofollow">
+                        <a href="https://github.com/d2funlife" target="_blank" rel="nofollow noopener">
                             <svg class="b-icon__github ">
                                 <use xlink:href="/img/sprite/sprite.svg#github"></use>
                             </svg>
                         </a>
                     </li>
                     <li class="b-menu__social-item">
-                        <a href="https://twitter.com/d2funlife" target="_blank" rel="nofollow">
+                        <a href="https://twitter.com/d2funlife" target="_blank" rel="nofollow noopener">
                             <svg class="b-icon__twitter ">
                                 <use xlink:href="/img/sprite/sprite.svg#twitter"></use>
                             </svg>
                         </a>
                     </li>
                     <li class="b-menu__social-item">
-                        <a href="https://vk.com/d2funlife" target="_blank" rel="nofollow">
+                        <a href="https://vk.com/d2funlife" target="_blank" rel="nofollow noopener">
                             <svg class="b-icon__vk ">
                                 <use xlink:href="/img/sprite/sprite.svg#vk"></use>
                             </svg>
                         </a>
                     </li>
                     <li class="b-menu__social-item">
-                        <a href="https://www.linkedin.com/in/d2funlife/" target="_blank" rel="nofollow">
+                        <a href="https://www.linkedin.com/in/d2funlife/" target="_blank" rel="nofollow noopener">
                             <svg class="b-icon__in ">
                                 <use xlink:href="/img/sprite/sprite.svg#in"></use>
                             </svg>
                         </a>
                     </li>
                     <li class="b-menu__social-item">
-                        <a href="https://www.facebook.com/d2funlife" target="_blank" rel="nofollow">
+                        <a href="https://www.facebook.com/d2funlife" target="_blank" rel="nofollow noopener">
                             <svg class="b-icon__facebook ">
                                 <use xlink:href="/img/sprite/sprite.svg#facebook"></use>
                             </svg>
@@ -139,7 +143,10 @@
     </a>
 </div>
 <script src="/front.min.js?v=@Versioning.Current"></script>
-<script>var lozadObeserver = lozad();lozadObeserver.observe();</script>
+<script>
+    var lozadObeserver = lozad();
+    lozadObeserver.observe();
+</script>
 @RenderSection("additionalScripts", false)
 </body>
 </html>

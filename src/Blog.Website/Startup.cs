@@ -52,17 +52,19 @@ namespace Blog.Website
                      {
                          options.ClientId = Configuration["logins:google:client-id"];
                          options.ClientSecret = Configuration["logins:google:client-secret"];
+                         options.CallbackPath = new PathString("/account/signin-google");
                      })
                     .AddTwitter(options =>
                      {
                          options.ConsumerKey = Configuration["logins:twitter:client-id"];
                          options.ConsumerSecret = Configuration["logins:twitter:client-secret"];
-
+                         options.CallbackPath = new PathString("/account/signin-twitter");
                      })
                     .AddMicrosoftAccount(options =>
                      {
                          options.ClientId = Configuration["logins:microsoft:client-id"];
                          options.ClientSecret = Configuration["logins:microsoft:client-secret"];
+                         options.CallbackPath = new PathString("/account/signin-microsoft");
                      })
                     .AddCookie(options =>
                      {
@@ -70,18 +72,12 @@ namespace Blog.Website
                          options.LogoutPath = "/account/logoff";
                      });
 
-            services.Configure<ForwardedHeadersOptions>(options =>
-            {
-                options.ForwardedHeaders = ForwardedHeaders.All;
-            });
-            
+            services.Configure<ForwardedHeadersOptions>(options => { options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto; });
+
             services.AddMvc(options =>
             {
                 options.MaxModelValidationErrors = 5;
-                if(Environment.IsDevelopment())
-                {
-                    options.Filters.Add(typeof(GlobalException));
-                }
+                options.Filters.Add(typeof(GlobalException));
             });
 
             services.AddTransient<IBlogStoryManager>(provider => new BlogStoryManager(provider.GetService<IBlogStoryRepository>(),
@@ -99,9 +95,8 @@ namespace Blog.Website
 
             var storyImgSec = Configuration.GetSection("DefaultPageInfo:StoryImage");
             services.Configure<StoryImageOption>(storyImgSec);
-            
-            
-            
+
+
             var loginRestriction = new List<LoginRestriction>();
             var section = Configuration.GetSection("logins-restrictions");
             section.Bind(loginRestriction);
@@ -113,10 +108,15 @@ namespace Blog.Website
         public void Configure(IApplicationBuilder app,
                               IHostingEnvironment env)
         {
-            app.UseHsts();
-            app.UseHttpsRedirection();
-            app.UseForwardedHeaders();
-            
+            var forwardingOptions = new ForwardedHeadersOptions()
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            };
+            forwardingOptions.KnownNetworks.Clear();
+            forwardingOptions.KnownProxies.Clear();
+
+            app.UseForwardedHeaders(forwardingOptions);
+
             var items = new List<MenuItemData>();
             Configuration.GetSection("MainMenu")
                          .Bind(items);
@@ -130,13 +130,14 @@ namespace Blog.Website
             {
                 var context = app.ApplicationServices.GetService<BlogContext>();
                 context?.Database.Migrate();
-                
+
                 app.UseStatusCodePagesWithReExecute("/StatusCode/{0}");
             }
 
             app.UseStaticFiles();
-            
+
             app.UseAuthentication();
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
@@ -147,7 +148,6 @@ namespace Blog.Website
                                 name: "default",
                                 template: "{controller=BlogStory}/{action=Index}/{id?}");
             });
-            
         }
     }
 }

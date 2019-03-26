@@ -2,16 +2,13 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Blog.Core.Contracts.Managers;
-using Blog.Core.Exceptions;
 using Blog.Extensions.Helpers;
 using Blog.Website.Controllers;
 using Blog.Website.Core.ConfigurationOptions;
-using Blog.Website.Core.Helpers;
 using Blog.Website.Core.ViewModels.Author.BlogStories;
 using Blog.Website.Models.Requests.Author;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace Blog.Website.Areas.Author.Controllers
@@ -22,19 +19,17 @@ namespace Blog.Website.Areas.Author.Controllers
     {
         private readonly IBlogStoryManager _blogStoryManager;
         private readonly ITagManager _tagManager;
-        private readonly ILogger _logger;
 
         private IOptions<StoryImageOption> _defaultStoryImage;
 
         public BlogStoryController(IBlogStoryManager blogStoryManager,
                                    ITagManager tagManager,
                                    IOptions<DefaultPageInfoOption> pageInfo,
-                                   IOptions<StoryImageOption> defaultStoryImage,
-                                   ILoggerFactory loggerFactory) : base(pageInfo)
+                                   IOptions<StoryImageOption> defaultStoryImage)
+            : base(pageInfo)
         {
             _blogStoryManager = blogStoryManager;
             _tagManager = tagManager;
-            _logger = loggerFactory.GetLogger();
             _defaultStoryImage = defaultStoryImage;
         }
 
@@ -47,7 +42,7 @@ namespace Blog.Website.Areas.Author.Controllers
         }
 
         [HttpGet("edit/{storyId:guid?}")]
-        public async Task<IActionResult> Edit(Guid storyId)
+        public async Task<IActionResult> Edit([FromRoute] Guid storyId)
         {
             var tags = await _tagManager.GetTopAsync(Cancel);
             var story = await _blogStoryManager.GetWithTagsAsync(storyId, Cancel);
@@ -55,34 +50,23 @@ namespace Blog.Website.Areas.Author.Controllers
             return View(viewModel);
         }
 
-        [HttpPost("edit", Name = "edit-story"), ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(EditBlogStoryViewModel model)
+        [HttpPost("edit/{storyId:guid?}", Name = "edit-story"), ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit([FromRoute] Guid storyId,
+                                              EditBlogStoryViewModel model)
         {
-            try
+            if(!ModelState.IsValid)
             {
-                if(!ModelState.IsValid)
-                {
-                    return View(model);
-                }
-
-                model.SetImageUrlIfNotExist(_defaultStoryImage.Value.Url, _defaultStoryImage.Value.Width);
-                var blogStory = await _blogStoryManager.CreateOrUpdateAsync(model.ToDomain(), Cancel);
-
-                var tagIds = model.TagsSelected?.GetGuids(',').ToList();
-                await _tagManager.UpdateBlogStoryTagsAsync(tagIds, blogStory, Cancel);
-
-                return RedirectToAction("Edit", new {storyId = blogStory.Id});
+                return View(model);
             }
-            catch (ArgumentException exception)
-            {
-                _logger.Error(exception);
-                return BadRequest();
-            }
-            catch (EntityNotFoundException exception)
-            {
-                _logger.Error(exception);
-                return NotFound();
-            }
+
+            model.SetImageUrlIfNotExist(_defaultStoryImage.Value.Url, _defaultStoryImage.Value.Width);
+            var blogStory = await _blogStoryManager.CreateOrUpdateAsync(model.ToDomain(), Cancel);
+
+            var tagIds = model.TagsSelected?.GetGuids(',')
+                              .ToList();
+            await _tagManager.UpdateBlogStoryTagsAsync(tagIds, blogStory, Cancel);
+
+            return RedirectToAction("Edit", new {storyId = blogStory.Id});
         }
 
         [HttpDelete("{alias}"), ValidateAntiForgeryToken]
