@@ -86,15 +86,18 @@ namespace Blog.Website
             services.AddTransient<IBlogStoryRepository, BlogStoryRepository>();
             services.AddTransient<ITagRepository, TagRepository>();
             services.AddTransient<IBlogStoryTagRepository, BlogStoryTagRepository>();
-            services.AddSingleton<IMainMenuContainer>(provider => new MainMenuContainer(Configuration.GetSection("menus:main-nav-menu")));
-            services.AddSingleton<IStoryEditMenuContainer>(provider =>
-                                                               new StoryEditMenuContainer(Configuration.GetSection("menus:story-edit-top-menu")));
+            services.AddSingleton<IMainMenuContainer, MainMenuContainer>();
+            services.AddSingleton<IStoryEditMenuContainer, StoryEditMenuContainer>();
 
             var pageInfoSec = Configuration.GetSection("DefaultPageInfo");
             services.Configure<DefaultPageInfoOption>(pageInfoSec);
 
             var storyImgSec = Configuration.GetSection("DefaultPageInfo:StoryImage");
             services.Configure<StoryImageOption>(storyImgSec);
+
+            var menus = Configuration.GetSection("Menus");
+            services.Configure<MainMenuOptions>(menus);
+            services.Configure<StoryEditMenuOptions>(menus);
 
 
             var loginRestriction = new List<LoginRestriction>();

@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Blog.Website.Core.Contracts;
-using Microsoft.Extensions.Configuration;
 
 namespace Blog.Website.Core.ViewModels.Author.ViewComponents
 {
@@ -8,11 +7,9 @@ namespace Blog.Website.Core.ViewModels.Author.ViewComponents
     {
         public List<MenuItemData> Items { get; set; }
 
-        protected MenuContainer(IConfigurationSection section)
+        protected MenuContainer(List<MenuItemData> items)
         {
-            var items = new List<MenuItemData>();
-            section.Bind(items);
-            Items = items;
+            Items = items ?? new List<MenuItemData>(0);
         }
     }
 }
