@@ -37,7 +37,7 @@ namespace Blog.Core.Contracts.Managers
                                                 Boolean isPublished,
                                                 CancellationToken cancel = default);
 
-        Task DeleteAsync(String alias,
+        Task DeleteAsync(Guid storyId,
                          CancellationToken cancel = default);
 
         Task<String> GetSiteMapXmlAsync(String baseUrl,
