@@ -33,6 +33,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blog.Data.Mongo", "src\Blog
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blog.Website.Models", "src\Blog.Website.Models\Blog.Website.Models.csproj", "{01B4B5D2-1F5E-46DC-85A9-8973F027ADB5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blog.Data.EntityFramework.MemoryCache", "src\Blog.Data.EntityFramework.MemoryCache\Blog.Data.EntityFramework.MemoryCache.csproj", "{BD425250-4498-4E00-986B-9B1999E7E34A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -79,6 +81,10 @@ Global
 		{01B4B5D2-1F5E-46DC-85A9-8973F027ADB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{01B4B5D2-1F5E-46DC-85A9-8973F027ADB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{01B4B5D2-1F5E-46DC-85A9-8973F027ADB5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD425250-4498-4E00-986B-9B1999E7E34A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD425250-4498-4E00-986B-9B1999E7E34A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD425250-4498-4E00-986B-9B1999E7E34A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD425250-4498-4E00-986B-9B1999E7E34A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

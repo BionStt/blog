@@ -52,6 +52,11 @@ namespace Blog.Data.EntityFramework.Repository
             return dataQuery.ToListAsync(cancel);
         }
 
+        public Task<List<Tag>> GetTopPublishedAsync(CancellationToken cancel = default)
+        {
+            throw new NotImplementedException();
+        }
+
         private IQueryable<Tag> GetOrderedQuery(TagsQuery query,
                                                 IQueryable<Tag> dataQuery)
         {
