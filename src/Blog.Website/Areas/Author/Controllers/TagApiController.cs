@@ -46,7 +46,5 @@ namespace Blog.Website.Areas.Author.Controllers
             await _tagManager.DeleteAsync(id, Cancel);
             return Ok();
         }
-
-        
     }
 }

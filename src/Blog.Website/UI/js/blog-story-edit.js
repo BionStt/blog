@@ -87,7 +87,8 @@
                         blogStoryManager.tags.push(newItem);
                     },
                     error: function (data) {
-                        alert(data);
+                        callback();
+                        console.log(data);
                     }
                 });
             }
