@@ -5,7 +5,6 @@ using Blog.Website.Controllers;
 using Blog.Website.Core.Requests;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace Blog.Website.Areas.Author.Controllers
 {
@@ -24,32 +23,28 @@ namespace Blog.Website.Areas.Author.Controllers
         public async Task<IActionResult> Create([FromRoute] Int32 version,
                                                 [FromBody] TagCreateRequest request)
         {
-            var cancel = HttpContext.RequestAborted;
-            var tag = await _tagManager.CreateTagAsync(request.Name, cancel);
+            var tag = await _tagManager.CreateTagAsync(request.Name, Cancel);
             return Ok(new {id = tag.Id, name = tag.Name});
         }
-
-        [HttpPost("assign/story"), ValidateAntiForgeryToken]
-        public async Task<IActionResult> AssignToBlogStory([FromBody] TagToBlogStoryRequest request)
+        
+        [HttpPost("tagId:guid/stories/{storyId:guid}"), ValidateAntiForgeryToken]
+        public async Task<IActionResult> AssignToBlogStory([FromRoute] Guid tagId, [FromRoute] Guid storyId)
         {
-            var cancel = HttpContext.RequestAborted;
-            var story = await _tagManager.AssignTagToBlogStoryAsync(request.TagId, request.BlogStoryId, cancel);
+            await _tagManager.AssignTagToBlogStoryAsync(tagId, storyId, Cancel);
             return Ok();
         }
 
-        [HttpPost("unassign/story"), ValidateAntiForgeryToken]
-        public async Task<IActionResult> UnassignTagFromBlogStory([FromBody] TagToBlogStoryRequest request)
+        [HttpDelete("tagId:guid/stories/{storyId:guid}"), ValidateAntiForgeryToken]
+        public async Task<IActionResult> UnassignTagFromBlogStory([FromRoute] Guid tagId, [FromRoute] Guid storyId)
         {
-            var cancel = HttpContext.RequestAborted;
-            var story = await _tagManager.UnassignTagFromBlogStoryAsync(request.TagId, request.BlogStoryId, cancel);
+            await _tagManager.UnassignTagFromBlogStoryAsync(tagId, storyId, Cancel);
             return Ok();
         }
 
         [HttpDelete("{id:guid}"), ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete([FromRoute] Guid id)
         {
-            var cancel = HttpContext.RequestAborted;
-            await _tagManager.DeleteAsync(id, cancel);
+            await _tagManager.DeleteAsync(id, Cancel);
             return Ok();
         }
 
