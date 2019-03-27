@@ -20,6 +20,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.WebEncoders;
 
 namespace Blog.Website
@@ -82,10 +83,22 @@ namespace Blog.Website
 
             services.AddTransient<IBlogStoryManager>(provider => new BlogStoryManager(provider.GetService<IBlogStoryRepository>(),
                                                                                       provider.GetService<ITagManager>()));
-            services.AddTransient<ITagManager, TagManager>();
             services.AddTransient<IBlogStoryRepository, BlogStoryRepository>();
             services.AddTransient<ITagRepository, TagRepository>();
             services.AddTransient<IBlogStoryTagRepository, BlogStoryTagRepository>();
+            
+            services.AddTransient<ITagManager>(provider =>
+            {
+                var tagRepository = provider.GetService<ITagRepository>();
+                var memoryCache = provider.GetService<IMemoryCache>();
+                var cacheRepository = new Blog.Data.EntityFramework.MemoryCache.Repositories.TagRepository(tagRepository, memoryCache);
+
+                var blogStoriesRepository = provider.GetService<IBlogStoryRepository>();
+                var storyTagRepositories = provider.GetService<IBlogStoryTagRepository>();
+                
+                return new TagManager(cacheRepository, blogStoriesRepository, storyTagRepositories);
+            });
+
             services.AddSingleton<IMainMenuContainer, MainMenuContainer>();
             services.AddSingleton<IStoryEditMenuContainer, StoryEditMenuContainer>();
 

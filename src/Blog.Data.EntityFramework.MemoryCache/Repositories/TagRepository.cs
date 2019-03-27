@@ -6,82 +6,105 @@ using Blog.Core.Containers;
 using Blog.Core.Entities;
 using Blog.Core.Queries;
 using Blog.Data.Contracts.Repositories;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace Blog.Data.EntityFramework.MemoryCache.Repositories
 {
     public class TagRepository : ITagRepository
     {
-        private readonly ITagRepository _tagRepositoryImplementation;
+        private const String TopTagsKey = "topTags";
 
-        public TagRepository(ITagRepository tagRepositoryImplementation)
+        private readonly ITagRepository _tagRepository;
+        private readonly IMemoryCache _memoryCache;
+
+        public TagRepository(ITagRepository tagRepository,
+                             IMemoryCache memoryCache)
         {
-            _tagRepositoryImplementation = tagRepositoryImplementation;
+            _tagRepository = tagRepository;
+            _memoryCache = memoryCache;
         }
 
         public Task<Page<Tag>> GetPageAsync(TagsQuery query,
-                                 CancellationToken cancel = default)
+                                            CancellationToken cancel = default)
         {
-            return _tagRepositoryImplementation.GetPageAsync(query, cancel);
+            return _tagRepository.GetPageAsync(query, cancel);
         }
 
         public Task<List<Tag>> GetAsync(TagsQuery query,
-                             CancellationToken cancel = default)
+                                        CancellationToken cancel = default)
         {
-            return _tagRepositoryImplementation.GetAsync(query, cancel);
+            return _tagRepository.GetAsync(query, cancel);
         }
 
-        public Task<List<Tag>> GetTopPublishedAsync(CancellationToken cancel = default)
+        public async Task<List<Tag>> GetTopPublishedAsync(CancellationToken cancel = default)
         {
-            
-            
-            return _tagRepositoryImplementation.GetTopPublishedAsync(cancel);
+            if(_memoryCache.TryGetValue(TopTagsKey, out List<Tag> result))
+            {
+                return result;
+            }
+
+            var topTags = await _tagRepository.GetTopPublishedAsync(cancel);
+            _memoryCache.Set(TopTagsKey,
+                             topTags,
+                             new MemoryCacheEntryOptions
+                             {
+                                 AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(6)
+                             });
+
+            return topTags;
         }
 
         public Task<List<Tag>> GetAllPublishedAsync(CancellationToken cancel = default)
         {
-            return _tagRepositoryImplementation.GetAllPublishedAsync(cancel);
+            return _tagRepository.GetAllPublishedAsync(cancel);
         }
 
         public Task<Tag> GetAsync(Guid id,
-                             CancellationToken cancel = default)
+                                  CancellationToken cancel = default)
         {
-            return _tagRepositoryImplementation.GetAsync(id, cancel);
+            return _tagRepository.GetAsync(id, cancel);
         }
 
         public Task<Tag> GetAsync(String alias,
-                             CancellationToken cancel = default)
+                                  CancellationToken cancel = default)
         {
-            return _tagRepositoryImplementation.GetAsync(alias, cancel);
+            return _tagRepository.GetAsync(alias, cancel);
         }
 
         public Task<Tag> GetTagWithBlogStoryTagsAsync(String alias,
-                                                 CancellationToken cancel = default)
+                                                      CancellationToken cancel = default)
         {
-            return _tagRepositoryImplementation.GetTagWithBlogStoryTagsAsync(alias, cancel);
+            return _tagRepository.GetTagWithBlogStoryTagsAsync(alias, cancel);
         }
 
         public Task DeleteAsync(Tag tag,
                                 CancellationToken cancel = default)
         {
-            return _tagRepositoryImplementation.DeleteAsync(tag, cancel);
+            return _tagRepository.DeleteAsync(tag, cancel).ContinueWith(task => { _memoryCache.Remove(TopTagsKey); }, cancel);
         }
 
         public Task UpdateAsync(Tag tag,
                                 CancellationToken cancel)
         {
-            return _tagRepositoryImplementation.UpdateAsync(tag, cancel);
+            return _tagRepository.UpdateAsync(tag, cancel).ContinueWith(task => { _memoryCache.Remove(TopTagsKey); }, cancel);
         }
 
         public Task<Tag> AddAsync(Tag tag,
-                             CancellationToken cancel)
+                                  CancellationToken cancel)
         {
-            return _tagRepositoryImplementation.AddAsync(tag, cancel);
+            return _tagRepository.AddAsync(tag, cancel)
+                                 .ContinueWith(task =>
+                                               {
+                                                   _memoryCache.Remove(TopTagsKey);
+                                                   return task.Result;
+                                               },
+                                               cancel);
         }
 
         public Task<Guid> GetTagIdAsync(String alias,
-                                  CancellationToken cancel)
+                                        CancellationToken cancel)
         {
-            return _tagRepositoryImplementation.GetTagIdAsync(alias, cancel);
+            return _tagRepository.GetTagIdAsync(alias, cancel);
         }
     }
 }

@@ -19,6 +19,7 @@
     <ProjectReference Include="..\Blog.BusinessLogic\Blog.BusinessLogic.csproj" />
     <ProjectReference Include="..\Blog.Core\Blog.Core.csproj" />
     <ProjectReference Include="..\Blog.Data.Contracts\Blog.Data.Contracts.csproj" />
+    <ProjectReference Include="..\Blog.Data.EntityFramework.MemoryCache\Blog.Data.EntityFramework.MemoryCache.csproj" />
     <ProjectReference Include="..\Blog.Data.EntityFramework\Blog.Data.EntityFramework.csproj" />
     <ProjectReference Include="..\Blog.Website.Core\Blog.Website.Core.csproj" />
     <ProjectReference Include="..\Blog.Website.Models\Blog.Website.Models.csproj" />

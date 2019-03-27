@@ -18,6 +18,8 @@ namespace Blog.Data.EntityFramework.Repository
     public class TagRepository : BaseRepository<Tag>,
                                  ITagRepository
     {
+        private const Int32 NoLimit = Int32.MaxValue;
+        
         public TagRepository(BlogContext context) : base(context)
         {
         }
@@ -54,7 +56,12 @@ namespace Blog.Data.EntityFramework.Repository
 
         public Task<List<Tag>> GetTopPublishedAsync(CancellationToken cancel = default)
         {
-            throw new NotImplementedException();
+            return GetAsync(new TagsQuery(0, NoLimit)
+                            {
+                                WithScores = true,
+                                IsPublished = true,
+                            },
+                            cancel);
         }
 
         private IQueryable<Tag> GetOrderedQuery(TagsQuery query,

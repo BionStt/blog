@@ -14,8 +14,6 @@ namespace Blog.BusinessLogic.Managers
 {
     public class TagManager : ITagManager
     {
-        private const Int32 NoLimit = Int32.MaxValue;
-
         private readonly ITagRepository _tagRepository;
         private readonly IBlogStoryRepository _blogStoryRepository;
         private readonly IBlogStoryTagRepository _blogStoryTagRepository;
@@ -179,12 +177,7 @@ namespace Blog.BusinessLogic.Managers
 
         public Task<List<Tag>> GetTopAsync(CancellationToken cancel = default)
         {
-            return _tagRepository.GetAsync(new TagsQuery(0, NoLimit)
-                                           {
-                                               WithScores = true,
-                                               IsPublished = true,
-                                           },
-                                           cancel);
+            return _tagRepository.GetTopPublishedAsync(cancel);
         }
 
         public Task<Guid> GetTagIdAsync(String alias,
