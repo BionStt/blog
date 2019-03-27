@@ -19,7 +19,7 @@ var paths = {
     uiJs: "./UI/js/"
 };
 
-paths.adminJs = paths.webroot + "admin.min.js";
+paths.adminJs = paths.webroot + "admin.js";
 paths.adminCss = paths.webroot + "admin.min.css";
 paths.adminLocalCss = paths.webroot + "admin.local.min.css";
 paths.adminRemoteCss = paths.webroot + "admin.remote.min.css";
@@ -72,8 +72,9 @@ gulp.task("min:admin-managers", function (done) {
 
     files.forEach(function (file) {
         gulp.src(paths.uiJs + file + '.js')
-            .pipe(uglify())
-            .pipe(concat(file + '.min.js'))
+            //.pipe(uglify())
+            //.pipe(concat(file + '.min.js'))
+            .pipe(concat(file + '.js'))
             .pipe(gulp.dest(paths.webroot));
     });
 
@@ -83,7 +84,7 @@ gulp.task("min:admin-managers", function (done) {
 gulp.task("min:admin-base", function () {
     return gulp.src(adminJsFiles)
         .pipe(concat(paths.adminJs))
-        .pipe(uglify())
+        //.pipe(uglify())
         .pipe(gulp.dest("."));
 });
 

@@ -1,4 +1,4 @@
-﻿var blogStoryManager = {
+var blogStoryManager = {
     tags: [],
     publishText: 'Published',
     initialize: function (tags) {
