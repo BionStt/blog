@@ -2,12 +2,16 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Blog.Core.Containers;
 using Blog.Core.Entities;
+using Blog.Core.Queries;
 
 namespace Blog.Core.Contracts.Managers
 {
     public interface ITagManager
     {
+        Task<Page<Tag>> GetAsync(TagsQuery query, CancellationToken cancel = default);
+
         /// <summary>
         /// Get tag
         /// </summary>

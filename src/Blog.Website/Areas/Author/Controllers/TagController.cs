@@ -4,6 +4,7 @@ using Blog.Core.Contracts.Managers;
 using Blog.Website.Controllers;
 using Blog.Website.Core.ConfigurationOptions;
 using Blog.Website.Core.ViewModels.Author.Tag;
+using Blog.Website.Models.Requests.Author;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -17,16 +18,17 @@ namespace Blog.Website.Areas.Author.Controllers
         private readonly ITagManager _tagManager;
 
         public TagController(ITagManager tagManager,
-                             IOptions<DefaultPageInfoOption> pageInfo) : base(pageInfo)
+                             IOptions<DefaultPageInfoOption> pageInfo)
+            : base(pageInfo)
         {
             _tagManager = tagManager;
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index([FromRoute] Int32 page = 1)
+        public async Task<IActionResult> Index(GetTagsRequest request)
         {
-            var tags = await _tagManager.GetTopAsync(Cancel);
-            var viewModel = new TagsViewModel(tags, 10, page, PageSize);
+            var tagPage = await _tagManager.GetAsync(request.ToQuery(PageSize), Cancel);
+            var viewModel = new TagsViewModel(tagPage, request.Page);
             return View(viewModel);
         }
 
