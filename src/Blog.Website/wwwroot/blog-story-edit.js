@@ -117,7 +117,8 @@ var blogStoryManager = {
                 }
             });
         });
-
+        
+        $("#remove-story-btn").click(this.removeStory);
         $("#update-access-token-btn").click(this.updateAccessToken);
         $("#remove-access-token-btn").click(this.removeAccessToken);
     },
@@ -155,5 +156,17 @@ var blogStoryManager = {
                 document.location.reload();
             }
         });
+    },
+    removeStory: function(){
+        var id = $("#Id").val();
+
+        $.ajax({
+            type: "DELETE",
+            url: "/api/v1/author/stories/" + id,
+            success: function () {
+                document.location.replace("/author/stories");
+            }
+        });
+
     }
 };

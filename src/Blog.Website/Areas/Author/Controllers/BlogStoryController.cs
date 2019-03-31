@@ -43,14 +43,9 @@ namespace Blog.Website.Areas.Author.Controllers
         }
 
         [HttpGet("edit/{storyId:guid?}")]
-        public async Task<IActionResult> Edit([FromRoute] Guid storyId)
+        public async Task<IActionResult> Edit(Guid storyId)
         {
             var story = await _blogStoryManager.GetWithTagsAsync(storyId, Cancel);
-            if(story == null)
-            {
-                return NotFound();
-            }
-
             var tagPage = await _tagManager.GetAsync(new TagsQuery(), Cancel);
             var viewModel = new EditBlogStoryViewModel(story, tagPage.Items, Url);
             return View(viewModel);

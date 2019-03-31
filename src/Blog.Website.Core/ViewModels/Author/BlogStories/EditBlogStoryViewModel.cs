@@ -19,7 +19,7 @@ namespace Blog.Website.Core.ViewModels.Author.BlogStories
     {
         public Guid Id { get; set; }
 
-        [Required, MinLength(4)]
+        [Required]
         public String Title { get; set; }
 
         [Required]
