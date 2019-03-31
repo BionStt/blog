@@ -36,7 +36,7 @@ namespace Blog.Website.Controllers
 
             var storiesByTag = await _blogStoryManager.GetPageWithTagsAsync(GetStoriesRequest.ToQuery(tag.Id, page, PageSize));
 
-            var topTags = await _tagManager.GetTopAsync(Cancel);
+            var topTags = await _tagManager.GetTopPublishedAsync(Cancel);
 
             ViewBag.Title = tag.SeoTitle;
             ViewBag.Description = tag.SeoDescription;

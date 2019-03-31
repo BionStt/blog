@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Blog.Core.Contracts.Managers;
+using Blog.Core.Queries;
 using Blog.Extensions.Helpers;
 using Blog.Website.Controllers;
 using Blog.Website.Core.ConfigurationOptions;
@@ -44,9 +45,14 @@ namespace Blog.Website.Areas.Author.Controllers
         [HttpGet("edit/{storyId:guid?}")]
         public async Task<IActionResult> Edit([FromRoute] Guid storyId)
         {
-            var tags = await _tagManager.GetTopAsync(Cancel);
             var story = await _blogStoryManager.GetWithTagsAsync(storyId, Cancel);
-            var viewModel = new EditBlogStoryViewModel(story, tags, Url);
+            if(story == null)
+            {
+                return NotFound();
+            }
+
+            var tagPage = await _tagManager.GetAsync(new TagsQuery(), Cancel);
+            var viewModel = new EditBlogStoryViewModel(story, tagPage.Items, Url);
             return View(viewModel);
         }
 

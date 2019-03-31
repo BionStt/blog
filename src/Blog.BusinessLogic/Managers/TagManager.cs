@@ -187,7 +187,7 @@ namespace Blog.BusinessLogic.Managers
             return exitingTag;
         }
 
-        public Task<List<Tag>> GetTopAsync(CancellationToken cancel = default)
+        public Task<List<Tag>> GetTopPublishedAsync(CancellationToken cancel = default)
         {
             return _tagRepository.GetTopPublishedAsync(cancel);
         }

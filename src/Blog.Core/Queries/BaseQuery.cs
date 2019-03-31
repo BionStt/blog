@@ -7,6 +7,7 @@ namespace Blog.Core.Queries
 {
     public class BaseQuery
     {
+        protected const Int32 NoLimit = Int32.MaxValue;
         protected const Int32 MaxLimit = 50;
         protected const Int32 DefaultLimit = 20;
         protected const Int32 DefaultOffset = 0;
