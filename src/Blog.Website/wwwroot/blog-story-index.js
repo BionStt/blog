@@ -72,7 +72,7 @@ var blogStoryManager = {
     removeStory: function (storyId) {
         $.ajax({
             type: "DELETE",
-            url: "/author/stories/" + storyId,
+            url: "/api/v1/author/stories/" + storyId,
             success: function (data) {
                 location.reload();
             },
