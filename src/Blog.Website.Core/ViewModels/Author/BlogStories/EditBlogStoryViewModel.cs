@@ -119,7 +119,7 @@ namespace Blog.Website.Core.ViewModels.Author.BlogStories
                 Title = Title.Trim(),
                 Alias = slug ?? Alias,
                 Description = Description.Trim(),
-                SeoDescription = SeoDescription.Trim(),
+                SeoDescription = SeoDescription?.Trim(),
                 SeoKeywords = Keywords,
                 Content = Content ?? String.Empty,
                 StoryImageUrl = StoryImageUrl?.Trim(),
