@@ -85,6 +85,9 @@ namespace Blog.BusinessLogic.Managers
 
             originalBlogStory.Update(blogStory);
             await _blogStoryRepository.UpdateAsync(originalBlogStory, cancel);
+            
+            await _tagManager.UpdateBlogStoryTagsAsync(blogStory, cancel);
+            
             return originalBlogStory;
         }
 

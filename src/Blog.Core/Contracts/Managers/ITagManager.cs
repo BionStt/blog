@@ -48,11 +48,9 @@ namespace Blog.Core.Contracts.Managers
         /// <summary>
         /// Assign tag to blog story
         /// </summary>
-        /// <param name="tagIds">Tag id</param>
         /// <param name="story">Blog story entity</param>
         /// <param name="cancel">Cancellation token</param>
-        Task UpdateBlogStoryTagsAsync(List<Guid> tagIds,
-                                      BlogStory story,
+        Task UpdateBlogStoryTagsAsync(BlogStory story,
                                       CancellationToken cancel = default);
 
         /// <summary>

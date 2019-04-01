@@ -26,7 +26,7 @@ namespace Blog.Website.Core.ViewModels.Author.BlogStories
         public String Description { get; set; }
 
         public String SeoDescription { get; set; }
-        
+
         public String Keywords { get; set; }
 
         public String CreateDate { get; set; }
@@ -65,7 +65,7 @@ namespace Blog.Website.Core.ViewModels.Author.BlogStories
 
         public EditBlogStoryViewModel(BlogStory blogStory)
         {
-            if (blogStory != null)
+            if(blogStory != null)
             {
                 Id = blogStory.Id;
                 Title = blogStory.Title;
@@ -82,18 +82,20 @@ namespace Blog.Website.Core.ViewModels.Author.BlogStories
                 AccessToken = blogStory.AccessToken;
                 Tags = "[]";
 
-                if (blogStory.BlogStoryTags != null)
+                if(blogStory.BlogStoryTags != null)
                 {
                     TagsSelected = blogStory.BlogStoryTags.Select(x => x.TagId).JoinToString(",");
                 }
             }
         }
 
-        public EditBlogStoryViewModel(BlogStory blogStory, IEnumerable<Blog.Core.Entities.Tag> tags, IUrlHelper url) : this(blogStory)
+        public EditBlogStoryViewModel(BlogStory blogStory,
+                                      IEnumerable<Blog.Core.Entities.Tag> tags,
+                                      IUrlHelper url) : this(blogStory)
         {
             Tags = tags == null
-                       ? "[]"
-                       : JsonConvert.SerializeObject(tags.Select(x => new TagShort(x)).ToList(), Formatting.None);
+                ? "[]"
+                : JsonConvert.SerializeObject(tags.Select(x => new TagShort(x)).ToList(), Formatting.None);
 
             ShareLink = GetShareLink(url);
         }
@@ -102,7 +104,7 @@ namespace Blog.Website.Core.ViewModels.Author.BlogStories
         {
             String slug = null;
 
-            if (String.IsNullOrWhiteSpace(Alias))
+            if(String.IsNullOrWhiteSpace(Alias))
             {
                 slug = StringToUrlStandard.Convert(Title.Trim());
             }
@@ -111,21 +113,37 @@ namespace Blog.Website.Core.ViewModels.Author.BlogStories
                 Alias = Alias.ToLowerInvariant();
             }
 
-            return new BlogStory
-                   {
-                       Id = Id,
-                       Title = Title.Trim(),
-                       Alias = slug ?? Alias,
-                       Description = Description.Trim(),
-                       SeoDescription = SeoDescription.Trim(),
-                       SeoKeywords = Keywords,
-                       Content = Content ?? String.Empty,
-                       StoryImageUrl = StoryImageUrl?.Trim(),
-                       StoryThumbUrl = StoryThumbUrl?.Trim(),
-                       CreateDate = String.IsNullOrWhiteSpace(CreateDate) ? DateTime.Now : DateTime.Parse(CreateDate),
-                       ModifiedDate = DateTime.Now,
-                       AccessToken = AccessToken
-                   };
+            var story = new BlogStory
+            {
+                Id = Id,
+                Title = Title.Trim(),
+                Alias = slug ?? Alias,
+                Description = Description.Trim(),
+                SeoDescription = SeoDescription.Trim(),
+                SeoKeywords = Keywords,
+                Content = Content ?? String.Empty,
+                StoryImageUrl = StoryImageUrl?.Trim(),
+                StoryThumbUrl = StoryThumbUrl?.Trim(),
+                CreateDate = String.IsNullOrWhiteSpace(CreateDate)
+                    ? DateTime.Now
+                    : DateTime.Parse(CreateDate),
+                ModifiedDate = DateTime.Now,
+                AccessToken = AccessToken
+            };
+
+
+            if(!String.IsNullOrEmpty(TagsSelected))
+            {
+                var tagIds = TagsSelected.GetGuids(',');
+                story.BlogStoryTags = tagIds.Select(x => new BlogStoryTag
+                                             {
+                                                 BlogStoryId = story.Id,
+                                                 TagId = x
+                                             })
+                                            .ToList();
+            }
+
+            return story;
         }
 
         public BlogStory ToDomain(Guid storyId)
@@ -135,14 +153,15 @@ namespace Blog.Website.Core.ViewModels.Author.BlogStories
             return story;
         }
 
-        public void SetImageUrlIfNotExist(String url, Int32 thumbMaxWidth)
+        public void SetImageUrlIfNotExist(String url,
+                                          Int32 thumbMaxWidth)
         {
-            if (String.IsNullOrWhiteSpace(StoryImageUrl))
+            if(String.IsNullOrWhiteSpace(StoryImageUrl))
             {
                 StoryImageUrl = url;
             }
 
-            if (String.IsNullOrWhiteSpace(StoryThumbUrl))
+            if(String.IsNullOrWhiteSpace(StoryThumbUrl))
             {
                 StoryThumbUrl = url;
             }
@@ -152,19 +171,23 @@ namespace Blog.Website.Core.ViewModels.Author.BlogStories
 
         public String GetShareLink(IUrlHelper url)
         {
-            if (String.IsNullOrWhiteSpace(AccessToken))
+            if(String.IsNullOrWhiteSpace(AccessToken))
             {
-                return url.Action(IsPublished ? "Story" : "Preview", "BlogStory", new {alias = Alias});
+                return url.Action(IsPublished
+                                      ? "Story"
+                                      : "Preview",
+                                  "BlogStory",
+                                  new {alias = Alias});
             }
 
             return IsPublished
-                       ? url.Action("Story", "BlogStory", new {alias = Alias})
-                       : url.Action("Preview", "BlogStory", new {alias = Alias, token = AccessToken});
+                ? url.Action("Story", "BlogStory", new {alias = Alias})
+                : url.Action("Preview", "BlogStory", new {alias = Alias, token = AccessToken});
         }
 
         private void ResizeThumbImage(Int32 thumbMaxWidth)
         {
-            if (String.IsNullOrWhiteSpace(StoryThumbUrl))
+            if(String.IsNullOrWhiteSpace(StoryThumbUrl))
             {
                 return;
             }
@@ -174,7 +197,8 @@ namespace Blog.Website.Core.ViewModels.Author.BlogStories
             query.TryGetValue("width", out var widthValue);
             query.TryGetValue("height", out var heightValue);
 
-            if (String.IsNullOrWhiteSpace(widthValue) || String.IsNullOrWhiteSpace(heightValue))
+            if(String.IsNullOrWhiteSpace(widthValue) ||
+               String.IsNullOrWhiteSpace(heightValue))
             {
                 return;
             }

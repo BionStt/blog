@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Blog.Core.Entities;
+using Blog.Core.Helpers;
 using Blog.Data.Contracts.Repositories;
 using Blog.Data.EntityFramework.Context;
 using GenRep.EntityFramework;
@@ -16,6 +17,14 @@ namespace Blog.Data.EntityFramework.Repository
     {
         public BlogStoryTagRepository(BlogContext context) : base(context)
         {
+        }
+
+        public Task<List<Guid>> GetIdsByStoryIdAsync(Guid storyId,
+                                                     CancellationToken cancel = default)
+        {
+            return Entities.Where(x => x.BlogStoryId == storyId)
+                           .Select(x => x.TagId)
+                           .ToListAsync(cancel);
         }
 
         public Task<List<BlogStoryTag>> GetByStoryIdAsync(Guid storyId,
@@ -40,6 +49,11 @@ namespace Blog.Data.EntityFramework.Repository
         public Task AddRangeAsync(List<BlogStoryTag> blogStoryTags,
                                   CancellationToken cancel)
         {
+            foreach (var blogStoryTag in blogStoryTags)
+            {
+                blogStoryTag.CreateDate = DateTime.UtcNow;
+            }
+
             return base.AddRangeAsync(blogStoryTags, cancel);
         }
 
@@ -49,8 +63,21 @@ namespace Blog.Data.EntityFramework.Repository
             return base.DeleteRangeAsync(tags, cancel);
         }
 
+        public async Task DeleteRangeAsync(IEnumerable<Guid> tagIds,
+                                           Guid storyId,
+                                           CancellationToken cancel = default)
+        {
+            var storyTags = await Entities.Where(x => x.BlogStoryId == storyId && tagIds.Contains(x.TagId))
+                                          .ToListAsync(cancel);
+
+            if(storyTags.IsNotEmpty())
+            {
+                await DeleteRangeAsync(storyTags, cancel);
+            }
+        }
+
         public new Task DeleteAsync(BlogStoryTag blogStoryTag,
-                                CancellationToken cancel)
+                                    CancellationToken cancel)
         {
             return base.DeleteAsync(blogStoryTag, cancel);
         }

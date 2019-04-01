@@ -61,12 +61,8 @@ namespace Blog.Website.Areas.Author.Controllers
             }
 
             model.SetImageUrlIfNotExist(_defaultStoryImage.Value.Url, _defaultStoryImage.Value.Width);
+            
             var blogStory = await _blogStoryManager.CreateOrUpdateAsync(model.ToDomain(), Cancel);
-
-            var tagIds = model.TagsSelected?.GetGuids(',')
-                              .ToList();
-            await _tagManager.UpdateBlogStoryTagsAsync(tagIds, blogStory, Cancel);
-
             return RedirectToAction("Edit", new {storyId = blogStory.Id});
         }
     }
