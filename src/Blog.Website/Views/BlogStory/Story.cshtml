@@ -3,7 +3,9 @@
 @{
     Layout = "_Layout";
     ViewBag.Title = Model.Title;
-    ViewBag.Description = Model.Description;
+    ViewBag.Description = String.IsNullOrEmpty(Model.SeoDescription)
+        ? Model.Description
+        : Model.SeoDescription;
     ViewBag.Keywords = Model.Keywords;
     ViewBag.ImageLink = Model.StoryImageUrl;
 
@@ -45,7 +47,10 @@
                                 @foreach (var tag in Model.StoryTags)
                                 {
                                     <li class="b-post__tag">
-                                        <a href="@Url.Action("Tags", "Tags", new { alias = tag.Alias})" class="b-post__tag-link">
+                                        <a href="@Url.Action("Tags", "Tags", new
+                                                 {
+                                                     alias = tag.Alias
+                                                 })" class="b-post__tag-link">
                                             <svg class="b-icon__tag b-post__tag-icon">
                                                 <use xlink:href="/img/sprite/sprite.svg#tag"></use>
                                             </svg>
@@ -74,6 +79,19 @@
 }
 
 @section additionalScripts{
-    <script>var pathSegments = window.location.pathname.split('/'); if (pathSegments.length === 2) { var options = { scriptUrl: 'https://d2funlife.disqus.com/embed.js', disqusConfig: function() { this.page.title = $("title").text(); this.page.url = window.location.href; this.page.identifier = window.location.pathname.replace("/", ""); } }; $.disqusLoader("#disqus", options); }</script>
+    <script>
+        var pathSegments = window.location.pathname.split('/');
+        if (pathSegments.length === 2) {
+            var options = {
+                scriptUrl: 'https://d2funlife.disqus.com/embed.js',
+                disqusConfig: function() {
+                    this.page.title = $("title").text();
+                    this.page.url = window.location.href;
+                    this.page.identifier = window.location.pathname.replace("/", "");
+                }
+            };
+            $.disqusLoader("#disqus", options);
+        }
+    </script>
     <script async src="/ya-share"></script>
 }

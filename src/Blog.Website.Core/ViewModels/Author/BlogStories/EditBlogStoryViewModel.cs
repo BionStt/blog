@@ -25,6 +25,8 @@ namespace Blog.Website.Core.ViewModels.Author.BlogStories
         [Required]
         public String Description { get; set; }
 
+        public String SeoDescription { get; set; }
+        
         public String Keywords { get; set; }
 
         public String CreateDate { get; set; }
@@ -69,6 +71,7 @@ namespace Blog.Website.Core.ViewModels.Author.BlogStories
                 Title = blogStory.Title;
                 Alias = blogStory.Alias;
                 Description = blogStory.Description;
+                SeoDescription = blogStory.SeoDescription;
                 Keywords = blogStory.SeoKeywords;
                 Content = blogStory.Content;
                 StoryImageUrl = blogStory.StoryImageUrl;
@@ -114,6 +117,7 @@ namespace Blog.Website.Core.ViewModels.Author.BlogStories
                        Title = Title.Trim(),
                        Alias = slug ?? Alias,
                        Description = Description.Trim(),
+                       SeoDescription = SeoDescription.Trim(),
                        SeoKeywords = Keywords,
                        Content = Content ?? String.Empty,
                        StoryImageUrl = StoryImageUrl?.Trim(),

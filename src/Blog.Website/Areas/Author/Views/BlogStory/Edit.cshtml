@@ -17,6 +17,11 @@
                     <span class="has-error" asp-validation-for="Description"></span>
                 </div>
                 <div class="form-group">
+                    <label class="control-label" asp-for='SeoDescription'></label>
+                    <textarea rows="2" class="form-control" asp-for="SeoDescription">@Model.SeoDescription</textarea>
+                    <span class="has-error" asp-validation-for="SeoDescription"></span>
+                </div>
+                <div class="form-group">
                     <label class="control-label" asp-for="Keywords"></label>
                     <input asp-for="Keywords" type="text" class="form-control" placeholder="keyword, keyword1, keyword2">
                     <span class="has-error" asp-validation-for="Keywords"></span>
