@@ -16,7 +16,7 @@ namespace Blog.Website.Core.ViewModels.Author.BlogStories
         {
             var additionalPageCount = totalBlogStoriesCount % pageSize > 0 ? 1 : 0;
             TotalPageCount = totalBlogStoriesCount / pageSize + additionalPageCount;
-            Page = page;
+            Page = page <= 0 ? 1 : page;
 
             if (stories == null || !stories.Any())
             {

@@ -16,7 +16,7 @@ namespace Blog.Website.Core.ViewModels.Author.Tag
                              Int32 page,
                              Int32 pageSize)
         {
-            Page = page;
+            Page = page <= 0 ? 1 : page;
             TotalPageCount = (Int32) Math.Ceiling((Double) totalCount / pageSize);
             Tags = tags == null
                 ? new List<TagShort>(0)
