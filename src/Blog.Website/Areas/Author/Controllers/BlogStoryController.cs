@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Linq;
 using System.Threading.Tasks;
 using Blog.Core.Contracts.Managers;
 using Blog.Core.Queries;
-using Blog.Extensions.Helpers;
 using Blog.Website.Controllers;
 using Blog.Website.Core.ConfigurationOptions;
 using Blog.Website.Core.ViewModels.Author.BlogStories;
@@ -21,17 +19,13 @@ namespace Blog.Website.Areas.Author.Controllers
         private readonly IBlogStoryManager _blogStoryManager;
         private readonly ITagManager _tagManager;
 
-        private readonly IOptions<StoryImageOption> _defaultStoryImage;
-
         public BlogStoryController(IBlogStoryManager blogStoryManager,
                                    ITagManager tagManager,
-                                   IOptions<DefaultPageInfoOption> pageInfo,
-                                   IOptions<StoryImageOption> defaultStoryImage)
+                                   IOptions<DefaultPageInfoOption> pageInfo)
             : base(pageInfo)
         {
             _blogStoryManager = blogStoryManager;
             _tagManager = tagManager;
-            _defaultStoryImage = defaultStoryImage;
         }
 
         [HttpGet]
@@ -53,15 +47,16 @@ namespace Blog.Website.Areas.Author.Controllers
 
         [HttpPost("edit/{storyId:guid?}", Name = "edit-story"), ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit([FromRoute] Guid storyId,
-                                              EditBlogStoryViewModel model)
+                                              EditBlogStoryViewModel model,
+                                              [FromServices] IOptions<StoryImageOption> defaultStoryImage)
         {
             if(!ModelState.IsValid)
             {
                 return View(model);
             }
 
-            model.SetImageUrlIfNotExist(_defaultStoryImage.Value.Url, _defaultStoryImage.Value.Width);
-            
+            model.SetImageUrlIfNotExist(defaultStoryImage.Value.Url, defaultStoryImage.Value.Width);
+
             var blogStory = await _blogStoryManager.CreateOrUpdateAsync(model.ToDomain(), Cancel);
             return RedirectToAction("Edit", new {storyId = blogStory.Id});
         }
