@@ -10,6 +10,7 @@ namespace Blog.Website.Core.ViewModels.Author.Tag
         public String SeoTitle { get; set; }
         public String SeoDescription { get; set; }
         public String Keywords { get; set; }
+        public Int32 Score { get; set; }
 
         public TagEditViewModel()
         {
@@ -23,6 +24,7 @@ namespace Blog.Website.Core.ViewModels.Author.Tag
             SeoTitle = tag.SeoTitle;
             SeoDescription = tag.SeoDescription;
             Keywords = tag.SeoKeywords;
+            Score = tag.Score;
         }
 
         public Blog.Core.Entities.Tag ToDomain()
@@ -34,7 +36,8 @@ namespace Blog.Website.Core.ViewModels.Author.Tag
                 Alias = Alias,
                 SeoTitle = SeoTitle,
                 SeoDescription = SeoDescription,
-                SeoKeywords = Keywords
+                SeoKeywords = Keywords,
+                Score = Score
             };
         }
     }
