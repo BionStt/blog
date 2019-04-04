@@ -24,6 +24,16 @@
                             <span>Title</span>
                         </div>
                     </div>
+                    <div class="item-col item-col-header item-col-title">
+                        <div>
+                            <span>Seo title</span>
+                        </div>
+                    </div>
+                    <div class="item-col item-col-header item-col-stats">
+                        <div class="no-overflow">
+                            <span>Score</span>
+                        </div>
+                    </div>
                     <div class="item-col item-col-header item-col-stats">
                         <div class="no-overflow">
                             <span>Status</span>
@@ -37,17 +47,25 @@
                 <li class="item">
                     <div class="item-row">
                         <div class="item-col fixed pull-left item-col-title no-overflow">
-                            <div class="item-heading">Title</div>
                             <div>
                                 <a asp-area="author" asp-controller="Tag" asp-action="Edit" asp-route-id="@tag.Id">
                                     <h4 class="item-title" tag-id="@tag.Id"> @tag.Name </h4>
                                 </a>
                             </div>
                         </div>
+                        <div class="item-col fixed pull-left item-col-title no-overflow">
+                            <div class="no-overflow"> @tag.SeoTitle</div>
+                        </div>
                         <div class="item-col item-col-stats no-overflow">
-                            <div class="item-heading">Stats</div>
-                            <div class="no-overflow val @(tag.IsPublished ? ("status-publish") : ("status-draft"))">
-                                 @(tag.IsPublished? "Published" : "Draft")
+                            <div class="no-overflow"> @tag.Score</div>
+                        </div>
+                        <div class="item-col item-col-stats no-overflow">
+                            <div class="no-overflow val @(tag.IsPublished
+                                                              ? ("status-publish")
+                                                              : ("status-draft"))">
+                                @(tag.IsPublished
+                                      ? "Published"
+                                      : "Draft")
                             </div>
                         </div>
                         <div class="item-col fixed item-col-actions-dropdown">
@@ -64,7 +82,7 @@
     </div>
     <nav class="text-xs-right">
         <ul class="pagination">
-            @if (Model.Page > 1)
+            @if(Model.Page > 1)
             {
                 <li class="page-item">
                     <a class="page-link" asp-controller="Tag" asp-action="Index" asp-route-page="@(Model.Page - 1)">
@@ -72,7 +90,7 @@
                     </a>
                 </li>
             }
-            @if (Model.Page < Model.TotalPageCount)
+            @if(Model.Page < Model.TotalPageCount)
             {
                 <li class="page-item">
                     <a class="page-link" asp-controller="Tag" asp-action="Index" asp-route-page="@(Model.Page + 1)">

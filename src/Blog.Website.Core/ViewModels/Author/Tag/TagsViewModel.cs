@@ -9,7 +9,7 @@ namespace Blog.Website.Core.ViewModels.Author.Tag
     {
         public Int32 Page { get; set; }
         public Int32 TotalPageCount { get; set; }
-        public List<TagShort> Tags { get; set; }
+        public List<TagResume> Tags { get; set; }
 
         public TagsViewModel(List<Blog.Core.Entities.Tag> tags,
                              Int32 totalCount,
@@ -19,8 +19,8 @@ namespace Blog.Website.Core.ViewModels.Author.Tag
             Page = page <= 0 ? 1 : page;
             TotalPageCount = (Int32) Math.Ceiling((Double) totalCount / pageSize);
             Tags = tags == null
-                ? new List<TagShort>(0)
-                : tags.Select(x => new TagShort(x))
+                ? new List<TagResume>(0)
+                : tags.Select(x => new TagResume(x))
                       .ToList();
         }
 

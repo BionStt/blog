@@ -22,6 +22,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.WebEncoders;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace Blog.Website
 {
@@ -79,7 +81,18 @@ namespace Blog.Website
             {
                 options.MaxModelValidationErrors = 5;
                 options.Filters.Add(typeof(GlobalException));
+            }).AddJsonOptions(options =>
+            {
+                options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+                options.SerializerSettings.DateFormatString = "dd.MM.yyyy HH:mm:ss zzz";
+                options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
             });
+
+            JsonConvert.DefaultSettings = () => new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+                ContractResolver = new CamelCasePropertyNamesContractResolver()
+            };
 
             services.AddTransient<IBlogStoryManager>(provider => new BlogStoryManager(provider.GetService<IBlogStoryRepository>(),
                                                                                       provider.GetService<ITagManager>()));

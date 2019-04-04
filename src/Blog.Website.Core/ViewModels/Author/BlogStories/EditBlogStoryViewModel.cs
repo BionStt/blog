@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Primitives;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using Formatting = Newtonsoft.Json.Formatting;
 
 namespace Blog.Website.Core.ViewModels.Author.BlogStories
@@ -95,7 +96,7 @@ namespace Blog.Website.Core.ViewModels.Author.BlogStories
         {
             Tags = tags == null
                 ? "[]"
-                : JsonConvert.SerializeObject(tags.Select(x => new TagShort(x)).ToList(), Formatting.None);
+                : JsonConvert.SerializeObject(tags.Select(x => new TagShort(x)).ToList());
 
             ShareLink = GetShareLink(url);
         }
