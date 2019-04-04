@@ -11,6 +11,7 @@ namespace Blog.Website.Core.ViewModels.Author.Tag
         public String SeoDescription { get; set; }
         public String Keywords { get; set; }
         public Int32 Score { get; set; }
+        public Boolean IsPublished { get; set; }
 
         public TagEditViewModel()
         {
@@ -25,6 +26,7 @@ namespace Blog.Website.Core.ViewModels.Author.Tag
             SeoDescription = tag.SeoDescription;
             Keywords = tag.SeoKeywords;
             Score = tag.Score;
+            IsPublished = tag.IsPublished;
         }
 
         public Blog.Core.Entities.Tag ToDomain()

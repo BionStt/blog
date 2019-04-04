@@ -24,12 +24,12 @@
                 </div>
                 <div class="form-group">
                     <label class="control-label" asp-for="SeoTitle"></label>
-                    <textarea rows="5" class="form-control" asp-for="SeoTitle" >@Model.SeoTitle</textarea>
+                    <textarea rows="5" class="form-control" asp-for="SeoTitle"></textarea>
                     <span class="has-error" asp-validation-for="SeoTitle"></span>
                 </div>
                 <div class="form-group">
                     <label class="control-label" asp-for="SeoDescription"></label>
-                    <textarea rows="5" class="form-control" asp-for="SeoDescription" >@Model.SeoDescription</textarea>
+                    <textarea rows="5" class="form-control" asp-for="SeoDescription"></textarea>
                     <span class="has-error" asp-validation-for="SeoDescription"></span>
                 </div>
                 <div class="form-group">
@@ -37,9 +37,36 @@
                     <input asp-for="Score" type="number" class="form-control">
                     <span class="has-error" asp-validation-for="Score"></span>
                 </div>
+
             </div>
             <div class="col-xl-2 col-md-3">
+                @if(Model.Id != Guid.Empty)
+                {
+                    <button type="button" class="btn btn-primary btn-block" id="publish-btn" set="@(Model.IsPublished
+                                                                                                        ? "false"
+                                                                                                        : "true")">
+                        @(Model.IsPublished
+                              ? "Un publish"
+                              : "Publish")
+                    </button>
+                    <button type="button" class="btn btn-primary btn-block" id="remove-tag-btn">Remove</button>
+                }
                 <button type="button" class="btn btn-primary btn-block mb-1 submit">Save</button>
+                <div class="form-group">
+                    <label class="control-label">Status</label>
+                    <section id="story-status">
+                        @if(Model.IsPublished)
+                        {
+                            <i class="fa fa-smile-o status-publish"></i>
+                            <span> Published</span>
+                        }
+                        else
+                        {
+                            <i class="fa fa-meh-o status-draft"></i>
+                            <span> Draft</span>
+                        }
+                    </section>
+                </div>
             </div>
             <input type="hidden" asp-for="Id"/>
             <input type="hidden" asp-for="Alias"/>
