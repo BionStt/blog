@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Blog.Website.Areas.Author.Controllers
 {
     [Authorize]
-    [Area("author"), Route("api/v{version:int}/author/stories")]
+    [Area("author"), Route("api/author/stories")]
     public class BlogStoryApiController : BaseController
     {
         private readonly IBlogStoryManager _blogStoryManager;

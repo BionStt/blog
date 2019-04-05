@@ -13,7 +13,7 @@
     removeTag: function (tagId) {
         $.ajax({
             type: "DELETE",
-            url: "/author/tags/" + tagId,
+            url: "/api/author/tags/" + tagId,
             success: function () { location.reload(); },
             error: function (data) { alert(data); }
         });

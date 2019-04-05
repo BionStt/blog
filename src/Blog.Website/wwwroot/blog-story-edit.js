@@ -78,7 +78,7 @@ var blogStoryManager = {
                 var request = JSON.stringify({name: input});
                 $.ajax({
                     type: "POST",
-                    url: "/api/v1/author/tags",
+                    url: "/api/author/tags",
                     data: request,
                     contentType: "application/json",
                     success: function (data) {
@@ -162,7 +162,7 @@ var blogStoryManager = {
 
         $.ajax({
             type: "DELETE",
-            url: "/api/v1/author/stories/" + id,
+            url: "/api/author/stories/" + id,
             success: function () {
                 document.location.replace("/author/stories");
             }
