@@ -116,7 +116,7 @@
     <script src="https://cdn.jsdelivr.net/npm/tinymce@4.7.13/tinymce.min.js"></script>
     <script src="~/blog-story-edit.js?v=@Versioning.Current"></script>
     <script>
-        var tags = @Html.Raw(Model.Tags);
+        var tags=@Html.Raw(Model.Tags);
         blogStoryManager.initialize(tags);
     </script>
 }

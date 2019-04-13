@@ -1,20 +1,20 @@
 var tagManager = {
     initialize: function () {
-        $('#confirm-modal').on('show.bs.modal',
+        $('#remove-tag-btn').click(
             function (event) {
-                var button = $(event.relatedTarget);
-                var tag = button.data('tag');
-                var modal = $(this);
-                modal.find('.btn-primary').click(function () {
-                    tagManager.removeTag(tag);
-                });
+                var isAccept = confirm("Удалить тег?");
+                if(isAccept){
+                    var button = $(event.currentTarget);
+                    var tagId = button.data('tag');
+                    tagManager.removeTag(tagId);
+                }
             });
     },
     removeTag: function (tagId) {
         $.ajax({
             type: "DELETE",
             url: "/api/author/tags/" + tagId,
-            success: function () { location.reload(); },
+            success: function () { document.location.replace("/author/tags"); },
             error: function (data) { alert(data); }
         });
     }
