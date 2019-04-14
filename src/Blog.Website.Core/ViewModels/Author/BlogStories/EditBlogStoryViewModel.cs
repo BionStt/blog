@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Xml;
@@ -26,6 +27,7 @@ namespace Blog.Website.Core.ViewModels.Author.BlogStories
         [Required]
         public String Description { get; set; }
 
+        [DisplayName("Seo description")]
         public String SeoDescription { get; set; }
 
         public String Keywords { get; set; }

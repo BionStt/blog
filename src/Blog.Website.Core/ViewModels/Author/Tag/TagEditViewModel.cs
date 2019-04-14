@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 
 namespace Blog.Website.Core.ViewModels.Author.Tag
 {
@@ -7,7 +8,11 @@ namespace Blog.Website.Core.ViewModels.Author.Tag
         public Guid Id { get; set; }
         public String Name { get; set; }
         public String Alias { get; set; }
+        
+        [DisplayName("Seo title")]
         public String SeoTitle { get; set; }
+        
+        [DisplayName("Seo description")]
         public String SeoDescription { get; set; }
         public String Keywords { get; set; }
         public Int32 Score { get; set; }
