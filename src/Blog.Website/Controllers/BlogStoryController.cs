@@ -27,7 +27,7 @@ namespace Blog.Website.Controllers
         public async Task<IActionResult> Index([FromQuery] Int32 page = 1)
         {
             var storiesPage = await _blogStoryManager.GetPageWithTagsAsync(GetStoriesRequest.ToPublishedQuery(page, PageSize), Cancel);
-            var topTags = await _tagManager.GetTopAsync(Cancel);
+            var topTags = await _tagManager.GetTopPublishedAsync(Cancel);
 
             return View("IndexPub", new MainPageViewModel(storiesPage,
                                                           topTags,
@@ -43,7 +43,7 @@ namespace Blog.Website.Controllers
                 return NotFound();
             }
 
-            var tags = await _tagManager.GetTopAsync(Cancel);
+            var tags = await _tagManager.GetTopPublishedAsync(Cancel);
             
             return View(new FullStoryViewModel(story, tags));
         }
@@ -63,7 +63,7 @@ namespace Blog.Website.Controllers
                 !story.AccessToken.Equals(token, StringComparison.Ordinal)))
                 return NotFound();
 
-            var tags = await _tagManager.GetTopAsync(Cancel);
+            var tags = await _tagManager.GetTopPublishedAsync(Cancel);
             
             return View("Story", new FullStoryViewModel(story, tags));
         }

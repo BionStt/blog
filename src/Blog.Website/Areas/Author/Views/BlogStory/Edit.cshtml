@@ -8,17 +8,22 @@
             <div class="col-xl-10 col-md-9">
                 <div class="form-group">
                     <label class="control-label" asp-for="Title"></label>
-                    <input asp-for="Title" type="text" class="form-control form-control underlined" placeholder="Blog story title">
+                    <input asp-for="Title" type="text" class="form-control" placeholder="Enter story title">
                     <span class="has-error" asp-validation-for="Title"></span>
                 </div>
                 <div class="form-group">
                     <label class="control-label" asp-for='Description'></label>
-                    <textarea rows="5" class="form-control" asp-for="Description" >@Model.Description</textarea>
+                    <textarea rows="2" class="form-control" asp-for="Description" placeholder="Enter description"></textarea>
                     <span class="has-error" asp-validation-for="Description"></span>
                 </div>
                 <div class="form-group">
+                    <label class="control-label" asp-for='SeoDescription'></label>
+                    <textarea rows="2" class="form-control" asp-for="SeoDescription" placeholder="Enter seo description"></textarea>
+                    <span class="has-error" asp-validation-for="SeoDescription"></span>
+                </div>
+                <div class="form-group">
                     <label class="control-label" asp-for="Keywords"></label>
-                    <input asp-for="Keywords" type="text" class="form-control form-control underlined" placeholder="keyword, keyword1, keyword2">
+                    <input asp-for="Keywords" type="text" class="form-control" placeholder="keyword, keyword1, keyword2">
                     <span class="has-error" asp-validation-for="Keywords"></span>
                 </div>
                 <div class="form-group">
@@ -46,23 +51,32 @@
                 </div>
             </div>
             <div class="col-xl-2 col-md-3">
-                <button type="button" class="btn btn-primary btn-block" id="publish-btn" set="@(Model.IsPublished ? "false" : "true")">
+                <button type="button" class="btn btn-primary btn-block" id="publish-btn" set="@(Model.IsPublished
+                                                                                                    ? "false"
+                                                                                                    : "true")">
                     @(Model.IsPublished
                           ? "Un publish"
                           : "Publish")
                 </button>
-                <a id="share-link" target="_blank" class="btn btn-primary btn-block" href="@Model.GetShareLink(Url)">Preview</a>
-                <button type="button" class="btn btn-primary btn-block" id="update-access-token-btn">
-                    @(String.IsNullOrWhiteSpace(Model.AccessToken)
-                          ? "Create access token"
-                          : "Update access token")
-                </button>
-                @if (!String.IsNullOrWhiteSpace(Model.AccessToken))
+                @if(Model.Id != Guid.Empty)
+                {
+                    <a id="share-link" target="_blank" class="btn btn-primary btn-block" href="@Model.GetShareLink(Url)">Preview</a>
+                    <button type="button" class="btn btn-primary btn-block" id="update-access-token-btn">
+                        @(String.IsNullOrWhiteSpace(Model.AccessToken)
+                              ? "Create access token"
+                              : "Change access token")
+                    </button>
+                }
+                @if(!String.IsNullOrWhiteSpace(Model.AccessToken))
                 {
                     <button type="button" class="btn btn-primary btn-block" id="remove-access-token-btn">Remove access token</button>
                 }
-                <button type="button" class="btn btn-primary btn-block mb-1 submit">Save</button>
-                @if (!System.String.IsNullOrWhiteSpace(Model.CreateDate))
+                @if(Model.Id != Guid.Empty)
+                {
+                    <button type="button" class="btn btn-primary btn-block" id="remove-story-btn">Remove story</button>
+                }
+                <button type="button" class="btn btn-primary btn-block mb-1 submit">Save story</button>
+                @if(!System.String.IsNullOrWhiteSpace(Model.CreateDate))
                 {
                     <div class="form-group">
                         <label class="control-label">Craeted date</label>
@@ -72,7 +86,7 @@
                 <div class="form-group">
                     <label class="control-label">Status</label>
                     <section id="story-status">
-                        @if (Model.IsPublished)
+                        @if(Model.IsPublished)
                         {
                             <i class="fa fa-smile-o status-publish"></i>
                             <span> Published</span>
@@ -86,7 +100,7 @@
                 </div>
                 <div class="form-group">
                     <label class="control-label">Tags</label>
-                    <input asp-for="TagsSelected" type="text" class="form-control tag-editor"/>
+                    <input asp-for="TagsSelected" type="text" class="form-control tag-editor" placeholder="Enter tag name"/>
                 </div>
             </div>
             <input type="hidden" asp-for="Id"/>
@@ -100,9 +114,9 @@
 @section additionalScripts
 {
     <script src="https://cdn.jsdelivr.net/npm/tinymce@4.7.13/tinymce.min.js"></script>
-    <script src="~/blog-story-edit.min.js?v=@Versioning.Current"></script>
+    <script src="~/js/admin/blog-story-edit.js"></script>
     <script>
-        var tags = @Html.Raw(Model.Tags);
+        var tags=@Html.Raw(Model.Tags);
         blogStoryManager.initialize(tags);
     </script>
 }

@@ -2,12 +2,16 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Blog.Core.Containers;
 using Blog.Core.Entities;
+using Blog.Core.Queries;
 
 namespace Blog.Core.Contracts.Managers
 {
     public interface ITagManager
     {
+        Task<Page<Tag>> GetAsync(TagsQuery query, CancellationToken cancel = default);
+
         /// <summary>
         /// Get tag
         /// </summary>
@@ -32,7 +36,7 @@ namespace Blog.Core.Contracts.Managers
         /// <param name="cancel">Cancellation token</param>
         /// <returns>Tag entities</returns>
         Task<List<Tag>> GetAllPublishedAsync(CancellationToken cancel = default);
-
+        
         /// <summary>
         /// Delete tag
         /// </summary>
@@ -44,20 +48,18 @@ namespace Blog.Core.Contracts.Managers
         /// <summary>
         /// Assign tag to blog story
         /// </summary>
-        /// <param name="tagIds">Tag id</param>
         /// <param name="story">Blog story entity</param>
         /// <param name="cancel">Cancellation token</param>
-        Task UpdateBlogStoryTagsAsync(List<Guid> tagIds,
-                                      BlogStory story,
+        Task UpdateBlogStoryTagsAsync(BlogStory story,
                                       CancellationToken cancel = default);
 
         /// <summary>
         /// Create tag
         /// </summary>
-        /// <param name="name">Tag name</param>
+        /// <param name="tag">Tag model</param>
         /// <param name="cancel">Cancellation token</param>
         /// <returns>Tag entity</returns>
-        Task<Tag> CreateTagAsync(String name,
+        Task<Tag> CreateTagAsync(Tag tag,
                                  CancellationToken cancel = default);
 
         /// <summary>
@@ -91,7 +93,7 @@ namespace Blog.Core.Contracts.Managers
         Task<Tag> UpdateAsync(Tag tag,
                               CancellationToken cancel = default);
 
-        Task<List<Tag>> GetTopAsync(CancellationToken cancel = default);
+        Task<List<Tag>> GetTopPublishedAsync(CancellationToken cancel = default);
 
         Task<Guid> GetTagIdAsync(String alias,
                                  CancellationToken cancel = default);

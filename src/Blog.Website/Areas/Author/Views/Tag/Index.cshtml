@@ -9,7 +9,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <h3 class="title">
-                        Tags
+                        Tags <a href="#" data-toggle="modal" data-target="#add-tag-modal" class="btn btn-primary btn-sm rounded-s">Add new</a>
                     </h3>
                 </div>
             </div>
@@ -22,6 +22,16 @@
                     <div class="item-col item-col-header item-col-title">
                         <div>
                             <span>Title</span>
+                        </div>
+                    </div>
+                    <div class="item-col item-col-header item-col-title">
+                        <div>
+                            <span>Seo title</span>
+                        </div>
+                    </div>
+                    <div class="item-col item-col-header item-col-stats">
+                        <div class="no-overflow">
+                            <span>Score</span>
                         </div>
                     </div>
                     <div class="item-col item-col-header item-col-stats">
@@ -37,22 +47,30 @@
                 <li class="item">
                     <div class="item-row">
                         <div class="item-col fixed pull-left item-col-title no-overflow">
-                            <div class="item-heading">Title</div>
                             <div>
                                 <a asp-area="author" asp-controller="Tag" asp-action="Edit" asp-route-id="@tag.Id">
                                     <h4 class="item-title" tag-id="@tag.Id"> @tag.Name </h4>
                                 </a>
                             </div>
                         </div>
+                        <div class="item-col fixed pull-left item-col-title no-overflow">
+                            <div class="no-overflow"> @tag.SeoTitle</div>
+                        </div>
                         <div class="item-col item-col-stats no-overflow">
-                            <div class="item-heading">Stats</div>
-                            <div class="no-overflow val @(tag.IsPublished ? ("status-publish") : ("status-draft"))">
-                                 @(tag.IsPublished? "Published" : "Draft")
+                            <div class="no-overflow"> @tag.Score</div>
+                        </div>
+                        <div class="item-col item-col-stats no-overflow">
+                            <div class="no-overflow val @(tag.IsPublished
+                                                              ? ("status-publish")
+                                                              : ("status-draft"))">
+                                @(tag.IsPublished
+                                      ? "Published"
+                                      : "Draft")
                             </div>
                         </div>
                         <div class="item-col fixed item-col-actions-dropdown">
                             <div class="item-actions-dropdown">
-                                <div data-toggle="modal" data-target="#confirm-modal" data-tag="@tag.Id" data-keyboard="true">
+                                <div data-toggle="modal" data-tag="@tag.Id" class="remove-tag-btn">
                                     <i class="fa fa-trash-o "></i>
                                 </div>
                             </div>
@@ -64,7 +82,7 @@
     </div>
     <nav class="text-xs-right">
         <ul class="pagination">
-            @if (Model.Page > 1)
+            @if(Model.Page > 1)
             {
                 <li class="page-item">
                     <a class="page-link" asp-controller="Tag" asp-action="Index" asp-route-page="@(Model.Page - 1)">
@@ -72,7 +90,7 @@
                     </a>
                 </li>
             }
-            @if (Model.Page < Model.TotalPageCount)
+            @if(Model.Page < Model.TotalPageCount)
             {
                 <li class="page-item">
                     <a class="page-link" asp-controller="Tag" asp-action="Index" asp-route-page="@(Model.Page + 1)">
@@ -83,10 +101,35 @@
         </ul>
     </nav>
 </article>
+<div class="modal fade" id="add-tag-modal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                    <span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title">Add tag</h4>
+            </div>
+            <div class="modal-body modal-tab-container">
+                <div class="col-md-12" style="margin-top: 20px;">
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="newtag-name" placeholder="Enter tag name">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="newtag-alias" placeholder="Enter tag alias">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal" id="create-tag-btn">Create</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 @section additionalScripts{
-    <script src="~/tag-index.min.js?v=@Versioning.Current"></script>
-    <script>
-        tagManager.initialize();
-    </script>
+    <script src="~/js/admin/tag-index.js"></script>
+    <script>tagManager.initialize();</script>
 }

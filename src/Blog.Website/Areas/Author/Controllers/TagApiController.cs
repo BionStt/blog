@@ -1,57 +1,69 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Blog.Core.Contracts.Managers;
+using Blog.Website.Controllers;
 using Blog.Website.Core.Requests;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace Blog.Website.Areas.Author.Controllers
 {
     [Authorize]
-    [Area("author"), Route("api/{version:int}/author/tags")]
-    public class TagApiController : Controller
+    [Area("author"), Route("api/author/tags")]
+    public class TagApiController : BaseController
     {
         private readonly ITagManager _tagManager;
-        private readonly ILogger<TagApiController> _logger;
 
-        public TagApiController(ITagManager tagManager,
-                                ILogger<TagApiController> logger)
+        public TagApiController(ITagManager tagManager)
         {
             _tagManager = tagManager;
-            _logger = logger;
         }
 
-        [HttpPost, ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([FromRoute] Int32 version,
-                                                [FromBody] TagCreateRequest request)
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] TagCreateRequest request)
         {
-            var cancel = HttpContext.RequestAborted;
-            var tag = await _tagManager.CreateTagAsync(request.Name, cancel);
+            var tag = await _tagManager.CreateTagAsync(request.ToDomain(), Cancel);
             return Ok(new {id = tag.Id, name = tag.Name});
         }
 
-        [HttpPost("assign/story"), ValidateAntiForgeryToken]
-        public async Task<IActionResult> AssignToBlogStory([FromBody] TagToBlogStoryRequest request)
+        [HttpPatch("{tagId:guid}")]
+        public async Task<ActionResult> PatchTag([FromRoute] Guid tagId,
+                                                 [FromBody] JsonPatchDocument<TagEditRequest> request)
         {
-            var cancel = HttpContext.RequestAborted;
-            var story = await _tagManager.AssignTagToBlogStoryAsync(request.TagId, request.BlogStoryId, cancel);
+            var tag = await _tagManager.GetAsync(tagId, Cancel);
+            if(tag == null)
+            {
+                return NotFound();
+            }
+
+            var patchTag = new TagEditRequest(tag);
+            request.ApplyTo(patchTag);
+
+            var updatedTag = await _tagManager.UpdateAsync(patchTag.ToDomain(), Cancel);
+            return Ok(new {id = updatedTag.Id, name = updatedTag.Name});
+        }
+
+        [HttpPost("{tagId:guid}/stories/{storyId:guid}")]
+        public async Task<IActionResult> AssignToBlogStory([FromRoute] Guid tagId,
+                                                           [FromRoute] Guid storyId)
+        {
+            await _tagManager.AssignTagToBlogStoryAsync(tagId, storyId, Cancel);
             return Ok();
         }
 
-        [HttpPost("unassign/story"), ValidateAntiForgeryToken]
-        public async Task<IActionResult> UnassignTagFromBlogStory([FromBody] TagToBlogStoryRequest request)
+        [HttpDelete("{tagId:guid}/stories/{storyId:guid}")]
+        public async Task<IActionResult> UnassignTagFromBlogStory([FromRoute] Guid tagId,
+                                                                  [FromRoute] Guid storyId)
         {
-            var cancel = HttpContext.RequestAborted;
-            var story = await _tagManager.UnassignTagFromBlogStoryAsync(request.TagId, request.BlogStoryId, cancel);
+            await _tagManager.UnassignTagFromBlogStoryAsync(tagId, storyId, Cancel);
             return Ok();
         }
 
-        [HttpDelete("{id:guid}"), ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete([FromRoute] Guid id)
+        [HttpDelete("{tagId:guid}")]
+        public async Task<IActionResult> Delete([FromRoute] Guid tagId)
         {
-            var cancel = HttpContext.RequestAborted;
-            await _tagManager.DeleteAsync(id, cancel);
+            await _tagManager.DeleteAsync(tagId, Cancel);
             return Ok();
         }
     }

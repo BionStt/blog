@@ -4,9 +4,11 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Blog.Core.Containers;
 using Blog.Core.Contracts.Managers;
 using Blog.Core.Entities;
 using Blog.Core.Exceptions;
+using Blog.Core.Helpers;
 using Blog.Core.Queries;
 using Blog.Data.Contracts.Repositories;
 
@@ -14,8 +16,6 @@ namespace Blog.BusinessLogic.Managers
 {
     public class TagManager : ITagManager
     {
-        private const Int32 NoLimit = Int32.MaxValue;
-
         private readonly ITagRepository _tagRepository;
         private readonly IBlogStoryRepository _blogStoryRepository;
         private readonly IBlogStoryTagRepository _blogStoryTagRepository;
@@ -27,6 +27,13 @@ namespace Blog.BusinessLogic.Managers
             _tagRepository = tagRepository;
             _blogStoryRepository = blogStoryRepository;
             _blogStoryTagRepository = blogStoryTagRepository;
+        }
+
+
+        public Task<Page<Tag>> GetAsync(TagsQuery query,
+                                        CancellationToken cancel = default)
+        {
+            return _tagRepository.GetPageAsync(query, cancel);
         }
 
         public Task<Tag> GetAsync(Guid id,
@@ -60,8 +67,7 @@ namespace Blog.BusinessLogic.Managers
             await _tagRepository.DeleteAsync(originalTag, cancel);
         }
 
-        public async Task UpdateBlogStoryTagsAsync(List<Guid> tagIds,
-                                                   BlogStory story,
+        public async Task UpdateBlogStoryTagsAsync(BlogStory story,
                                                    CancellationToken cancel = default)
         {
             if(story == null)
@@ -69,39 +75,49 @@ namespace Blog.BusinessLogic.Managers
                 throw new ArgumentNullException(nameof(story));
             }
 
-            var existTags = await _blogStoryTagRepository.GetByStoryIdAsync(story.Id, cancel);
-            var isAllTagsRemoved = existTags.Any() && (tagIds == null || !tagIds.Any());
-            if(isAllTagsRemoved)
+            var existTagIds = await _blogStoryTagRepository.GetIdsByStoryIdAsync(story.Id, cancel);
+            var isAddingNewSet = existTagIds.IsEmpty() &&
+                                 story.BlogStoryTags.IsNotEmpty();
+            if(isAddingNewSet)
             {
-                await _blogStoryTagRepository.DeleteRangeAsync(existTags, cancel);
+                await _blogStoryTagRepository.AddRangeAsync(story.BlogStoryTags, cancel);
+                return;
             }
-            else if(tagIds != null)
+
+            
+            if(story.BlogStoryTags.IsEmpty())
             {
-                var existTagIds = existTags.Select(x => x.TagId).ToList();
-
-                var tagIdsToRemove = existTagIds.Except(tagIds).ToList();
-                if(tagIdsToRemove.Any())
+                if(existTagIds.IsNotEmpty())
                 {
-                    await _blogStoryTagRepository.DeleteRangeAsync(existTags.Where(x => tagIdsToRemove.Contains(x.TagId)), cancel);
+                    await _blogStoryTagRepository.DeleteRangeAsync(existTagIds, story.Id, cancel);
                 }
 
-                var blogStoryTagsForCreate = tagIds.Except(existTagIds).Select(x => new BlogStoryTag(story.Id, x)).ToList();
-                if(blogStoryTagsForCreate.Any())
-                {
-                    await _blogStoryTagRepository.AddRangeAsync(blogStoryTagsForCreate, cancel);
-                }
+                return;
+            }
+
+            var targetTagIds = story.BlogStoryTags.Select(x => x.TagId).ToList();
+            var tagsForRemove = existTagIds.Except(targetTagIds).ToList();
+            var tagsForAdding = targetTagIds.Except(existTagIds).ToList();
+
+            if(tagsForAdding.IsNotEmpty())
+            {
+                await _blogStoryTagRepository.AddRangeAsync(story.BlogStoryTags.Where(x => tagsForAdding.Contains(x.TagId)).ToList(), cancel);
+            }
+
+            if(tagsForRemove.IsNotEmpty())
+            {
+                await _blogStoryTagRepository.DeleteRangeAsync(tagsForRemove, story.Id, cancel);
             }
         }
 
-        public async Task<Tag> CreateTagAsync(String name,
+        public async Task<Tag> CreateTagAsync(Tag tag,
                                               CancellationToken cancel = default)
         {
-            if(String.IsNullOrWhiteSpace(name))
+            if(tag == null)
             {
-                throw new ArgumentException(nameof(name));
+                throw new ArgumentException(nameof(tag));
             }
 
-            var tag = new Tag(name);
             await _tagRepository.AddAsync(tag, cancel);
             return tag;
         }
@@ -177,14 +193,9 @@ namespace Blog.BusinessLogic.Managers
             return exitingTag;
         }
 
-        public Task<List<Tag>> GetTopAsync(CancellationToken cancel = default)
+        public Task<List<Tag>> GetTopPublishedAsync(CancellationToken cancel = default)
         {
-            return _tagRepository.GetAsync(new TagsQuery(0, NoLimit)
-                                           {
-                                               WithScores = true,
-                                               IsPublished = true,
-                                           },
-                                           cancel);
+            return _tagRepository.GetTopPublishedAsync(cancel);
         }
 
         public Task<Guid> GetTagIdAsync(String alias,

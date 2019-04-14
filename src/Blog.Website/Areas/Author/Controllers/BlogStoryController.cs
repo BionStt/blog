@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Linq;
 using System.Threading.Tasks;
 using Blog.Core.Contracts.Managers;
-using Blog.Extensions.Helpers;
+using Blog.Core.Queries;
 using Blog.Website.Controllers;
 using Blog.Website.Core.ConfigurationOptions;
 using Blog.Website.Core.ViewModels.Author.BlogStories;
@@ -20,17 +19,13 @@ namespace Blog.Website.Areas.Author.Controllers
         private readonly IBlogStoryManager _blogStoryManager;
         private readonly ITagManager _tagManager;
 
-        private IOptions<StoryImageOption> _defaultStoryImage;
-
         public BlogStoryController(IBlogStoryManager blogStoryManager,
                                    ITagManager tagManager,
-                                   IOptions<DefaultPageInfoOption> pageInfo,
-                                   IOptions<StoryImageOption> defaultStoryImage)
+                                   IOptions<DefaultPageInfoOption> pageInfo)
             : base(pageInfo)
         {
             _blogStoryManager = blogStoryManager;
             _tagManager = tagManager;
-            _defaultStoryImage = defaultStoryImage;
         }
 
         [HttpGet]
@@ -42,64 +37,28 @@ namespace Blog.Website.Areas.Author.Controllers
         }
 
         [HttpGet("edit/{storyId:guid?}")]
-        public async Task<IActionResult> Edit([FromRoute] Guid storyId)
+        public async Task<IActionResult> Edit(Guid storyId)
         {
-            var tags = await _tagManager.GetTopAsync(Cancel);
             var story = await _blogStoryManager.GetWithTagsAsync(storyId, Cancel);
-            var viewModel = new EditBlogStoryViewModel(story, tags, Url);
+            var tagPage = await _tagManager.GetAsync(new TagsQuery(), Cancel);
+            var viewModel = new EditBlogStoryViewModel(story, tagPage.Items, Url);
             return View(viewModel);
         }
 
         [HttpPost("edit/{storyId:guid?}", Name = "edit-story"), ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit([FromRoute] Guid storyId,
-                                              EditBlogStoryViewModel model)
+                                              EditBlogStoryViewModel model,
+                                              [FromServices] IOptions<StoryImageOption> defaultStoryImage)
         {
             if(!ModelState.IsValid)
             {
                 return View(model);
             }
 
-            model.SetImageUrlIfNotExist(_defaultStoryImage.Value.Url, _defaultStoryImage.Value.Width);
+            model.SetImageUrlIfNotExist(defaultStoryImage.Value.Url, defaultStoryImage.Value.Width);
+
             var blogStory = await _blogStoryManager.CreateOrUpdateAsync(model.ToDomain(), Cancel);
-
-            var tagIds = model.TagsSelected?.GetGuids(',')
-                              .ToList();
-            await _tagManager.UpdateBlogStoryTagsAsync(tagIds, blogStory, Cancel);
-
             return RedirectToAction("Edit", new {storyId = blogStory.Id});
-        }
-
-        [HttpDelete("{storyId:guid}")]
-        public async Task<IActionResult> Delete([FromRoute]Guid storyId)
-        {
-            await _blogStoryManager.DeleteAsync(storyId, Cancel);
-            return Ok();
-        }
-
-        [HttpPatch("{storyId}")]
-        public async Task<IActionResult> ChangeAvailability(Guid storyId,
-                                                            Boolean isPublished = false)
-        {
-            var story = await _blogStoryManager.ChangeAvailabilityAsync(storyId, isPublished, Cancel);
-            var redirect = isPublished
-                ? Url.Action("Story", "BlogStory", new {alias = story.Alias})
-                : String.Empty;
-
-            return Ok(new {redirect = redirect});
-        }
-
-        [HttpPost("{storyId}/accesstoken")]
-        public async Task<IActionResult> UpdateAccessToken(Guid storyId)
-        {
-            var story = await _blogStoryManager.UpdateAccessTokenAsync(storyId, Cancel);
-            return Ok();
-        }
-
-        [HttpDelete("{storyId}/accesstoken")]
-        public async Task<IActionResult> RemoveAccessToken(Guid storyId)
-        {
-            await _blogStoryManager.RemoveAccessTokenAsync(storyId, Cancel);
-            return Ok();
         }
     }
 }

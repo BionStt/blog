@@ -11,6 +11,7 @@ using Blog.Data.Contracts.Repositories;
 using Blog.Data.EntityFramework.Context;
 using Blog.Data.EntityFramework.OrderMappings;
 using GenRep.EntityFramework;
+using GenRep.EntityFramework.Helpers;
 using Microsoft.EntityFrameworkCore;
 
 namespace Blog.Data.EntityFramework.Repository
@@ -98,7 +99,7 @@ namespace Blog.Data.EntityFramework.Repository
         }
 
         public Task<BlogStory> GetPublishedWithTagsAsync(String alias,
-                                                CancellationToken cancel = default)
+                                                         CancellationToken cancel = default)
         {
             return Entities.Include(x => x.BlogStoryTags)
                            .ThenInclude(x => x.Tag)
@@ -140,7 +141,7 @@ namespace Blog.Data.EntityFramework.Repository
 
             if(query.TagId.HasValue)
             {
-                dataQuery = dataQuery.Where(x => x.BlogStoryTags.Any(t=>t.TagId == query.TagId));
+                dataQuery = dataQuery.Where(x => x.BlogStoryTags.Any(t => t.TagId == query.TagId));
             }
 
             return dataQuery;

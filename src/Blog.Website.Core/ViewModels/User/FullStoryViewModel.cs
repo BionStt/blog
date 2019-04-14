@@ -12,6 +12,7 @@ namespace Blog.Website.Core.ViewModels.User
         public Guid Id { get; set; }
         public String Title { get; set; }
         public String Description { get; set; }
+        public String SeoDescription { get; set; }
         public String Keywords { get; set; }
         public String Content { get; set; }
         public String StoryThumbUrl { get; set; }
@@ -36,6 +37,7 @@ namespace Blog.Website.Core.ViewModels.User
             Title = story.Title;
             Keywords = story.SeoKeywords;
             Description = story.Description;
+            SeoDescription = story.SeoDescription;
             StoryThumbUrl = story.StoryThumbUrl;
             CreateDate = story.CreateDate;
             if (story.PublishedDate.HasValue)

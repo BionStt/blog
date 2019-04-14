@@ -12,9 +12,6 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.2.2" PrivateAssets="All" />
   </ItemGroup>
   <ItemGroup>
-    <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="2.0.1" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Blog.Core\Blog.Core.csproj" />
     <ProjectReference Include="..\Blog.Data.Contracts\Blog.Data.Contracts.csproj" />
   </ItemGroup>

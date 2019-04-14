@@ -14,7 +14,7 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <title>@ViewBag.Title</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-    <link rel="stylesheet" href="/front.min.css?v=@Versioning.Current">
+    <link rel="stylesheet subresource" href="/css/reader/front.min.css">
     <meta name="theme-color" content="#5c6bd0">
     <meta name="robots" content="index, follow">
     <meta http-equiv="x-dns-prefetch-control" content="on">
@@ -111,13 +111,6 @@
                             </svg>
                         </a>
                     </li>
-                    <li class="b-menu__social-item">
-                        <a href="https://www.facebook.com/d2funlife" target="_blank" rel="nofollow noopener">
-                            <svg class="b-icon__facebook ">
-                                <use xlink:href="/img/sprite/sprite.svg#facebook"></use>
-                            </svg>
-                        </a>
-                    </li>
                 </ul>
                 @RenderSection("publicMainMenu", true)
             </div>
@@ -133,7 +126,7 @@
     <div class="l-container b-post__footer">
         <div class="b-copy">
             <div>d2funlife | Даниил Павлов 2015-@DateTime.Now.Year.ToString()</div>
-            <div>Создано с использованием ASP.NET Core 2.2, Entity Framework Core 2.2. <a href="https://github.com/d2funlife/blog" class="b-copy__link" rel="nofollow">Исходный код</a></div>
+            <div>Создано с использованием ASP.NET Core 2.2, Entity Framework Core 2.2. <a href="https://github.com/d2funlife/blog" class="b-copy__link" rel="nofollow" target="_blank">Исходный код</a> + <a href="https://github.com/ann-pavlova/d2funlife" class="b-copy__link" rel="nofollow" target="_blank">Исходный код UI</a></div>
         </div>
     </div>
     <a href="#" class="back-to-top j-btn-top" rel="nofollow">
@@ -142,7 +135,7 @@
         </svg>
     </a>
 </div>
-<script src="/front.min.js?v=@Versioning.Current"></script>
+<script src="~/js/reader/front.min.js"></script>
 <script>
     var lozadObeserver = lozad();
     lozadObeserver.observe();

@@ -20,7 +20,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.WebEncoders;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace Blog.Website
 {
@@ -78,23 +81,49 @@ namespace Blog.Website
             {
                 options.MaxModelValidationErrors = 5;
                 options.Filters.Add(typeof(GlobalException));
+            }).AddJsonOptions(options =>
+            {
+                options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+                options.SerializerSettings.DateFormatString = "dd.MM.yyyy HH:mm:ss zzz";
+                options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
             });
+
+            JsonConvert.DefaultSettings = () => new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+                ContractResolver = new CamelCasePropertyNamesContractResolver()
+            };
 
             services.AddTransient<IBlogStoryManager>(provider => new BlogStoryManager(provider.GetService<IBlogStoryRepository>(),
                                                                                       provider.GetService<ITagManager>()));
-            services.AddTransient<ITagManager, TagManager>();
             services.AddTransient<IBlogStoryRepository, BlogStoryRepository>();
             services.AddTransient<ITagRepository, TagRepository>();
             services.AddTransient<IBlogStoryTagRepository, BlogStoryTagRepository>();
-            services.AddSingleton<IMainMenuContainer>(provider => new MainMenuContainer(Configuration.GetSection("menus:main-nav-menu")));
-            services.AddSingleton<IStoryEditMenuContainer>(provider =>
-                                                               new StoryEditMenuContainer(Configuration.GetSection("menus:story-edit-top-menu")));
+            
+            services.AddTransient<ITagManager>(provider =>
+            {
+                var tagRepository = provider.GetService<ITagRepository>();
+                var memoryCache = provider.GetService<IMemoryCache>();
+                var cacheRepository = new Blog.Data.EntityFramework.MemoryCache.Repositories.TagRepository(tagRepository, memoryCache);
+
+                var blogStoriesRepository = provider.GetService<IBlogStoryRepository>();
+                var storyTagRepositories = provider.GetService<IBlogStoryTagRepository>();
+                
+                return new TagManager(cacheRepository, blogStoriesRepository, storyTagRepositories);
+            });
+
+            services.AddSingleton<IMainMenuContainer, MainMenuContainer>();
+            services.AddSingleton<IStoryEditMenuContainer, StoryEditMenuContainer>();
 
             var pageInfoSec = Configuration.GetSection("DefaultPageInfo");
             services.Configure<DefaultPageInfoOption>(pageInfoSec);
 
             var storyImgSec = Configuration.GetSection("DefaultPageInfo:StoryImage");
             services.Configure<StoryImageOption>(storyImgSec);
+
+            var menus = Configuration.GetSection("Menus");
+            services.Configure<MainMenuOptions>(menus);
+            services.Configure<StoryEditMenuOptions>(menus);
 
 
             var loginRestriction = new List<LoginRestriction>();

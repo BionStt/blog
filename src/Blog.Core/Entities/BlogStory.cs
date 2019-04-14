@@ -33,6 +33,7 @@ namespace Blog.Core.Entities
         {
             Title = target.Title;
             Description = target.Description;
+            SeoDescription = target.SeoDescription;
             SeoKeywords = target.SeoKeywords;
             Content = target.Content;
             StoryImageUrl = target.StoryImageUrl;

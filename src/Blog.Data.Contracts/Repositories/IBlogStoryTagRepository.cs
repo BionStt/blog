@@ -8,22 +8,29 @@ namespace Blog.Data.Contracts.Repositories
 {
     public interface IBlogStoryTagRepository
     {
+        Task<List<Guid>> GetIdsByStoryIdAsync(Guid storyId,
+                                              CancellationToken cancel = default);
+
         Task<List<BlogStoryTag>> GetByStoryIdAsync(Guid storyId,
-                                                   CancellationToken cancel);
+                                                   CancellationToken cancel = default);
 
         Task DeleteRangeAsync(List<BlogStoryTag> tags,
-                              CancellationToken cancel);
+                              CancellationToken cancel = default);
 
         Task<BlogStoryTag> AddAsync(BlogStoryTag blogStoryTag,
-                                    CancellationToken cancel);
+                                    CancellationToken cancel = default);
 
         Task AddRangeAsync(List<BlogStoryTag> blogStoryTags,
-                           CancellationToken cancel);
+                           CancellationToken cancel = default);
 
         Task DeleteRangeAsync(IEnumerable<BlogStoryTag> tags,
-                              CancellationToken cancel);
+                              CancellationToken cancel = default);
+
+        Task DeleteRangeAsync(IEnumerable<Guid> tagIds,
+                              Guid storyId,
+                              CancellationToken cancel = default);
 
         Task DeleteAsync(BlogStoryTag blogStoryTag,
-                         CancellationToken cancel);
+                         CancellationToken cancel = default);
     }
 }
