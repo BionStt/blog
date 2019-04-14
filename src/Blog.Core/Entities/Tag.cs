@@ -16,15 +16,20 @@ namespace Blog.Core.Entities
 
         public Int32 Score { get; set; }
         public Boolean IsPublished { get; set; }
-        
+
         public List<BlogStoryTag> BlogStoryTags { get; set; }
 
-        public Tag() { }
+        public Tag()
+        {
+        }
 
-        public Tag(String name)
+        public Tag(String name,
+                   String alias = null)
         {
             Name = name;
-            Alias = StringToUrlStandard.Convert(name.ToLowerInvariant());
+            Alias = String.IsNullOrEmpty(alias)
+                ? StringToUrlStandard.Convert(name.ToLowerInvariant())
+                : alias;
         }
 
         public void Update(Tag targetEntity)

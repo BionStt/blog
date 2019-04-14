@@ -14,11 +14,7 @@ namespace Blog.Website.Core.Requests
 
         public Tag ToDomain()
         {
-            return new Tag
-            {
-                Name = Name,
-                Alias = Alias
-            };
+            return new Tag(Name, Alias);
         }
     }
 }
