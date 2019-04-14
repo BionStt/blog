@@ -7,7 +7,16 @@
     <meta name="description" content="blog">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" type="image/x-icon" href="/img/favicon.ico">
-    <link href="~/admin.min.css?v=@Versioning.Current" rel="stylesheet" />
+    <link rel="stylesheet subresource" href="~/css/admin/bootstrap-reboot.min.css" />
+    <link rel="stylesheet subresource" href="~/css/admin/bootstrap-grid.min.css" />
+    <link rel="stylesheet subresource" href="~/css/admin/bootstrap.min.css" />
+    <link rel="stylesheet subresource" href="~/css/admin/animate.min.css" />
+    <link rel="stylesheet subresource" href="~/css/admin/font-awesome.min.css" />
+    <link rel="stylesheet subresource" href="~/css/admin/metisMenu.min.css" />
+    <link rel="stylesheet subresource" href="~/css/admin/selectize.css" />
+    <link rel="stylesheet subresource" href="~/css/admin/prism.vs.css" />
+    <link rel="stylesheet subresource" href="~/css/admin/app.css" />
+    <link rel="stylesheet subresource" href="~/css/admin/admin.custom.css" />
 </head>
 <body>
     <div class="main-wrapper">
@@ -84,7 +93,20 @@
             <div class="color-secondary"></div>
         </div>
     </div>
-    <script src="~/admin.js"></script>
+    <script rel="subresource" src="~/js/admin/jquery.min.js"></script>
+    <script rel="subresource" src="~/js/admin/tether.min.js"></script>
+    <script rel="subresource" src="~/js/admin/bootstrap.min.js"></script>
+    <script rel="subresource" src="~/js/admin/bootstrap-toolkit.min.js"></script>
+    <script rel="subresource" src="~/js/admin/jquery.validate.min.js"></script>
+    <script rel="subresource" src="~/js/admin/jquery.validate.unobtrusive.js"></script>
+    <script rel="subresource" src="~/js/admin/metisMenu.min.js"></script>
+    <script rel="subresource" src="~/js/admin/nprogress.js"></script>
+    <script rel="subresource" src="~/js/admin/Sortable.min.js"></script>
+    <script rel="subresource" src="~/js/admin/microplugin.js"></script>
+    <script rel="subresource" src="~/js/admin/sifter.min.js"></script>
+    <script rel="subresource" src="~/js/admin/selectize.min.js"></script>
+    <script rel="subresource" src="~/js/admin/prism.min.js"></script>
+    <script rel="subresource" src="~/js/admin/app.js"></script>
     @RenderSection("additionalScripts", false)
 </body>
 </html>
