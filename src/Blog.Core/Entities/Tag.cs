@@ -30,6 +30,7 @@ namespace Blog.Core.Entities
         public void Update(Tag targetEntity)
         {
             Name = targetEntity.Name;
+            Alias = targetEntity.Alias;
             SeoTitle = targetEntity.SeoTitle;
             SeoDescription = targetEntity.SeoDescription;
             SeoKeywords = targetEntity.SeoKeywords;

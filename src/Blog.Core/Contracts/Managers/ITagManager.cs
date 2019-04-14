@@ -56,10 +56,10 @@ namespace Blog.Core.Contracts.Managers
         /// <summary>
         /// Create tag
         /// </summary>
-        /// <param name="name">Tag name</param>
+        /// <param name="tag">Tag model</param>
         /// <param name="cancel">Cancellation token</param>
         /// <returns>Tag entity</returns>
-        Task<Tag> CreateTagAsync(String name,
+        Task<Tag> CreateTagAsync(Tag tag,
                                  CancellationToken cancel = default);
 
         /// <summary>

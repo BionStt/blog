@@ -23,7 +23,7 @@ namespace Blog.Website.Areas.Author.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] TagCreateRequest request)
         {
-            var tag = await _tagManager.CreateTagAsync(request.Name, Cancel);
+            var tag = await _tagManager.CreateTagAsync(request.ToDomain(), Cancel);
             return Ok(new {id = tag.Id, name = tag.Name});
         }
 

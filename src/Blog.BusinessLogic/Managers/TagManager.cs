@@ -110,15 +110,14 @@ namespace Blog.BusinessLogic.Managers
             }
         }
 
-        public async Task<Tag> CreateTagAsync(String name,
+        public async Task<Tag> CreateTagAsync(Tag tag,
                                               CancellationToken cancel = default)
         {
-            if(String.IsNullOrWhiteSpace(name))
+            if(tag == null)
             {
-                throw new ArgumentException(nameof(name));
+                throw new ArgumentException(nameof(tag));
             }
 
-            var tag = new Tag(name);
             await _tagRepository.AddAsync(tag, cancel);
             return tag;
         }

@@ -9,6 +9,7 @@
                     tagManager.removeTag(tag);
                 });
             });
+        
     },
     removeTag: function (tagId) {
         $.ajax({
