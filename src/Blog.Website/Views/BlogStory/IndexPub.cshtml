@@ -1,5 +1,13 @@
-﻿@model Blog.Website.Core.ViewModels.User.MainPageViewModel
-@{ Layout = "_Layout"; }
+﻿@using Microsoft.AspNetCore.Http.Extensions
+@model Blog.Website.Core.ViewModels.User.MainPageViewModel
+@{
+    Layout = "_Layout";
+    
+    var displayUrl = Context.Request.GetDisplayUrl();
+    ViewBag.Url = displayUrl.Last() == '/'
+        ? displayUrl.Substring(0, displayUrl.Length - 1)
+        : displayUrl;
+}
 
 <div class="b-post__posts j-masonry">
     <div class="b-post__h1">
