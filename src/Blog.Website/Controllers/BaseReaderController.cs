@@ -8,7 +8,7 @@ namespace Blog.Website.Controllers
     {
         protected readonly Int32 PageSize;
         
-        public BaseReaderController(IOptions<DefaultPageInfoOption> pageInfo)
+        public BaseReaderController(IOptions<DefaultPageInfoOptions> pageInfo)
         {
             PageSize = pageInfo.Value.PageSize;
         }

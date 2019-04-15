@@ -3,8 +3,10 @@ using System.Text;
 using System.Threading.Tasks;
 using Blog.Core.Contracts.Managers;
 using Blog.Website.ActionResults;
+using Blog.Website.Core.ConfigurationOptions;
 using Blog.Website.Models.Requests.Reader;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 namespace Blog.Website.Controllers
 {
@@ -26,17 +28,20 @@ namespace Blog.Website.Controllers
         }
 
         [HttpGet("feed/rss")]
-        public async Task<IActionResult> GetRssFeed([FromQuery] Int32 page = 1)
+        public async Task<IActionResult> GetRssFeed([FromServices] IOptions<FeedOptions> feedOptions,
+                                                    [FromQuery] Int32 page = 1)
+
         {
             var storiesPage = await _blogStoryManager.GetPageWithTagsAsync(GetStoriesRequest.ToPublishedQuery(page, PageSize), Cancel);
-            return new RssStoriesFeedResult(storiesPage);
+            return new RssStoriesFeedResult(storiesPage, feedOptions);
         }
-        
+
         [HttpGet("feed/atom")]
-        public async Task<IActionResult> GetAtomFeed([FromQuery] Int32 page = 1)
+        public async Task<IActionResult> GetAtomFeed([FromServices] IOptions<FeedOptions> feedOptions,
+                                                     [FromQuery] Int32 page = 1)
         {
             var storiesPage = await _blogStoryManager.GetPageWithTagsAsync(GetStoriesRequest.ToPublishedQuery(page, PageSize), Cancel);
-            return new AtomStoriesResult(storiesPage);
+            return new AtomStoriesResult(storiesPage, feedOptions);
         }
     }
 }

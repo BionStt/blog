@@ -4,7 +4,9 @@ using System.Threading.Tasks;
 using System.Xml;
 using Blog.Core.Containers;
 using Blog.Core.Entities;
+using Blog.Website.Core.ConfigurationOptions;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using Microsoft.SyndicationFeed;
 using Microsoft.SyndicationFeed.Atom;
 using Microsoft.SyndicationFeed.Rss;
@@ -14,10 +16,13 @@ namespace Blog.Website.ActionResults
     public class RssStoriesFeedResult : IActionResult
     {
         private readonly Page<BlogStory> _page;
+        private readonly IOptions<FeedOptions> _options;
         
-        public RssStoriesFeedResult(Page<BlogStory> page)
+        public RssStoriesFeedResult(Page<BlogStory> page,
+                                    IOptions<FeedOptions> options)
         {
             _page = page;
+            _options = options;
         }
 
         public async  Task ExecuteResultAsync(ActionContext context)
@@ -28,12 +33,12 @@ namespace Blog.Website.ActionResults
             response.ContentType = "application/xml";
             
             var host = request.Scheme + "://" + request.Host;
-            using (var xmlWriter = XmlWriter.Create(response.Body, new XmlWriterSettings() { Async = true, Indent = true, Encoding = new UTF8Encoding(false) }))
+            using (var xmlWriter = XmlWriter.Create(response.Body, new XmlWriterSettings() { Async = true, Indent = true, Encoding = new UTF8Encoding(true) }))
             {
                 var rss = new RssFeedWriter(xmlWriter);
-                await rss.WriteTitle("d2funlife | Блог о программировании");
-                await rss.WriteDescription("Описание");
-                await rss.WriteGenerator("генрен");
+                await rss.WriteTitle(_options.Value.Title);
+                await rss.WriteDescription(_options.Value.Description);
+                await rss.WriteGenerator(_options.Value.GeneratorDescription);
                 await rss.WriteValue("link", host);
                 
                 foreach (var post in _page.Items)
@@ -41,7 +46,7 @@ namespace Blog.Website.ActionResults
                     var item = new AtomEntry
                     {
                         Title = post.Title,
-                        Description = post.Content.Replace("data-src", "src"),
+                        Description = post.GetContentWithoutDataSrc(),
                         Id = post.Id.ToString(),
                         Published = post.PublishedDate.Value,
                         LastUpdated = post.ModifiedDate,
@@ -53,7 +58,7 @@ namespace Blog.Website.ActionResults
                         item.AddCategory(new SyndicationCategory(tag.Tag.Name));
                     }
 
-                    item.AddContributor(new SyndicationPerson("Danil Pavlov", "d2funlife@gmail.com (Danil Pavlov)","author"));
+                    item.AddContributor(new SyndicationPerson(_options.Value.AuthorName, _options.Value.FullEmail, "author"));
                     item.AddLink(new SyndicationLink(new Uri($"{host}/{post.Alias}")));
 
                     await rss.Write(item);

@@ -2,7 +2,7 @@ using System;
 
 namespace Blog.Website.Core.ConfigurationOptions
 {
-    public class DefaultPageInfoOption
+    public class DefaultPageInfoOptions
     {
         public String Title { get; set; }
         public String Description { get; set; }

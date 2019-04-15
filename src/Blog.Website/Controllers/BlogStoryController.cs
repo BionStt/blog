@@ -17,7 +17,7 @@ namespace Blog.Website.Controllers
 
         public BlogStoryController(IBlogStoryManager blogStoryManager,
                                    ITagManager tagManager,
-                                   IOptions<DefaultPageInfoOption> pageInfo) : base(pageInfo)
+                                   IOptions<DefaultPageInfoOptions> pageInfo) : base(pageInfo)
         {
             _blogStoryManager = blogStoryManager;
             _tagManager = tagManager;
