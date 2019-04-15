@@ -18,7 +18,7 @@ namespace Blog.Website.Filters
                 return;
             }
 
-            var pageInfo = context.HttpContext.RequestServices.GetService<IOptions<DefaultPageInfoOption>>();
+            var pageInfo = context.HttpContext.RequestServices.GetService<IOptions<DefaultPageInfoOptions>>();
             if(pageInfo == null)
             {
                 return;

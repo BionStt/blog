@@ -49,5 +49,10 @@ namespace Blog.Core.Entities
                               .ToString("N")
                               .Substring(0, 6);
         }
+
+        public String GetContentWithoutDataSrc()
+        {
+            return Content.Replace("data-src", "src");
+        }
     }
 }

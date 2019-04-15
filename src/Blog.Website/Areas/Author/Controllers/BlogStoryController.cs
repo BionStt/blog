@@ -21,7 +21,7 @@ namespace Blog.Website.Areas.Author.Controllers
 
         public BlogStoryController(IBlogStoryManager blogStoryManager,
                                    ITagManager tagManager,
-                                   IOptions<DefaultPageInfoOption> pageInfo)
+                                   IOptions<DefaultPageInfoOptions> pageInfo)
             : base(pageInfo)
         {
             _blogStoryManager = blogStoryManager;
@@ -48,7 +48,7 @@ namespace Blog.Website.Areas.Author.Controllers
         [HttpPost("edit/{storyId:guid?}", Name = "edit-story"), ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit([FromRoute] Guid storyId,
                                               EditBlogStoryViewModel model,
-                                              [FromServices] IOptions<StoryImageOption> defaultStoryImage)
+                                              [FromServices] IOptions<StoryImageOptions> defaultStoryImage)
         {
             if(!ModelState.IsValid)
             {

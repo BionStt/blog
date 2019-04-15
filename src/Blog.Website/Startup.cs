@@ -116,15 +116,17 @@ namespace Blog.Website
             services.AddSingleton<IStoryEditMenuContainer, StoryEditMenuContainer>();
 
             var pageInfoSec = Configuration.GetSection("DefaultPageInfo");
-            services.Configure<DefaultPageInfoOption>(pageInfoSec);
+            services.Configure<DefaultPageInfoOptions>(pageInfoSec);
 
             var storyImgSec = Configuration.GetSection("DefaultPageInfo:StoryImage");
-            services.Configure<StoryImageOption>(storyImgSec);
+            services.Configure<StoryImageOptions>(storyImgSec);
 
             var menus = Configuration.GetSection("Menus");
             services.Configure<MainMenuOptions>(menus);
             services.Configure<StoryEditMenuOptions>(menus);
 
+            var feedSection = Configuration.GetSection("Feed");
+            services.Configure<FeedOptions>(feedSection);
 
             var loginRestriction = new List<LoginRestriction>();
             var section = Configuration.GetSection("logins-restrictions");

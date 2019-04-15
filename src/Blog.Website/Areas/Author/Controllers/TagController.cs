@@ -18,7 +18,7 @@ namespace Blog.Website.Areas.Author.Controllers
         private readonly ITagManager _tagManager;
 
         public TagController(ITagManager tagManager,
-                             IOptions<DefaultPageInfoOption> pageInfo)
+                             IOptions<DefaultPageInfoOptions> pageInfo)
             : base(pageInfo)
         {
             _tagManager = tagManager;
